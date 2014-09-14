@@ -29,19 +29,10 @@
  *	from: @(#)stdarg.h	8.1 (Berkeley) 6/10/93
  */
 
-#ifndef ARM_STDARG_H
-#define	ARM_STDARG_H
+#ifndef STDARG_H
+#define	STDARG_H
 
-
-//#if __GNUC_PREREQ__(2, 96)
-//#define va_list			__builtin_va_list
-//#define	va_start(ap, last)	__builtin_va_start((ap), (last))
-//#define	va_arg			__builtin_va_arg
-//#define	va_end			__builtin_va_end
-//#define	va_copy(dest, src)	__builtin_va_copy((dest), (src))
-//#else
-
-typedef char *			va_list;
+typedef char *va_list;
 
 #define	__va_size(type) \
 	(((sizeof(type) + sizeof(long) - 1) / sizeof(long)) * sizeof(long))
@@ -55,6 +46,5 @@ typedef char *			va_list;
 #define	va_end(ap)
 
 #define	va_copy(dest, src)	((dest) = (src))
-//#endif
 
-#endif /* !_ARM_STDARG_H */
+#endif /* !STDARG_H */
