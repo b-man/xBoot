@@ -7,6 +7,7 @@ S_SRC_FILES := \
 	string/strcmp.S \
 	string/strlen.S \
 	string/strncmp.S \
-	string/memset_pattern.S
+	string/memset_pattern.S \
+	builtin/div.S
 
 S_SRCS += $(addprefix $(SRC_DIR)/, $(S_SRC_FILES))

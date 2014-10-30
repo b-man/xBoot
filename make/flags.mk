@@ -77,6 +77,4 @@ LDFLAGS	+= \
 	-nostdlib \
 	--gc-sections \
 	--defsym DRAM_SIZE=$(DRAM_SIZE) \
-	--defsym BOOT_TEXT_BASE=$(BOOT_TEXT_BASE) \
-	-L$(dir $(shell $(CC) -print-libgcc-file-name)) \
-	-lgcc
+	--defsym BOOT_TEXT_BASE=$(BOOT_TEXT_BASE)
