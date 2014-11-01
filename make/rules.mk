@@ -52,7 +52,7 @@ $(TARGET): $(OBJS)
 install: all
 
 clean:
-	@rm -rf $(BUILD_DIR) $(SRCROOT)/$(TARGET).* $(SRCROOT)/scripts/ccdv
+	@rm -rf $(BUILD_DIR) $(SRCROOT)/$(TARGET).* $(SRCROOT)/scripts/ccdv $(SRCROOT)/xboot.*.bin
 	@echo "Source tree is now clean."
 
 

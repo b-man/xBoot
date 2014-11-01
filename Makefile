@@ -7,7 +7,7 @@ export SRCROOT := $(CURDIR)
 export OBJROOT := $(SRCROOT)
 
 # Main build target
-export TARGET := xboot
+export TARGET := xboot.$(PLATFORM)
 
 include $(SRCROOT)/make/vars.mk
 include $(SRCROOT)/make/tools.mk
