@@ -33,10 +33,10 @@
 #include <interface/serial.h>
 
 extern serial_driver serial_drv;
+static serial_driver *serial = &serial_drv;
 
 void serial_init(void)
 {
-	serial_driver *serial = &serial_drv;
 	serial->init();
 
 	return;
@@ -45,7 +45,6 @@ void serial_init(void)
 int serial_poll(void)
 {
 	int state;
-	serial_driver *serial = &serial_drv;
 
 	state = serial->poll();
 
@@ -55,7 +54,6 @@ int serial_poll(void)
 uint32_t serial_getc(void)
 {
 	uint32_t val = '\0';
-	serial_driver *serial = &serial_drv;
 
 	val = serial->getc();
 
@@ -64,8 +62,6 @@ uint32_t serial_getc(void)
 
 void serial_putc(int c)
 {
-	serial_driver *serial = &serial_drv;
-
 	if (c == '\n')
 		serial->putc('\r');
 
@@ -76,7 +72,6 @@ void serial_putc(int c)
 
 void serial_puts(const char *str)
 {
-	serial_driver *serial = &serial_drv;
 	serial->puts(str);
 
 	return;

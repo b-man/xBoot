@@ -32,11 +32,11 @@
 #include <sys/types.h>
 #include <interface/sysctl.h>
 
-sysctl_driver sysctl_drv;
+extern sysctl_driver sysctl_drv;
+static sysctl_driver *sysctl = &sysctl_drv;
 
 void sysctl_reset(void)
 {
-	sysctl_driver *sysctl = &sysctl_drv;
 	sysctl->reset();
 
 	return;
@@ -44,7 +44,6 @@ void sysctl_reset(void)
 
 void sysctl_poweroff(void)
 {
-	sysctl_driver *sysctl = &sysctl_drv;
 	sysctl->poweroff();
 
 	return;

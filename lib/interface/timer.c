@@ -34,10 +34,10 @@
 #include <interface/timer.h>
 
 extern timer_driver timer_drv;
+static timer_driver *timer = &timer_drv;
 
 void timer_init(void)
 {
-	timer_driver *timer = &timer_drv;
 	timer->init();
 
 	return;
@@ -45,7 +45,6 @@ void timer_init(void)
 
 void timer_reset(void)
 {
-	timer_driver *timer = &timer_drv;
 	timer->reset();
 
 	return;
@@ -54,9 +53,7 @@ void timer_reset(void)
 void usleep(uint32_t us)
 {
 	uint32_t ini, end;
-
 	ini = end = 0;
-	timer_driver *timer = &timer_drv;
 
 	ini = timer->count_usec();
 	end = (ini + us);
