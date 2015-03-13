@@ -49,21 +49,21 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 		switch (ch) {
 			case '\n':
 			case '\r':
-				serial_puts("\n");
+			    serial_puts("\n");
 			    *lp++ = '\0';
 			    return;
 			case '\b':
 			case '\177':
-				if (lp >= (buffer + minlen)) {
-					serial_puts("\b \b");
-					lp--;
-				}
+			    if (lp >= (buffer + minlen)) {
+				serial_puts("\b \b");
+				lp--;
+			    }
 				continue;
 			default:
 			    if ((ch > '\040' || ch < '\177') && ch_count < maxlen) {
 			    	serial_putc(ch);
-					*lp++ = ch;
-					ch_count++;
+				*lp++ = ch;
+				ch_count++;
 			    }
 		}
 	}
@@ -73,16 +73,44 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 
 static int shell_parseline(char *buffer, char **argv)
 {
-	int argc;
-	char *token;
+	int argc, nquote;
 	char *delim = " \t";
+	char *token, *lpr, *lpw;
+
+	nquote = 0;
 
 	if (*buffer == '\0')
 		return 0;
 
+	for (lpr = buffer, lpw = buffer; *lpr != '\0'; lpr++) {
+		*lpw = *lpr;
+		switch (*lpr) {
+			case '\042': /* " */
+			case '\047': /* ' */
+			    if (++nquote == 2)
+				nquote = 0;
+			    break;
+			default:
+			    if ((nquote == 1) && (*lpr == ' '))
+				*lpw = (char)-1;
+			    lpw++;
+		}
+	}
+
+	*lpw = '\0';
+
+	if (nquote == 1) {
+		printf("? SYNTAX ERROR: malformed text\n");
+		return -1;
+	}
+
 	token = strtok(buffer, delim);
 
 	for (argc = 0; token != NULL; argc++) {
+		for (lpr = token, lpw = token; *lpr != '\0'; lpr++, lpw++) {
+			if (*lpr == (char)-1)
+				*lpw = ' ';
+		}
 		*argv++ = token;
 		token = strtok(NULL, delim);
 	}
