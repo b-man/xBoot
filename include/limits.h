@@ -34,4 +34,6 @@
 
 #define CHAR_BIT	8	/* Max. number of bits that can fit in a char */
 
+#define MAX_INPUT 1024	/* Max. number of bytes available for input. */
+
 #endif /* !LIMITS_H */

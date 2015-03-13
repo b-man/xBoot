@@ -31,23 +31,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int command_printenv(int argc, char *argv[])
+void printenv_help(void)
 {
-    char *val;
+	printf("Usage:\n\tprintenv\nOR\tprintenv <var>\n");
 
-    if(argv[1]) {
-        if ((val = getenv(argv[1])) == NULL) {
-            printf("no such variable: %s\n", argv[1]);
-            return -1;
-        } else {
-            printf("  %s = %s\n", argv[1], val);
-            return 0;
-        }
-    } else {
-	printf("\n");
-        printenv();
-	printf("\n");
-    }
+	return;
+}
 
-    return 0;
+int printenv_main(int argc, char *argv[])
+{
+	char *val;
+
+	if (argv[1]) {
+		if ((val = getenv(argv[1])) == NULL) {
+			printf("no such variable: %s\n", argv[1]);
+			return -1;
+		} else {
+			printf("  %s = %s\n", argv[1], val);
+			return 0;
+		}
+	} else {
+		printf("\n");
+		printenv();
+		printf("\n");
+	}
+
+	return 0;
 }

@@ -30,10 +30,10 @@
 #include <stdio.h>
 #include <interface/sysctl.h>
 
-int command_reset(int argc, char *argv[])
+int reset_main(int argc, char *argv[])
 {
 	printf("Resetting system...\n");
-    sysctl_reset();
+	sysctl_reset();
 
-    return 0;
+	return 0;
 }

@@ -38,11 +38,11 @@
 #define NULL ((void *)0)
 
 /* Initialization functions */
-void printf_init(void (*putc)(int c));
+extern void printf_init(void (*putc)(int c));
 
 /* printf prototypes */
-int printf(const char *fmt, ...);
-int vprintf(const char *fmt, va_list ap);
-int sprintf(char *buf, const char *fmt, ...);
+extern int printf(const char *fmt, ...);
+extern int vprintf(const char *fmt, va_list ap);
+extern int sprintf(char *buf, const char *fmt, ...);
 
 #endif /* !STDIO_H */

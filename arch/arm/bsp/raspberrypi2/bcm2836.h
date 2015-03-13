@@ -1,6 +1,6 @@
-/* Character type routines
+/* BCM2836-specific definitions
  *
- * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,9 +29,21 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <ctype.h>
+#ifndef BCM2836_H
+#define BCM2836_H
 
-int isascii(int c)
-{
-	return (c >= 0 && c <= 127);
-}
+/* bcm2836-specific memory map defs */
+#define BCM2836_PERIPH_BASE	0x3F000000
+#define BCM2836_GPIO_BASE	(BCM2836_PERIPH_BASE + 0x200000)
+#define BCM2836_UART0_BASE	(BCM2836_PERIPH_BASE + 0x201000)
+#define BCM2836_TIMER_BASE	(BCM2836_PERIPH_BASE + 0x3000)
+
+/* bcm2836 gpio stuff */
+#define BCM_GPIO_GPPUD		0x94
+#define BCM_GPIO_GPPUDCLK0	0x98
+#define BCM_GPIO_PIN(p)		(1 << p)
+
+/* uart clock speed in Hz */
+#define PL011_CLOCK_RATE 3000000
+
+#endif /* !BCM2836_H */

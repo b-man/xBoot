@@ -1,6 +1,6 @@
 /* Main loop
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -40,56 +40,43 @@
 #include <interface/timer.h>
 #include <interface/serial.h>
 
-void xboot_banner(void)
+static void xboot_banner(void)
 {
-    /* display banner */
-    printf("\nxBoot for %s\n", bsp_platform_name);
-    printf("Copyright (c) 2014 Brian McKenzie <mckenzba@gmail.com>\n");
-    printf("Build: %s\n\n", (char *)__xBoot_version);
+	/* display banner */
+	printf("\nxBoot for %s\n", bsp_platform_name);
+	printf("Copyright (c) 2015 Brian McKenzie <mckenzba@gmail.com>\n");
+	printf("Build: %s\n\n", (char *)__xBoot_version);
 
-    return;
+	return;
 }
 
 void xboot_main(void)
 {
-    int boot_delay;
+	int boot_delay;
 
-    /* Display the banner */
-    xboot_banner();
+	/* Display the banner */
+	xboot_banner();
 
-#if 0
-    int size = 100;
-    char *test_str = "Hello, World!";
-    printf("==Start malloc test==\n");
-    printf("Allocating %d chars of space for string \"%s\"...\n", size, test_str);
-    char *str = (char *)malloc((sizeof(char)*size));
-    sprintf(str, "%s", test_str);
-    printf("string allocated: \"%s\", size of string is %d chars.\n", str, strlen(str));
-    printf("releasing resources...\n");
-    free(str);
-    printf("===End malloc test===\n\n");
-#endif
+	/* Delay the boot if necessary */
+	printf("Press any key to enter interactive shell.\n");
+	for (boot_delay = atoi(getenv("bootdelay")); boot_delay > 0; boot_delay--) {
+		printf("Booting in %2d seconds...\r", boot_delay);
+		if (serial_poll() != 0)
+			shell_prompt("] ");
+		usleep(1000 * 1000);
+	}
 
-    /* Delay the boot if necessary */
-    printf("Press any key to enter interactive shell.\n");
-    for (boot_delay = atoi(getenv("bootdelay")); boot_delay > 0; boot_delay--) {
-        printf("Booting in %2d seconds...\r", boot_delay);
-        if (serial_poll() != 0)
-            command_prompt();
-        usleep(1000 * 1000);
-    }
+	printf("\nnow looping forever.\n");
 
-    printf("\nnow looping forever.\n");
+	int i = '1';
+	while (1) {
+		if ( i <= '9' ) {
+			printf("count: %c\r", i);
+			usleep(1000 * 1000);
+			++i;
+		} else
+			i = '0';
+	}
 
-    int i = '1';
-    while (1) {
-        if ( i <= '9' ) {
-            printf("count: %c\r", i);
-            usleep(1000 * 1000);
-            ++i;
-        } else
-            i = '0';
-    }
-
-    return;
+	return;
 }

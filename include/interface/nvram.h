@@ -50,16 +50,16 @@ typedef struct _nvram_variable_list {
 } nvram_variable_list_t;
 
 /* NVRAM low-level api prototypes */
-int nvram_init(nvram_variable_t *vars, size_t size);
-nvram_variable_list_t *nvram_initialize_list(void);
-nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, int overridden);
-void nvram_append_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
-void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
+extern int nvram_init(nvram_variable_t *vars, size_t size);
+extern nvram_variable_list_t *nvram_initialize_list(void);
+extern nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, int overridden);
+extern void nvram_append_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
+extern void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
 
 /* NVRAM high-level api prototypes */
-void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting);
-int nvram_variable_unset(nvram_variable_list_t *list, const char *name);
-nvram_variable_t nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
-void nvram_dump_list(nvram_variable_list_t *list);
+extern void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting);
+extern int nvram_variable_unset(nvram_variable_list_t *list, const char *name);
+extern nvram_variable_t nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
+extern void nvram_dump_list(nvram_variable_list_t *list);
 
 #endif /* !NVRAM_H */

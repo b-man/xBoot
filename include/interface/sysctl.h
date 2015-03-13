@@ -39,7 +39,7 @@ typedef struct {
 } sysctl_driver;
 
 /* sysctl driver prototypes */
-void sysctl_reset(void);
-void sysctl_poweroff(void);
+extern void sysctl_reset(void);
+extern void sysctl_poweroff(void);
 
 #endif /* !SYSCTL_H */

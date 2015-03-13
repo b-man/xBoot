@@ -41,9 +41,9 @@
 #error "Unsupported architecture"
 #endif
 
-int atoi(const char *str);
-char *strncpy(char *dst, const char *src, size_t len);
-char *strtok(char *restrict s1, const char *restrict s2);
-unsigned long hextoul(const char *str);
+extern int atoi(const char *str);
+extern char *strncpy(char *dst, const char *src, size_t len);
+extern char *strtok(char *restrict s1, const char *restrict s2);
+extern unsigned long hextoul(const char *str);
 
 #endif /* !STRING_H */

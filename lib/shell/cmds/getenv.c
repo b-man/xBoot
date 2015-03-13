@@ -28,23 +28,30 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- #include <stdio.h>
- #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-int command_getenv(int argc, char *argv[])
+void getenv_help(void)
 {
-    char *val;
+        printf("Usage:\n\tgetenv <var>\n");
 
-    if(argc != 1) {
-        printf("usage: getenv <var>\n");
-        return -1;
-    }
+        return;
+}
 
-    if ((val = getenv(argv[1])) == NULL) {
-        printf("no such variable: %s\n", argv[1]);
-        return -1;
-    } else
-        printf("%s\n", val);
+int getenv_main(int argc, char *argv[])
+{
+	char *val;
+
+	if (argc != 2) {
+		getenv_help();
+		return -1;
+	}
+
+	if ((val = getenv(argv[1])) == NULL) {
+		printf("no such variable: %s\n", argv[1]);
+		return -1;
+	} else
+		printf("%s\n", val);
 
     return 0;
 }

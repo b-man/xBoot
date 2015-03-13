@@ -30,10 +30,10 @@
 #include <stdio.h>
 #include <interface/sysctl.h>
 
-int command_halt(int argc, char *argv[])
+int halt_main(int argc, char *argv[])
 {
 	printf("Halting system...\n");
-    sysctl_poweroff();
+	sysctl_poweroff();
 
-    return 0;
+	return 0;
 }

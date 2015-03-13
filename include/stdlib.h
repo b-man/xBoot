@@ -1,6 +1,6 @@
 /* Standard library api
  *
- * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -42,22 +42,22 @@ typedef struct {
 } env_init_list_t;
 
 /* Initialization prototypes */
-int env_init(env_init_list_t list[], size_t nvars);
+extern int env_init(env_init_list_t list[], size_t nvars);
 
 /* Memory allocation prototypes */
-void free(void *ptr);
-void mallocstats(void);
-caddr_t sbrk(int incr);
-void *malloc(size_t size);
-void *calloc(size_t n1, size_t n2);
-void *realloc(void *ptr, size_t size);
-void *reallocf(void *ptr, size_t size);
+extern void free(void *ptr);
+extern void mallocstats(void);
+extern caddr_t sbrk(int incr);
+extern void *malloc(size_t size);
+extern void *calloc(size_t n1, size_t n2);
+extern void *realloc(void *ptr, size_t size);
+extern void *reallocf(void *ptr, size_t size);
 
 
 /* Environment manipulation prototypes */
-char *getenv(const char *var);
-int unsetenv(const char *var);
-int setenv(const char *var, const char *val, int overwrite);
-void printenv(void);
+extern char *getenv(const char *var);
+extern int unsetenv(const char *var);
+extern int setenv(const char *var, const char *val, int overwrite);
+extern void printenv(void);
 
 #endif /* !STDLIB_H */

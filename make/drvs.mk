@@ -15,3 +15,7 @@ endif
 ifeq ($(SP804_TIMER),YES)
 	DIRS += $(SRCROOT)/drv/timer/sp804
 endif
+
+ifeq ($(BCM_TIMER),YES)
+	DIRS += $(SRCROOT)/drv/timer/bcm_timer
+endif

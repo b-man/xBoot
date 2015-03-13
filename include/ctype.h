@@ -1,4 +1,4 @@
-/* Character type routines
+/* Standard library api
  *
  * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,9 +29,13 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <ctype.h>
+#ifndef CTYPE_H
+#define CTYPE_H
 
-int isascii(int c)
-{
-	return (c >= 0 && c <= 127);
-}
+extern int isacii(int c);
+extern int isalpha(int c);
+extern int isdigit(int c);
+extern int isspace(int c);
+extern int isupper(int c);
+
+#endif /* !CTYPE_H */

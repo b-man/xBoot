@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <sys/io.h>
 #include <boot/bsp.h>
+#include <interface/timer.h>
 #include <interface/sysctl.h>
 #include <interface/serial.h>
 #include <drv/serial/pl011/pl011.h>
@@ -72,6 +73,9 @@ env_init_list_t env_list[] = {
 
 int bsp_init(void)
 {
+       /* Initialize the delay timer */
+        timer_init();
+
 	/* Initialize the serial port */
         serial_init();
 

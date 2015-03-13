@@ -1,4 +1,4 @@
-/* ARM RealView-specific configuration information
+/* Raspberry Pi2-specific configuration information
  *
  * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,8 +29,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "rvpba8.h"
-#include "realview-pba8.h"
+#include "bcm2836.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,8 +38,8 @@
 #include <interface/timer.h>
 #include <interface/serial.h>
 #include <interface/sysctl.h>
-#include <drv/timer/sp804/sp804.h>
 #include <drv/serial/pl011/pl011.h>
+#include <drv/timer/bcm_timer/bcm_timer.h>
 
 #define xstr(s) #s
 #define str(s) xstr(s)
@@ -48,19 +47,19 @@
 extern void _locore_halt_system();
 
 /* Platform name */
-char *bsp_platform_name = "ARM RealView Platform Baseboard (Cortex-A8)";
+char *bsp_platform_name = "Broadcom BCM2836";
 
 /* Serial port configuration */
 pl011_cfg pl011_config = {
 	/* UART0 */
 	.baud  = 115200,
 	.clock = PL011_CLOCK_RATE,
-	.base  = (addr_t)PL011_UART0_BASE,
+	.base  = (addr_t)BCM2836_UART0_BASE,
 };
 
 /* Delay timer configuration */
-sp804_cfg sp804_config = {
-	.base  = (addr_t)SP804_TIMER01_BASE,
+bcm_timer_cfg bcm_timer_config = {
+	.base  = (addr_t)BCM2836_TIMER_BASE,
 };
 
 /* Default environment settings for this platform */
@@ -79,14 +78,29 @@ int bsp_init(void)
        /* Initialize the delay timer */
         timer_init();
 
+	/* Wait for RX fifo to empty. */
+	while (readl((addr_t)(BCM2836_UART0_BASE + UART_FR)) & UART_FR_TXFF_BIT)
+		;
+
+	/* Turn off the uart */
+	writel((addr_t)(BCM2836_UART0_BASE + UART_CR), UART_CR_DISA);
+
+	/* Disable pull up/down for all pins and delay for 150 us. */
+	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), 0x00000000);
+	usleep(150);
+
+	/* Disable pull up/down for pins 14 and 15 and delay for 150 us. */
+	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), (BCM_GPIO_PIN(14) | BCM_GPIO_PIN(15)));
+	usleep(150);
+
+	/* Write 0 to GPPUDCLK0 to make it take effect. */
+	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUDCLK0), 0x00000000);
+
 	/* Initialize the serial port */
 	serial_init();
 
 	/* Initialize debug output */
 	printf_init(serial_putc);
-
-	/* Use REFCLK (1Mhz) for timer2 */
-	writel((addr_t)SYS_CTRL0_BASE, (1 << 19));
 
 	/* Initialize the environment */
 	env_init(env_list, 6);
@@ -95,23 +109,16 @@ int bsp_init(void)
 }
 
 /* Power management routines */
-void rvpba8_reset(void)
+void bcm2836_reset(void)
 {
-	/* Prepare for sw reset */
-	writel((addr_t)SYS_CTL_LOCK, 0x0);
-
-	/* Reset the board */
-	writel((addr_t)SYS_RESETCTL, SYS_SWRESET_BIT);
-
-	/* Halt on failure */
+	/* Halt */
 	_locore_halt_system();
 
 	return;
 }
 
-void rvpba8_halt(void)
+void bcm2836_halt(void)
 {
-
 	/* Halt the board */
 	_locore_halt_system();
 
@@ -120,6 +127,6 @@ void rvpba8_halt(void)
 
 /* Register system control interface */
 sysctl_driver sysctl_drv = {
-	rvpba8_reset,
-	rvpba8_halt
+	bcm2836_reset,
+	bcm2836_halt
 };

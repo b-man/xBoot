@@ -1,4 +1,4 @@
-/* Character type routines
+/* BCM283x System Timer driver - prototypes and definitions
  *
  * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,9 +29,26 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <ctype.h>
+#ifndef BCM_TIMER_H
+#define BCM_TIMER_H
 
-int isascii(int c)
-{
-	return (c >= 0 && c <= 127);
-}
+#include <sys/io.h>
+#include <sys/types.h>
+
+/* BCM timer configuration structure */
+typedef struct {
+	addr_t base;
+} bcm_timer_cfg;
+
+/* BCM timer driver prototypes */
+void bcm_timer_init(void);
+void bcm_timer_reset(void);
+uint32_t bcm_timer_usec_count(void);
+
+/* BCM Timer registers */
+#define BCM_TMR_CS	0x00			/* System timer control/status */
+#define BCM_TMR_CLO	0x04			/* System timer counter (lower 32 bits) */
+#define BCM_TMR_CHI	0x08			/* System timer counter (higher 32 bits) */
+#define BCM_TMR_C(x)	(0x0C + (0x04 * x))	/* System timer compare 0..3 */
+
+#endif /* !BCM_TIMER_H */

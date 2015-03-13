@@ -42,8 +42,8 @@ typedef struct {
 } timer_driver;
 
 /* timer driver prototypes */
-void timer_init(void);
-void timer_reset(void);
-void usleep(uint32_t us);
+extern void timer_init(void);
+extern void timer_reset(void);
+extern void usleep(uint32_t us);
 
 #endif /* !TIMER_H */

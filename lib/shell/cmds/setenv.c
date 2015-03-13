@@ -30,20 +30,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int command_setenv(int argc, char *argv[])
+
+void setenv_help(void)
+{
+	printf("Usage:\n\tsetenv <var> <value>\n");
+
+	return;
+}
+
+int setenv_main(int argc, char *argv[])
 {
 	int retval = -1;
 
-    if (argc == 0) {
-        printf("usage: setenv <var> <value>\n");
-        return -1;
-    }
+	if (argc == 1) {
+		setenv_help();
+		return -1;
+	}
 
-    if (argc == 1)
-        retval = setenv(argv[1], NULL, 1);
+	if (argc == 2)
+		retval = setenv(argv[1], NULL, 1);
 
-    if (argc == 2)
-        retval = setenv(argv[1], argv[2], 1);
+	if (argc == 3)
+		retval = setenv(argv[1], argv[2], 1);
 
-    return retval;
+	return retval;
 }

@@ -44,10 +44,10 @@ typedef struct {
 } serial_driver;
 
 /* serial driver prototypes */
-void serial_init(void);
-int serial_poll(void);
-uint32_t serial_getc(void);
-void serial_putc(int c);
-void serial_puts(const char *str);
+extern void serial_init(void);
+extern int serial_poll(void);
+extern uint32_t serial_getc(void);
+extern void serial_putc(int c);
+extern void serial_puts(const char *str);
 
 #endif /* !SERIAL_H */

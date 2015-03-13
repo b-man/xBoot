@@ -1,6 +1,6 @@
-/* Character type routines
+/* BCM283x System Timer driver
  *
- * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,9 +29,53 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <ctype.h>
+#include "bcm_timer.h"
 
-int isascii(int c)
+#include <sys/io.h>
+#include <sys/types.h>
+
+#include <interface/timer.h>
+
+/* pull in config */
+extern bcm_timer_cfg bcm_timer_config;
+static bcm_timer_cfg *cfg = &bcm_timer_config;
+
+/**
+ * bcm_timer_init - initialize the delay timer
+ */
+void bcm_timer_init(void)
 {
-	return (c >= 0 && c <= 127);
+	/* reset the timer */
+	bcm_timer_reset();
+
+	return;
 }
+
+/**
+ * bcm_timer_reset - reset the timer to zero
+ */
+void bcm_timer_reset(void)
+{
+	return;
+}
+
+/**
+ * bcm_timer_usec_count - get the tick value of the timer in microseconds
+ * @return: value between 0 and 2^32, counting up.
+ */
+uint32_t bcm_timer_usec_count(void)
+{
+	uint32_t value;
+	addr_t timer_base = cfg->base;
+
+	value = readl(timer_base + BCM_TMR_CLO);
+
+	return value;
+}
+
+/* register this driver */
+timer_driver timer_drv = {
+	bcm_timer_init,
+	bcm_timer_reset,
+	bcm_timer_usec_count,
+};

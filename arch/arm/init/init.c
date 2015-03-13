@@ -34,16 +34,11 @@
 
 #include <boot/bsp.h>
 #include <boot/xboot.h>
-#include <interface/timer.h>
-#include <interface/serial.h>
 
 void cpu_init(void)
 {
 	/* Initialize board-specific components */
 	bsp_init();
-
-	/* Initialize the delay timer */
-	timer_init();
 
 	/* Jump to main */
 	xboot_main();
