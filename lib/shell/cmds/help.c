@@ -27,19 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cmd.h>
+#include <shell.h>
 #include <stdio.h>
 #include <string.h>
 
-extern command_tab_t commands[];
+extern cmd_handle_t commands[];
 
 int help_main(int argc, char *argv[])
 {
 	int i = 0;
-	command_tab_t cmd;
+	cmd_handle_t cmd;
 
 	if (argc > 1) {
-		cmd = lookup_command(argv[1]);
+		cmd = query_command(argv[1]);
 		if (cmd.help != NULL)
 			cmd.help();
 		else

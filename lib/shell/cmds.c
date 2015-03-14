@@ -27,16 +27,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cmd.h>
+#include <shell.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "cmds.h"
 
-command_tab_t lookup_command(const char *name)
+/**
+ * query_command
+ *
+ * query a command and return its associated handle.
+ */
+cmd_handle_t query_command(const char *name)
 {
 	int i = 0;
-	command_tab_t cmd = { NULL, NULL, NULL };
+	cmd_handle_t cmd = { NULL, NULL, NULL };
 
 	while (commands[i].name != NULL) {
 		if (strncmp(commands[i].name, name, strlen(name)) == 0)

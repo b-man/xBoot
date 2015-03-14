@@ -29,7 +29,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cmd.h>
+#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -1,4 +1,5 @@
-/*
+/* xBoot interactive shell.
+ *
  * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
@@ -27,14 +28,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cmd.h>
+#include <shell.h>
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
 #include <interface/serial.h>
 
-#define MAXLINE MAX_INPUT
+#define MAXLINE MAX_INPUT	/* Longest line of user input the shell will accept. */
 
+/**
+ * shell_getline
+ *
+ * Read a line of user input and place it in an input buffer.
+ */
 static void shell_getline(char *buffer, int minlen, int maxlen)
 {
 	int ch;
@@ -54,7 +60,7 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			    return;
 			case '\b':
 			case '\177':
-			    if (lp >= (buffer + minlen)) {
+			    if (lp >= (buffer + minlen - 1)) {
 				serial_puts("\b \b");
 				lp--;
 			    }
@@ -71,6 +77,11 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 	return;
 }
 
+/**
+ * shell_parseline
+ *
+ * Parse an input buffer into an argument array and return the argument count.
+ */
 static int shell_parseline(char *buffer, char **argv)
 {
 	int argc, nquote;
@@ -82,6 +93,11 @@ static int shell_parseline(char *buffer, char **argv)
 	if (*buffer == '\0')
 		return 0;
 
+	/* If quoted strings are present in the input buffer, we need to save any spaces within
+	 * those quoted strings by replacing the spaces with a tag (-1) before those strings
+	 * get tokenized. We will also strip out the quotes around those strings as they aren't
+	 * needed when they get placed in the argument array.
+	 */
 	for (lpr = buffer, lpw = buffer; *lpr != '\0'; lpr++) {
 		*lpw = *lpr;
 		switch (*lpr) {
@@ -99,14 +115,16 @@ static int shell_parseline(char *buffer, char **argv)
 
 	*lpw = '\0';
 
+	/* Throw a syntax error for incomplete quoted strings. */
 	if (nquote == 1) {
-		printf("? SYNTAX ERROR: malformed text\n");
+		printf("? syntax error\n");
 		return -1;
 	}
 
+	/* Populate the argument array by tokenizing the input buffer. */
 	token = strtok(buffer, delim);
-
 	for (argc = 0; token != NULL; argc++) {
+		/* If a token had spaces, restore them. */
 		for (lpr = token, lpw = token; *lpr != '\0'; lpr++, lpw++) {
 			if (*lpr == (char)-1)
 				*lpw = ' ';
@@ -120,23 +138,33 @@ static int shell_parseline(char *buffer, char **argv)
 	return argc;
 }
 
+/**
+ * shell_callcmd
+ *
+ * Look up a command and call it with given arguments and argument count.
+ */
 static int shell_callcmd(int argc, char **argv)
 {
-	command_tab_t cmd;
+	cmd_handle_t cmd;
 
 	if (argc < 1)
 		return 0;
 
-	cmd = lookup_command(argv[0]);
+	cmd = query_command(argv[0]);
 
 	if (cmd.name != NULL)
 		return cmd.main(argc, argv);
 
-	printf("Error: \'%s\' is not a valid command.\nEnter \'help\' for a list of supported commands.\n\n", argv[0]);
+	printf("Unknown command \'%s\'.\nTry \'help\' for a list of commands.\n\n", argv[0]);
 
 	return -1;
 }
 
+/**
+ * shell_flushargs
+ *
+ * Utility function for flushing the argument array.
+ */
 static void shell_flushargs(char **argv)
 {
 	while (*argv != NULL) {
@@ -147,6 +175,11 @@ static void shell_flushargs(char **argv)
 	return;
 }
 
+/**
+ * shell_flushbuffer
+ *
+ * Utility function for flushing the input buffer.
+ */
 static void shell_flushbuffer(char *buffer)
 {
 	bzero(buffer, strlen(buffer));
@@ -154,15 +187,20 @@ static void shell_flushbuffer(char *buffer)
 	return;
 }
 
+/**
+ * shell_prompt
+ *
+ * An interactive shell for xBoot.
+ */
 void shell_prompt(const char *prompt)
 {
 	int argc, guard;
 	char *argv[MAXLINE];
 	char buffer[MAXLINE];
 
-	printf("\n\nEntering interactive shell. Enter \'help\' for a list of commands.\n\n");
+	printf("\n\nEntering interactive shell. Run \'help\' for a list of commands.\n\n");
 
-	guard = (strlen(prompt) - 1);
+	guard = (strlen(prompt));
 
 	while (1) {
 		printf("%s", prompt);

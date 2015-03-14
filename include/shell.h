@@ -1,4 +1,4 @@
-/* Common shell command structures and apis
+/* Common shell structures and apis.
  *
  * Copyright (c) 2015, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,8 +29,8 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CMD_H
-#define CMD_H
+#ifndef SHELL_H
+#define SHELL_H
 
 /* Command entry structure */
 typedef struct command_tab {
@@ -38,10 +38,10 @@ typedef struct command_tab {
 	char *desc;			/* Short description */
 	void (*help)(void);		/* Help function */
 	int (*main)(int, char **);	/* Entry function */
-} command_tab_t;
+} cmd_handle_t;
 
 /* Command interface prototypes */
 extern void shell_prompt(const char *prompt);
-extern command_tab_t lookup_command(const char *name);
+extern cmd_handle_t query_command(const char *name);
 
-#endif /* !CMD_H */
+#endif /* !SHELL_H */

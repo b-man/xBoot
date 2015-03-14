@@ -30,7 +30,7 @@
 #ifndef CMDS_H
 #define CMDS_H
 
-#include <cmd.h>
+#include <shell.h>
 #include <stdio.h>
 
 /* Command prototypes */
@@ -48,7 +48,7 @@ extern void printenv_help(void);
 extern int printenv_main(int argc, char *argv[]);
 
 /* Command list */
-command_tab_t commands[] = {
+cmd_handle_t commands[] = {
 	{ "help", "Display command help.", NULL, help_main },
 	{ "reset", "Reset the system.", NULL, reset_main },
 	{ "halt", "Halt the system.", NULL, halt_main },
