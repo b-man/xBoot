@@ -15,7 +15,7 @@ HOST_CC	:= gcc
 # Used for quiet vs verbose building - do not touch!
 #
 
-ifndef VERBOSE_BUILD
+ifneq ($(VERBOSE_BUILD),1)
 	_CC := @$(SRCROOT)/scripts/ccdv $(CC)
 	_AS := @$(SRCROOT)/scripts/ccdv $(AS)
 	_AR := @$(SRCROOT)/$(SRCROOT)scripts/ccdv $(AR)

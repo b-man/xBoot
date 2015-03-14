@@ -12,11 +12,10 @@ export TARGET := xboot.$(PLATFORM)
 include $(SRCROOT)/make/vars.mk
 include $(SRCROOT)/make/tools.mk
 ifdef PLATFORM
-	include $(SRCROOT)/configs/$(PLATFORM).mk
+        include $(SRCROOT)/bsp/$(PLATFORM)/bsp.mk
 endif
-include $(SRCROOT)/make/flags.mk
 include $(SRCROOT)/make/dirs.mk
-include $(SRCROOT)/make/drvs.mk
+include $(SRCROOT)/make/flags.mk
 include $(SRCROOT)/make/build.mk
 
 export DERIVED_SOURCES_DIR := $(BUILD_GEN)

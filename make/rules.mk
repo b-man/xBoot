@@ -59,7 +59,7 @@ clean:
 help:
 	@echo "When building xBoot, you must set PLATFORM to to a desired platform target.\n"
 	@echo -n "Platforms supported by xBoot: "
-	@for i in `ls $(SRCROOT)/configs/ | cut -d '.' -f1`; do \
+	@for i in `ls $(SRCROOT)/bsp`; do	\
 		echo -n "$$i ";			\
 	done;
-	@echo "\n\nIf you wish to see commands being called while building, you can also set VERBOSE_BOOT to YES\n"
+	@echo "\n\nIf you wish to see commands being called while building, you can also set VERBOSE_BUILD to 1\n"
