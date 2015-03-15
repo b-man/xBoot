@@ -40,6 +40,8 @@
 #include <interface/timer.h>
 #include <interface/serial.h>
 
+#define SHELL_PROMPT "] "
+
 static void xboot_banner(void)
 {
 	/* display banner */
@@ -62,10 +64,12 @@ void xboot_main(void)
 	for (boot_delay = atoi(getenv("bootdelay")); boot_delay > 0; boot_delay--) {
 		printf("Booting in %2d seconds...\r", boot_delay);
 		if (serial_poll() != 0)
-			shell_prompt("] ");
+			shell_prompt(SHELL_PROMPT);
 		usleep(1000 * 1000);
 	}
 
+
+	/* Place holder code until we implement the loader itself. */
 	printf("\nnow looping forever.\n");
 
 	int i = '1';

@@ -37,7 +37,10 @@
 
 void cpu_init(void)
 {
-	/* Initialize board-specific components */
+	/* Initialize environment */
+	env_init();
+
+	/* Initialize BSP */
 	bsp_init();
 
 	/* Jump to main */

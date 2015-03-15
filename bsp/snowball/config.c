@@ -32,6 +32,7 @@
 #include "ap9500.h"
 #include "snowball.h"
 
+#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
@@ -62,30 +63,27 @@ ste_mtu_cfg mtu_config = {
 };
 
 /* Default environment settings for this platform */
-env_init_list_t env_list[] = {
-	{ "bootdelay", "5" },
-	{ "boot-args", "-v" },
-	{ "auto-boot", "false" },
-	{ "boot-device", "nand0a" },
-	{ "boot-partition", "0" },
-	{ "loadaddr", str(DRAM_BASE) },
-};
+char init_script[512] = \
+	"setenv bootdelay 10;"
+	"setenv bootargs \"rd=md0 debug=0x16e serial=3 -v symbolicate_panics=1\";"
+	"setenv autoboot false;"
+	"setenv bootdev md0;"
+	"setenv bootpart 0;"
+	"setenv loadaddr " str(DRAM_BASE);
 
 int bsp_init(void)
 {
-       /* Initialize the delay timer */
-        timer_init();
+	/* Initialize the delay timer */
+	timer_init();
 
 	/* Initialize the serial port */
-        serial_init();
+	serial_init();
 
 	/* Initialize console output */
 	printf_init(serial_putc);
 
-//	printf("This is a test\n");
-
 	/* Initialize the environment */
-//	env_init(env_list, 6);
+	shell_runscript(init_script);
 
 	return 0;
 }
@@ -102,6 +100,6 @@ void prcmu_halt(void)
 
 /* Register system control interface */
 sysctl_driver sysctl_drv = {
-        prcmu_reset,
-        prcmu_halt
+	prcmu_reset,
+	prcmu_halt
 };

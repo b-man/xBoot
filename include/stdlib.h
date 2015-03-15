@@ -42,7 +42,7 @@ typedef struct {
 } env_init_list_t;
 
 /* Initialization prototypes */
-extern int env_init(env_init_list_t list[], size_t nvars);
+extern int env_init(void);
 
 /* Memory allocation prototypes */
 extern void free(void *ptr);

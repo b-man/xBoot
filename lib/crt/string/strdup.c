@@ -1,4 +1,5 @@
-/*
+/* C Runtime Library
+ *
  * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
@@ -27,35 +28,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CMDS_H
-#define CMDS_H
-
-#include <shell.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-/* Command prototypes */
-extern int help_main(int argc, char *argv[]);
-extern int reset_main(int argc, char *argv[]);
-extern int halt_main(int argc, char *argv[]);
+char *strdup(char *str)
+{
+	int len;
+	char *dup;
 
-extern void getenv_help(void);
-extern int getenv_main(int argc, char *argv[]);
+	len = strlen(str);
+	dup = (char *)malloc(len + 1);
 
-extern void setenv_help(void);
-extern int setenv_main(int argc, char *argv[]);
+	if ((len == 0) || (dup == NULL))
+		return NULL;
 
-extern void printenv_help(void);
-extern int printenv_main(int argc, char *argv[]);
+	bcopy(str, dup, len);
 
-/* Command list */
-cmd_handle_t commands[] = {
-	{ "help", "Display command help.", NULL, help_main },
-	{ "reset", "Reset the system.", NULL, reset_main },
-	{ "halt", "Halt the system.", NULL, halt_main },
-	{ "getenv", "Read environment variable.", getenv_help, getenv_main },
-	{ "setenv", "Set an environment variable.", setenv_help, setenv_main },
-	{ "printenv", "Print one or all environment variables.", printenv_help, printenv_main },
-	{ NULL, NULL, NULL },
-};
+	dup[len + 1] = '\0';
 
-#endif /* !CMDS_H */
+	return dup;
+}

@@ -32,6 +32,7 @@
 #include "rvpba8.h"
 #include "realview-pba8.h"
 
+#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
@@ -64,20 +65,19 @@ sp804_cfg sp804_config = {
 };
 
 /* Default environment settings for this platform */
-env_init_list_t env_list[] = {
-	{ "bootdelay", "10" },
-	{ "boot-args", "-v" },
-	{ "auto-boot", "false" },
-	{ "boot-device", "nand0a" },
-	{ "boot-partition", "0" },
-	{ "loadaddr", str(DRAM_BASE) },
-};
+char init_script[512] = \
+	"setenv bootdelay 10;"
+	"setenv bootargs \"rd=md0 debug=0x16e serial=3 -v symbolicate_panics=1\";"
+	"setenv autoboot false;"
+	"setenv bootdev md0;"
+	"setenv bootpart 0;"
+	"setenv loadaddr " str(DRAM_BASE);
 
 /* Board initialization routine */
 int bsp_init(void)
 {
-       /* Initialize the delay timer */
-        timer_init();
+	/* Initialize the delay timer */
+	timer_init();
 
 	/* Initialize the serial port */
 	serial_init();
@@ -89,7 +89,7 @@ int bsp_init(void)
 	writel((addr_t)SYS_CTRL0_BASE, (1 << 19));
 
 	/* Initialize the environment */
-	env_init(env_list, 6);
+	shell_runscript(init_script);
 
 	return 0;
 }

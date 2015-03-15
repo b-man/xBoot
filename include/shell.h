@@ -33,7 +33,7 @@
 #define SHELL_H
 
 /* Command entry structure */
-typedef struct command_tab {
+typedef struct command_handle {
 	char *name;			/* Command name */
 	char *desc;			/* Short description */
 	void (*help)(void);		/* Help function */
@@ -41,6 +41,7 @@ typedef struct command_tab {
 } cmd_handle_t;
 
 /* Command interface prototypes */
+extern int shell_runscript(char *buffer);
 extern void shell_prompt(const char *prompt);
 extern cmd_handle_t query_command(const char *name);
 

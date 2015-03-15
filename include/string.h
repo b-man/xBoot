@@ -42,8 +42,10 @@
 #endif
 
 extern int atoi(const char *str);
+extern char *strdup(char *str);
 extern char *strncpy(char *dst, const char *src, size_t len);
-extern char *strtok(char *restrict s1, const char *restrict s2);
+extern char *strtok(char *s, const char *delim);
+extern char *strtok_r(char *s, const char *delim, char **last);
 extern unsigned long hextoul(const char *str);
 
 #endif /* !STRING_H */

@@ -75,7 +75,7 @@ SECTIONS
     .stack . : {
         . = ALIGN(8);
         PROVIDE(__stack_start = .);
-        __stack_size = 64K;
+        __stack_size = 256K;
         . = . + __stack_size;
         PROVIDE(__stack_end = .);
     }

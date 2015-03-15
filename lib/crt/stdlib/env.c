@@ -39,17 +39,13 @@
 static nvram_variable_list_t *gNvramVariables;
 static bool environment_initialized = FALSE;
 
-int env_init(env_init_list_t list[], size_t nvars)
+int env_init(void)
 {
-	int i;
-
 	if (environment_initialized == TRUE)
 		return -1;
 
 	gNvramVariables = nvram_initialize_list();
-
-	for (i = 0; i < nvars; i++)
-		setenv(list[i].name, list[i].value, 0);
+	environment_initialized = TRUE;
 
 	return 0;
 }

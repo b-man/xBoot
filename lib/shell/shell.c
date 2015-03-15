@@ -30,6 +30,7 @@
 
 #include <shell.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 #include <interface/serial.h>
@@ -64,7 +65,7 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 				serial_puts("\b \b");
 				lp--;
 			    }
-				continue;
+			    continue;
 			default:
 			    if ((ch > '\040' || ch < '\177') && ch_count < maxlen) {
 			    	serial_putc(ch);
@@ -86,7 +87,7 @@ static int shell_parseline(char *buffer, char **argv)
 {
 	int argc, nquote;
 	char *delim = " \t";
-	char *token, *lpr, *lpw;
+	char *token, *lpr, *lpw, *save;
 
 	nquote = 0;
 
@@ -122,7 +123,7 @@ static int shell_parseline(char *buffer, char **argv)
 	}
 
 	/* Populate the argument array by tokenizing the input buffer. */
-	token = strtok(buffer, delim);
+	token = strtok_r(buffer, delim, &save);
 	for (argc = 0; token != NULL; argc++) {
 		/* If a token had spaces, restore them. */
 		for (lpr = token, lpw = token; *lpr != '\0'; lpr++, lpw++) {
@@ -130,7 +131,7 @@ static int shell_parseline(char *buffer, char **argv)
 				*lpw = ' ';
 		}
 		*argv++ = token;
-		token = strtok(NULL, delim);
+		token = strtok_r(NULL, delim, &save);
 	}
 
 	*argv++ = NULL;
@@ -185,6 +186,40 @@ static void shell_flushbuffer(char *buffer)
 	bzero(buffer, strlen(buffer));
 
 	return;
+}
+
+/**
+ * shell_runscript
+ *
+ * Parse and execute a script.
+ */
+int shell_runscript(char *buffer)
+{
+	char *token, *save;
+	char *delim = ";\n";
+	char *argv[MAXLINE];
+	int stat, line, argc;
+
+	if (buffer == NULL)
+		return -1;
+
+	token = strtok_r(buffer, delim, &save);
+	for (line = 1; token != NULL; line++) {
+		if ((argc = shell_parseline(token, argv)) == -1) {
+			printf("runscript: syntax error on line %d, aborting.\n", line);
+			stat = -2;
+			break;
+		}
+		if ((stat = shell_callcmd(argc, argv)) != 0) {
+			printf("runscript: command error on line %d, aborting.\n", line);
+			stat = -3;
+			break;
+		}
+		shell_flushargs(argv);
+		token = strtok_r(NULL, delim, &save);
+	}
+
+	return stat;
 }
 
 /**
