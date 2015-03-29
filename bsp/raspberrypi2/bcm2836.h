@@ -44,6 +44,6 @@
 #define BCM_GPIO_PIN(p)		(1 << p)
 
 /* uart clock speed in Hz */
-#define PL011_CLOCK_RATE 3000000
+#define PL011_CLOCK_RATE	3000000
 
 #endif /* !BCM2836_H */

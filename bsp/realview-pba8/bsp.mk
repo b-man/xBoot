@@ -14,5 +14,5 @@ C_SRC_FILES := \
 
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 
-include $(SRCROOT)/drv/timer/sp804/module.mk
-include $(SRCROOT)/drv/serial/pl011/module.mk
+include $(SRCROOT)/driver/timer/sp804/module.mk
+include $(SRCROOT)/driver/serial/pl011/module.mk

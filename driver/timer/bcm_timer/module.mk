@@ -1,6 +1,6 @@
-SRC_DIR := $(SRCROOT)/drv/timer/ste_mtu
+SRC_DIR := $(SRCROOT)/driver/timer/bcm_timer
 
 C_SRC_FILES := \
-	ste_mtu.c
+	bcm_timer.c
 
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))

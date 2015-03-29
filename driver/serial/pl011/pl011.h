@@ -104,6 +104,7 @@ void pl011_tx_interrupt_mask(bool state);
 #define UART_FR_RXFF_BIT 0x040
 #define UART_FR_TXFF_BIT 0x020
 #define UART_FR_RXFE_BIT 0x010
+#define UART_ICR_CLRP    0x7FF
 #define UART_ICR_DISA    0xFFF
 #define UART_CR_DISA     0x000
 

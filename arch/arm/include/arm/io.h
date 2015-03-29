@@ -44,25 +44,29 @@ typedef volatile void* addr_t;
 #define readw(addr) __arm_readw(addr)
 #define readl(addr) __arm_readl(addr)
 
+#define writeorb(addr, val) __arm_writeorb(addr, val)
+#define writeorh(addr, val) __arm_writeorh(addr, val)
+#define writeorl(addr, val) __arm_writeorl(addr, val)
+
 static inline void __arm_writeb(addr_t addr, uint8_t val)
 {
-	asm volatile("strb %1, %0" : "+Qo" (*(volatile uint8_t *)(addr)) : "r" (val));
+	__asm__ volatile("strb %1, %0" : "+Qo" (*(volatile uint8_t *)(addr)) : "r" (val));
 }
 
 static inline void __arm_writew(addr_t addr, uint16_t val)
 {
-	asm volatile("strh %1, %0" : "+Qo" (*(volatile uint16_t *)(addr)) : "r" (val));
+	__asm__ volatile("strh %1, %0" : "+Qo" (*(volatile uint16_t *)(addr)) : "r" (val));
 }
 
 static inline void __arm_writel(addr_t addr, uint32_t val)
 {
-	asm volatile("str %1, %0" : "+Qo" (*(volatile uint32_t *)(addr)) : "r" (val));
+	__asm__ volatile("str %1, %0" : "+Qo" (*(volatile uint32_t *)(addr)) : "r" (val));
 }
 
 static inline uint8_t __arm_readb(const addr_t addr)
 {
 	uint8_t val;
-	asm volatile("ldrb %1, %0" : "+Qo" (*(volatile uint8_t *)(addr)), "=r" (val));
+	__asm__ volatile("ldrb %1, %0" : "+Qo" (*(volatile uint8_t *)(addr)), "=r" (val));
 
 	return val;
 }
@@ -70,7 +74,7 @@ static inline uint8_t __arm_readb(const addr_t addr)
 static inline uint16_t __arm_readw(const addr_t addr)
 {
 	uint16_t val;
-	asm volatile("ldrh %1, %0" : "+Qo" (*(volatile uint16_t *)(addr)), "=r" (val));
+	__asm__ volatile("ldrh %1, %0" : "+Qo" (*(volatile uint16_t *)(addr)), "=r" (val));
 
 	return val;
 }
@@ -78,9 +82,24 @@ static inline uint16_t __arm_readw(const addr_t addr)
 static inline uint32_t __arm_readl(const addr_t addr)
 {
 	uint32_t val;
-	asm volatile("ldr %1, %0" : "+Qo" (*(volatile uint32_t *)(addr)), "=r" (val));
+	__asm__ volatile("ldr %1, %0" : "+Qo" (*(volatile uint32_t *)(addr)), "=r" (val));
 
 	return val;
+}
+
+static inline void __arm_writeorb(const addr_t addr, uint8_t val)
+{
+	__arm_writeb(addr, (__arm_readb(addr) | val));
+}
+
+static inline void __arm_writeorh(const addr_t addr, uint16_t val)
+{
+        __arm_writew(addr, (__arm_readw(addr) | val));
+}
+
+static inline void __arm_writeorl(const addr_t addr, uint32_t val)
+{
+        __arm_writel(addr, (__arm_readl(addr) | val));
 }
 
 #endif /* !ARM_IO_H */

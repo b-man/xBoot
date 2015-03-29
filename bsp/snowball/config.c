@@ -40,8 +40,8 @@
 #include <interface/timer.h>
 #include <interface/sysctl.h>
 #include <interface/serial.h>
-#include <drv/serial/pl011/pl011.h>
-#include <drv/timer/ste_mtu/ste_mtu.h>
+#include <driver/serial/pl011/pl011.h>
+#include <driver/timer/ste_mtu/ste_mtu.h>
 
 #define xstr(s) #s
 #define str(s) xstr(s)

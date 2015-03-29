@@ -40,8 +40,8 @@
 #include <interface/timer.h>
 #include <interface/serial.h>
 #include <interface/sysctl.h>
-#include <drv/timer/sp804/sp804.h>
-#include <drv/serial/pl011/pl011.h>
+#include <driver/timer/sp804/sp804.h>
+#include <driver/serial/pl011/pl011.h>
 
 #define xstr(s) #s
 #define str(s) xstr(s)

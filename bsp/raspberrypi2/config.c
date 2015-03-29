@@ -39,13 +39,19 @@
 #include <interface/timer.h>
 #include <interface/serial.h>
 #include <interface/sysctl.h>
-#include <drv/serial/pl011/pl011.h>
-#include <drv/timer/bcm_timer/bcm_timer.h>
+#include <driver/serial/pl011/pl011.h>
+#include <driver/timer/bcm_timer/bcm_timer.h>
 
 #define xstr(s) #s
 #define str(s) xstr(s)
 
 extern void _locore_halt_system();
+
+static inline void delay(uint32_t count)
+{
+	__asm__ volatile("__delay_%=: subs %[count], %[count], #1; bne __delay_%=\n"
+		: : [count]"r"(count) : "cc");
+}
 
 /* Platform name */
 char *bsp_platform_name = "Broadcom BCM2836";
@@ -85,13 +91,14 @@ int bsp_init(void)
 	/* Turn off the uart */
 	writel((addr_t)(BCM2836_UART0_BASE + UART_CR), UART_CR_DISA);
 
-	/* Disable pull up/down for all pins and delay for 150 us. */
+	/* Disable pull up/down for all pins and delay for 150 cycles. */
 	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), 0x00000000);
-	usleep(150);
+	delay(150);
 
-	/* Disable pull up/down for pins 14 and 15 and delay for 150 us. */
-	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), (BCM_GPIO_PIN(14) | BCM_GPIO_PIN(15)));
-	usleep(150);
+	/* Disable pull up/down for pins 14 and 15 and delay for 150 cycles. */
+	writeorl((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), BCM_GPIO_PIN(14));
+	writeorl((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), BCM_GPIO_PIN(15));
+	delay(150);
 
 	/* Write 0 to GPPUDCLK0 to make it take effect. */
 	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUDCLK0), 0x00000000);
@@ -101,6 +108,8 @@ int bsp_init(void)
 
 	/* Initialize debug output */
 	printf_init(serial_putc);
+
+	printf("I've made it here!\n");
 
 	/* Initialize the environment */
 	shell_runscript(init_script);
