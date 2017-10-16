@@ -59,7 +59,7 @@ extern void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t
 /* NVRAM high-level api prototypes */
 extern void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting);
 extern int nvram_variable_unset(nvram_variable_list_t *list, const char *name);
-extern nvram_variable_t nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
+extern nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
 extern void nvram_dump_list(nvram_variable_list_t *list);
 
 #endif /* !NVRAM_H */

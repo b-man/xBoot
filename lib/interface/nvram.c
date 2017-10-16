@@ -161,15 +161,15 @@ int nvram_variable_unset(nvram_variable_list_t *list, const char *name)
  *
  * Retrieve information about an nvram variable (such as it's value or if it's been modified).
  */
-nvram_variable_t nvram_read_variable_info(nvram_variable_list_t *list, const char *name)
+nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const char *name)
 {
-    nvram_variable_t value;
+    nvram_variable_t *value = NULL;
 
     nvram_variable_node_t *current = list->head;
 
     while (current != NULL) {
         if (strcmp(current->value.name, name) == 0)
-            value = current->value;
+            value = &current->value;
 
         current = current->next;
     }

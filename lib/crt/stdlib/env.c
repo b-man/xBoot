@@ -53,9 +53,9 @@ int env_init(void)
 char *getenv(const char *var)
 {
 	char *setting;
-	nvram_variable_t variable = nvram_read_variable_info(gNvramVariables, var);
+	nvram_variable_t *variable = nvram_read_variable_info(gNvramVariables, var);
 
-	setting = variable.setting;
+	setting = variable->setting;
 
 	if (setting != NULL)
 		return setting;
@@ -65,9 +65,9 @@ char *getenv(const char *var)
 
 int setenv(const char *var, const char *val, int overwrite)
 {
-	nvram_variable_t variable = nvram_read_variable_info(gNvramVariables, var);
+	nvram_variable_t *variable = nvram_read_variable_info(gNvramVariables, var);
 
-	if ((overwrite == 0) && (strlen(variable.name) >= 1))
+	if ((overwrite == 0) && (strlen(variable->name) >= 1))
 		return 0;
 	else
 		nvram_variable_set(gNvramVariables, var, val);

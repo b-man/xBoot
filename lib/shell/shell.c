@@ -35,8 +35,6 @@
 #include <limits.h>
 #include <interface/serial.h>
 
-#define MAXLINE MAX_INPUT	/* Longest line of user input the shell will accept. */
-
 /**
  * shell_getline
  *
@@ -197,7 +195,7 @@ int shell_runscript(char *buffer)
 {
 	char *token, *save;
 	char *delim = ";\n";
-	char *argv[MAXLINE];
+	char *argv[LINE_MAX];
 	int stat, line, argc;
 
 	if (buffer == NULL)
@@ -230,8 +228,8 @@ int shell_runscript(char *buffer)
 void shell_prompt(const char *prompt)
 {
 	int argc, guard;
-	char *argv[MAXLINE];
-	char buffer[MAXLINE];
+	char *argv[LINE_MAX];
+	char buffer[LINE_MAX];
 
 	printf("\n\nEntering interactive shell. Run \'help\' for a list of commands.\n\n");
 
@@ -239,7 +237,7 @@ void shell_prompt(const char *prompt)
 
 	while (1) {
 		printf("%s", prompt);
-		shell_getline(buffer, guard, MAXLINE);
+		shell_getline(buffer, guard, LINE_MAX);
 		argc = shell_parseline(buffer, argv);
 		shell_callcmd(argc, argv);
 		shell_flushargs(argv);
