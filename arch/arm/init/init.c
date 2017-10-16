@@ -35,7 +35,7 @@
 #include <boot/bsp.h>
 #include <boot/xboot.h>
 
-void cpu_init(void)
+void plat_init(void)
 {
 	/* Initialize environment */
 	env_init();

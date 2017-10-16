@@ -125,7 +125,7 @@ L_relocated:
     /*
      * Go to core bootstrap now.
      */
-    bl      cpu_init
+    bl      plat_init
 
 error_no_atags:
     /* no atags */
