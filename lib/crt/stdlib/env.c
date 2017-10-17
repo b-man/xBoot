@@ -59,8 +59,8 @@ char *getenv(const char *var)
 
 	if (setting != NULL)
 		return setting;
-	else
-		return NULL;
+
+	return NULL;
 }
 
 int setenv(const char *var, const char *val, int overwrite)
@@ -69,8 +69,8 @@ int setenv(const char *var, const char *val, int overwrite)
 
 	if ((overwrite == 0) && (strlen(variable->name) >= 1))
 		return 0;
-	else
-		nvram_variable_set(gNvramVariables, var, val);
+
+	nvram_variable_set(gNvramVariables, var, val);
 
 	return 0;
 }
