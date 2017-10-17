@@ -42,7 +42,7 @@
 
 #define SHELL_PROMPT "] "
 
-extern const char *__xBoot_version;
+extern const char __xBoot_version[];
 
 static void xboot_banner(void)
 {
