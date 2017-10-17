@@ -82,6 +82,7 @@ SECTIONS
 
     /DISCARD/ : {
         *(.comment .note)
+	*(.ARM.attributes)
     }
 
     __end = . ;
