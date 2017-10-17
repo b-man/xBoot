@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Brian McKenzie. <mckenzba@gamil.com>
+ * Copyright 2013, winocm. <winocm@icloud.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,29 +27,52 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef _MACHO_LOADER_H_
+#define _MACHO_LOADER_H_
 
+#include <boot/macho.h>
 
-void setenv_help(void)
-{
-	printf("Usage:\n\tsetenv <var> <value>\n");
+/*
+ * The global loader context is used to keep track of the loaded mach-o
+ * file and related properties such as VM bias and so on.
+ */
+typedef struct __loader_context {
+    uint8_t *source;            /* Original file source */
+    uint8_t *load_addr;         /* Load address */
+    uint32_t entry;             /* Entrypoint */
+    uint32_t vm_bias;           /* VM address the file is based to */
+    uint32_t vm_size;           /* Size of the object after mapping. */
+    struct dysymtab_command* dsymtab;
+} loader_context_t;
 
-	return;
-}
+/*
+ * These are the error codes returned by the loader for core operations.
+ */
+typedef enum {
+    kLoadSuccess = 0,
+    kLoadFailure = -1,
+    kLoadBadImage = -2,
+    kLoadMalformedSection = -3,
+    kLoadWrongArchitecture = -4,
+    kLoadUnexpectedError = -5,
+    kLoadInvalidParameter = -6,
+    kLoadBadContext = -7,
+    kLoadThatImageSucks = 0xBEEF
+} loader_return_t;
 
-int setenv_main(int argc, char *argv[])
-{
-	if (argc < 2) {
-		setenv_help();
-		return -1;
-	}
+/*
+ * API functions.
+ */
+loader_return_t macho_rebase(loader_context_t * ctx, uint32_t slide);
 
-	if (argc == 2)
-		return setenv(argv[1], NULL, 1);
+loader_return_t macho_initialize(loader_context_t * ctx, void *file);
 
-	if (argc == 3)
-		return setenv(argv[1], argv[2], 1);
+loader_return_t macho_set_vm_bias(loader_context_t * ctx, uint32_t vmaddr);
 
-	return -1;
-}
+loader_return_t macho_get_entrypoint(loader_context_t * ctx, uint32_t * ep);
+
+loader_return_t macho_file_map(loader_context_t * ctx, uint32_t loadaddr, uint32_t slide);
+
+uint32_t macho_get_vmsize(loader_context_t * ctx);
+
+#endif

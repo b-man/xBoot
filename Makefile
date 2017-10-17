@@ -13,7 +13,7 @@ include $(SRCROOT)/make/vars.mk
 include $(SRCROOT)/make/tools.mk
 ifdef PLATFORM
         BSP_PATH = $(SRCROOT)/bsp/$(PLATFORM)/bsp.mk
-        ifneq ("$(wildcard $(BSP_PATH))","")  
+        ifneq ("$(wildcard $(BSP_PATH))","")
                 include $(BSP_PATH)
         else
                 $(error Unsupported platform "$(PLATFORM)" specified. Run "make help" for a list of supported platforms.)

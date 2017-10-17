@@ -43,6 +43,7 @@
 
 extern int atoi(const char *str);
 extern char *strdup(char *str);
+extern char *strcpy(char *dst, const char *src);
 extern char *strncpy(char *dst, const char *src, size_t len);
 extern char *strtok(char *s, const char *delim);
 extern char *strtok_r(char *s, const char *delim, char **last);

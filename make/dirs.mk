@@ -9,6 +9,7 @@
 DIRS += \
 	core \
 	lib/crt \
+	lib/boot \
 	lib/shell \
 	lib/debug \
 	lib/memory \

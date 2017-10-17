@@ -33,7 +33,7 @@
 #include <stdlib.h>
 
 #include <boot/bsp.h>
-#include <boot/xboot.h>
+#include <boot/boot.h>
 
 void plat_init(void)
 {

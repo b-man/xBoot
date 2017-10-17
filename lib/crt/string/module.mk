@@ -3,6 +3,7 @@ SRC_DIR := $(SRCROOT)/lib/crt/string
 C_SRC_FILES := \
 	atoi.c \
 	strtok.c \
+	strcpy.c \
 	strncpy.c \
 	strdup.c
 

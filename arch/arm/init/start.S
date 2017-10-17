@@ -70,7 +70,6 @@ _vectorTable:
  * The known states of the registers are:
  *  r0 - #0
  *  r1 - Machine type
- *  r2 - PA of ATAGs list
  */
 EnterARM(start)
     /* We are in supervisor, no interrupts. */
@@ -83,11 +82,6 @@ EnterARM(start)
     beq    L_relocated
 
     /* We're not at the right load address, relocate ourselves to the right address. */
-
-    /*
-     * We should not trash the r0-r2 registers, but we don't guarantee that we won't
-     * overwrite the ATAGs.... (We probably won't anyway.)
-     */
 
     mov    r6, #(1 * 1024 * 1024)	// HACK
 L_relocate_loop:

@@ -36,18 +36,20 @@
 #include <sys/types.h>
 
 #include <boot/bsp.h>
-#include <boot/xboot.h>
+#include <boot/boot.h>
 #include <interface/timer.h>
 #include <interface/serial.h>
 
 #define SHELL_PROMPT "] "
+
+extern const char *__xBoot_version;
 
 static void xboot_banner(void)
 {
 	/* display banner */
 	printf("\nxBoot for %s\n", bsp_platform_name);
 	printf("Copyright (c) 2015 Brian McKenzie <mckenzba@gmail.com>\n");
-	printf("Build: %s\n\n", (char *)__xBoot_version);
+	printf("Build: %s\n\n", __xBoot_version);
 
 	return;
 }
@@ -69,18 +71,8 @@ void xboot_main(void)
 	}
 
 
-	/* Place holder code until we implement the loader itself. */
-	printf("\nnow looping forever.\n");
-
-	int i = '1';
-	while (1) {
-		if ( i <= '9' ) {
-			printf("count: %c\r", i);
-			usleep(1000 * 1000);
-			++i;
-		} else
-			i = '0';
-	}
+	/* Attempt to boot */
+	start_darwin();
 
 	return;
 }

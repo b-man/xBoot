@@ -1,6 +1,6 @@
 /* Linker script for ARM xBoot
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -83,4 +83,7 @@ SECTIONS
     /DISCARD/ : {
         *(.comment .note)
     }
+
+    __end = . ;
+    PROVIDE (__end = .);
 }

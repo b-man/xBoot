@@ -1,6 +1,6 @@
-/* Standard library api
+/* Bootloader globals
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,20 +29,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef STDBOOL_H
-#define STDBOOL_H
+#ifndef GLOBALS_H
+#define GLOBALS_H
 
-#define __bool_true_false_are_defined 1
+#include <sys/types.h>
+#include <boot/boot_args.h>
 
-#define bool _Bool
+extern boot_args gBootArgs;
+extern uint32_t ramdisk_base;
+extern uint32_t ramdisk_size;
 
-typedef bool boolean_t;
-
-#define true	1
-#define false	0
-
-/* TODO: get rid of this. */
-#define TRUE	true
-#define FALSE	false
-
-#endif /* !STDBOOL_H */
+#endif /* !GLOBALS_H */

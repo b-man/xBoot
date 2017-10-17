@@ -31,7 +31,7 @@ BOOT_TEXT_BASE	:=
 # HOST_CC		- compiler to use for building tools that are ran on the host
 # CROSS			- prefix for toolchain to be used while building xBoot
 
-CC	:= 
+CC	:=
 LD	:=
 AS	:=
 AR	:=
