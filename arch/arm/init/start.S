@@ -29,7 +29,6 @@
  */
 
 #include <arm/asm.h>
-#include <boot/linux_atags.h>
 
 .arm
 .code 32
@@ -103,18 +102,6 @@ L_relocate_loop:
 
 L_relocated:
 
-#if 0
-    /* Verify that things are defined properly. */
-    cmp     r2, #0
-    beq     error_no_atags
-
-    /* Verify the tag header */
-    ldr     r4, =ATAG_CORE
-    ldr     r3, [r2, #4]
-    cmp     r3, r4
-    bne     error_no_atags
-#endif
-
     /*
      * Things look semi good, (we hope we're running at the right
      * text base, this is assumed.)
@@ -123,13 +110,9 @@ L_relocated:
     mov     r7, #0
 
     /*
-     * Go to core bootstrap now.
+     * Go to platform bootstrap now.
      */
     bl      plat_init
-
-error_no_atags:
-    /* no atags */
-    bl      _failure
 
 .text
 
