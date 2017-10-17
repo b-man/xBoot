@@ -36,7 +36,5 @@
 #include <boot/boot_args.h>
 
 extern boot_args gBootArgs;
-extern uint32_t ramdisk_base;
-extern uint32_t ramdisk_size;
 
 #endif /* !GLOBALS_H */

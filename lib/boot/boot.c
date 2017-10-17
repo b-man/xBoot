@@ -59,7 +59,6 @@
 typedef void (*kernel_start) (void *bootArgs, uint32_t ttbr);
 extern void _locore_jump_to(kernel_start * startRoutine, void *bootArgs);
 
-boot_args gBootArgs;
 uint32_t ramdisk_base = 0x0;
 uint32_t ramdisk_size = 0x0;
 

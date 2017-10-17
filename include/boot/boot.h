@@ -1,4 +1,4 @@
-/* Boot loader prototypes
+/* Bootloader prototypes
  *
  * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -33,7 +33,7 @@
 #ifndef BOOT_H
 #define BOOT_H
 
-/* Used when calling xBoot's main routine after cpu-specific initialization */
+/* xBoot main routine */
 extern void xboot_main(void);
 
 /* Bootload Darwin kernel */
