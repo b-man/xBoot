@@ -1,4 +1,4 @@
-/* Generic system control interface - structures and prototypes
+/* Generic serial driver interface
  *
  * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,17 +29,50 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SYSCTL_H
-#define SYSCTL_H
+#include <sys/types.h>
+#include <device/serial.h>
 
-/* sysctl driver interface */
-typedef struct {
-	void (*reset)(void);
-	void (*poweroff)(void);
-} sysctl_driver;
+extern serial_driver serial_drv;
+static serial_driver *serial = &serial_drv;
 
-/* sysctl driver prototypes */
-extern void sysctl_reset(void);
-extern void sysctl_poweroff(void);
+void serial_init(void)
+{
+	serial->init();
 
-#endif /* !SYSCTL_H */
+	return;
+}
+
+int serial_poll(void)
+{
+	int state;
+
+	state = serial->poll();
+
+	return state;
+}
+
+uint32_t serial_getc(void)
+{
+	uint32_t val = '\0';
+
+	val = serial->getc();
+
+	return val;
+}
+
+void serial_putc(int c)
+{
+	if (c == '\n')
+		serial->putc('\r');
+
+	serial->putc(c);
+
+	return;
+}
+
+void serial_puts(const char *str)
+{
+	serial->puts(str);
+
+	return;
+}

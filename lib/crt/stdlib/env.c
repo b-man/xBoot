@@ -34,7 +34,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include <interface/nvram.h>
+
+#include <device/nvram.h>
 
 static nvram_variable_list_t *gNvramVariables;
 static bool environment_initialized = FALSE;

@@ -29,16 +29,18 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 
+#include <shell.h>
+
 #include <boot/bsp.h>
 #include <boot/boot.h>
-#include <interface/timer.h>
-#include <interface/serial.h>
+
+#include <device/timer.h>
+#include <device/serial.h>
 
 #define SHELL_PROMPT "] "
 

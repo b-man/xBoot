@@ -1,6 +1,6 @@
 /* ARM RealView-specific configuration information
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,19 +29,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "rvpba8.h"
-#include "realview-pba8.h"
-
-#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
+
+#include <shell.h>
+
 #include <boot/bsp.h>
-#include <interface/timer.h>
-#include <interface/serial.h>
-#include <interface/sysctl.h>
+
+#include <device/timer.h>
+#include <device/serial.h>
+#include <device/sysctl.h>
+
 #include <driver/timer/sp804/sp804.h>
 #include <driver/serial/pl011/pl011.h>
+
+#include "rvpba8.h"
+#include "realview-pba8.h"
 
 #define xstr(s) #s
 #define str(s) xstr(s)

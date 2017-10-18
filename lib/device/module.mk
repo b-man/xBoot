@@ -1,4 +1,4 @@
-SRC_DIR := $(SRCROOT)/lib/interface
+SRC_DIR := $(SRCROOT)/lib/device
 
 C_SRC_FILES := \
 	serial.c \

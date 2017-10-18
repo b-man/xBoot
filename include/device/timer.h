@@ -1,6 +1,6 @@
-/* Generic timer driver interface
+/* Timer device api
  *
- * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,37 +29,21 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
+#ifndef TIMER_H
+#define TIMER_H
+
 #include <sys/types.h>
-#include <interface/timer.h>
 
-extern timer_driver timer_drv;
-static timer_driver *timer = &timer_drv;
+/* timer driver interface */
+typedef struct {
+	void (*init)(void);
+	void (*reset)(void);
+	uint32_t (*count_usec)(void);
+} timer_driver;
 
-void timer_init(void)
-{
-	timer->init();
+/* timer driver prototypes */
+extern void timer_init(void);
+extern void timer_reset(void);
+extern void usleep(uint32_t us);
 
-	return;
-}
-
-void timer_reset(void)
-{
-	timer->reset();
-
-	return;
-}
-
-void usleep(uint32_t us)
-{
-	uint32_t ini, end;
-	ini = end = 0;
-
-	ini = timer->count_usec();
-	end = (ini + us);
-
-	while ((int32_t)(end - timer->count_usec()) > 0)
-		;
-
-	return;
-}
+#endif /* !TIMER_H */

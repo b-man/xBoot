@@ -1,6 +1,6 @@
 /* xBoot interactive shell.
  *
- * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2017, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -28,12 +28,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include <interface/serial.h>
+
+#include <shell.h>
+
+#include <device/serial.h>
 
 /**
  * shell_getline

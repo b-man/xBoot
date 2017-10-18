@@ -1,4 +1,4 @@
-/* Generic system control interface
+/* System control device api
  *
  * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,22 +29,17 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <sys/types.h>
-#include <interface/sysctl.h>
+#ifndef SYSCTL_H
+#define SYSCTL_H
 
-extern sysctl_driver sysctl_drv;
-static sysctl_driver *sysctl = &sysctl_drv;
+/* sysctl driver interface */
+typedef struct {
+	void (*reset)(void);
+	void (*poweroff)(void);
+} sysctl_driver;
 
-void sysctl_reset(void)
-{
-	sysctl->reset();
+/* sysctl driver prototypes */
+extern void sysctl_reset(void);
+extern void sysctl_poweroff(void);
 
-	return;
-}
-
-void sysctl_poweroff(void)
-{
-	sysctl->poweroff();
-
-	return;
-}
+#endif /* !SYSCTL_H */

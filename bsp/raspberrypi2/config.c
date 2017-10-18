@@ -29,18 +29,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "bcm2836.h"
-
 #include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
+
+#include <shell.h>
+
 #include <boot/bsp.h>
-#include <interface/timer.h>
-#include <interface/serial.h>
-#include <interface/sysctl.h>
+
+#include <device/timer.h>
+#include <device/serial.h>
+#include <device/sysctl.h>
+
 #include <driver/serial/pl011/pl011.h>
 #include <driver/timer/bcm_timer/bcm_timer.h>
+
+#include "bcm2836.h"
 
 #define xstr(s) #s
 #define str(s) xstr(s)

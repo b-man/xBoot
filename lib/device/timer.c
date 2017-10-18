@@ -1,6 +1,6 @@
-/* Generic serial driver interface - structures and prototypes
+/* Generic timer driver interface
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,25 +29,37 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SERIAL_H
-#define SERIAL_H
-
+#include <stdio.h>
 #include <sys/types.h>
+#include <device/timer.h>
 
-/* serial driver interface */
-typedef struct {
-	void (*init)(void);
-	int (*poll)(void);
-	uint32_t (*getc)(void);
-	void (*putc)(uint32_t c);
-	void (*puts)(const char *str);
-} serial_driver;
+extern timer_driver timer_drv;
+static timer_driver *timer = &timer_drv;
 
-/* serial driver prototypes */
-extern void serial_init(void);
-extern int serial_poll(void);
-extern uint32_t serial_getc(void);
-extern void serial_putc(int c);
-extern void serial_puts(const char *str);
+void timer_init(void)
+{
+	timer->init();
 
-#endif /* !SERIAL_H */
+	return;
+}
+
+void timer_reset(void)
+{
+	timer->reset();
+
+	return;
+}
+
+void usleep(uint32_t us)
+{
+	uint32_t ini, end;
+	ini = end = 0;
+
+	ini = timer->count_usec();
+	end = (ini + us);
+
+	while ((int32_t)(end - timer->count_usec()) > 0)
+		;
+
+	return;
+}

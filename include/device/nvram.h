@@ -1,6 +1,6 @@
-/* NVRAM api interface - prototypes and definitions
+/* NVRAM device api
  *
- * Copyright 2014, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2017, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
