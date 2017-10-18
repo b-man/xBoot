@@ -1,6 +1,5 @@
-/* NVRAM api interface - prototypes and definitions
- *
- * Copyright 2014, Brian McKenzie. <mckenzba@gmail.com>
+/*
+ * Copyright 2013, winocm. <winocm@icloud.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -28,38 +27,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef NVRAM_H
-#define NVRAM_H
+#include <assert.h>
+#include <sys/align.h>
+#include <sys/types.h>
+#include <boot/memory_region.h>
 
-/* NVRAM variable struct */
-typedef struct _nvram_variable {
-    char name[64];
-    char setting[256];
-    int overridden;
-} nvram_variable_t;
-
-/* NVRAM variable node struct */
-typedef struct _nvram_variable_node {
-    struct _nvram_variable_node *next;
-    nvram_variable_t value;
-} nvram_variable_node_t;
-
-/* NVRAM variable list struct */
-typedef struct _nvram_variable_list {
-    nvram_variable_node_t *head, **tail;
-} nvram_variable_list_t;
-
-/* NVRAM low-level api prototypes */
-extern int nvram_init(nvram_variable_t *vars, size_t size);
-extern nvram_variable_list_t *nvram_initialize_list(void);
-extern nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, int overridden);
-extern void nvram_append_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
-extern void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
-
-/* NVRAM high-level api prototypes */
-extern void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting);
-extern int nvram_variable_unset(nvram_variable_list_t *list, const char *name);
-extern nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
-extern void nvram_dump_list(nvram_variable_list_t *list);
-
-#endif /* !NVRAM_H */
+void *memory_region_reserve(memory_region_t * reg, uint32_t size, int align)
+{
+    uintptr_t start;
+    assert(reg);
+    if (align) {
+        reg->pos = align_up(reg->pos, align);
+    }
+    start = reg->pos;
+    reg->pos += size;
+    return (void *)start;
+}

@@ -1,6 +1,6 @@
-/* Generic system control interface
+/* Bootloader globals
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,22 +29,12 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
 #include <sys/types.h>
-#include <interface/sysctl.h>
+#include <boot/boot_args.h>
 
-extern sysctl_driver sysctl_drv;
-static sysctl_driver *sysctl = &sysctl_drv;
+extern boot_args gBootArgs;
 
-void sysctl_reset(void)
-{
-	sysctl->reset();
-
-	return;
-}
-
-void sysctl_poweroff(void)
-{
-	sysctl->poweroff();
-
-	return;
-}
+#endif /* !GLOBALS_H */

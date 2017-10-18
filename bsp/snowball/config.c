@@ -1,6 +1,6 @@
 /* AP9500-specific configuration information
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,19 +29,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ap9500.h"
-#include "snowball.h"
-
-#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
+
+#include <shell.h>
+
 #include <boot/bsp.h>
-#include <interface/timer.h>
-#include <interface/sysctl.h>
-#include <interface/serial.h>
+
+#include <device/timer.h>
+#include <device/sysctl.h>
+#include <device/serial.h>
+
 #include <driver/serial/pl011/pl011.h>
 #include <driver/timer/ste_mtu/ste_mtu.h>
+
+#include "ap9500.h"
+#include "snowball.h"
 
 #define xstr(s) #s
 #define str(s) xstr(s)

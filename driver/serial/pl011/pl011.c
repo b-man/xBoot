@@ -29,14 +29,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "pl011.h"
-
 #include <stdbool.h>
 
 #include <sys/io.h>
 #include <sys/types.h>
 
-#include <interface/serial.h>
+#include <device/serial.h>
+
+#include "pl011.h"
 
 /* pull in uart configuration */
 extern pl011_cfg pl011_config;

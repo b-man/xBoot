@@ -31,12 +31,23 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <boot/bsp.h>
-#include <boot/xboot.h>
+#include <boot/boot.h>
+#include <boot/globals.h>
+
+boot_args gBootArgs;
 
 void plat_init(void)
 {
+	/* Ensure that boot args struct is zeroed */
+	bzero((void *)&gBootArgs, sizeof(boot_args));
+
+	/* Initialize memory info */
+	gBootArgs.physBase = DRAM_BASE;
+	gBootArgs.memSize = DRAM_SIZE;
+
 	/* Initialize environment */
 	env_init();
 
@@ -45,6 +56,4 @@ void plat_init(void)
 
 	/* Jump to main */
 	xboot_main();
-
-	return;
 }

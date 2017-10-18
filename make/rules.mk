@@ -7,18 +7,18 @@
 #
 
 %.o: %.c
-	$(eval obj_uuid := $(shell uuidgen -r))
-	$(_CC) $(CFLAGS) -c $< -o $(BUILD_OBJS)/$(notdir $*-$(obj_uuid).o)
-	@echo "$(BUILD_OBJS)/$(notdir $*-$(obj_uuid).o)" >> $(BUILD_OBJS)/Objects.list
+	$(eval obj_uuid := $(shell uuidgen -r | cut -d'-' -f1))
+	$(_CC) $(CFLAGS) -c $< -o $(BUILD_OBJS)/$(notdir $*.$(obj_uuid).o)
+	@echo "$(BUILD_OBJS)/$(notdir $*.$(obj_uuid).o)" >> $(BUILD_OBJS)/Objects.list
 
 ##
 # ASM source code rules
 #
 
 %.o: %.S
-	$(eval obj_uuid := $(shell uuidgen -r))
-	$(_CC) -x assembler-with-cpp $(SFLAGS) -c $< -o $(BUILD_OBJS)/$(notdir $*-$(obj_uuid).o)
-	@echo "$(BUILD_OBJS)/$(notdir $*-$(obj_uuid).o)" >> $(BUILD_OBJS)/Objects.list
+	$(eval obj_uuid := $(shell uuidgen -r | cut -d'-' -f1))
+	$(_CC) -x assembler-with-cpp $(SFLAGS) -c $< -o $(BUILD_OBJS)/$(notdir $*.$(obj_uuid).o)
+	@echo "$(BUILD_OBJS)/$(notdir $*.$(obj_uuid).o)" >> $(BUILD_OBJS)/Objects.list
 
 ##
 # Main rules

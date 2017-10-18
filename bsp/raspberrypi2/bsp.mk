@@ -1,10 +1,10 @@
 # xBoot BSP for the Raspberry Pi 2 Board
 
 ARCH            := arm
-SUBARCH         := cortex-a8
+SUBARCH         := cortex-a7
 PLATFORM        := raspberrypi
-DRAM_BASE       := 0xC0000000
-DRAM_SIZE       := 0x40000000
+DRAM_BASE       := 0x00008000
+DRAM_SIZE       := 0x10000000
 BOOT_TEXT_BASE  := 0x00008000
 
 SRC_DIR := $(SRCROOT)/bsp/raspberrypi2

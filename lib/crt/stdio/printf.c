@@ -38,7 +38,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <interface/serial.h>
+
+#include <device/serial.h>
 
 /* putc function to use */
 static void (*putchar)(int c);

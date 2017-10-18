@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <interface/nvram.h>
+#include <device/nvram.h>
 
 /**
  * nvram_initialize_list

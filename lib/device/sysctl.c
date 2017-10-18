@@ -1,6 +1,6 @@
-/* Generic timer driver interface
+/* Generic system control interface
  *
- * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,37 +29,22 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
 #include <sys/types.h>
-#include <interface/timer.h>
+#include <device/sysctl.h>
 
-extern timer_driver timer_drv;
-static timer_driver *timer = &timer_drv;
+extern sysctl_driver sysctl_drv;
+static sysctl_driver *sysctl = &sysctl_drv;
 
-void timer_init(void)
+void sysctl_reset(void)
 {
-	timer->init();
+	sysctl->reset();
 
 	return;
 }
 
-void timer_reset(void)
+void sysctl_poweroff(void)
 {
-	timer->reset();
-
-	return;
-}
-
-void usleep(uint32_t us)
-{
-	uint32_t ini, end;
-	ini = end = 0;
-
-	ini = timer->count_usec();
-	end = (ini + us);
-
-	while ((int32_t)(end - timer->count_usec()) > 0)
-		;
+	sysctl->poweroff();
 
 	return;
 }

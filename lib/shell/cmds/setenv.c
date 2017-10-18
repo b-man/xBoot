@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, Brian McKenzie. <mckenzba@gamil.com>
+ * Copyright 2017, Brian McKenzie. <mckenzba@gamil.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -40,18 +40,16 @@ void setenv_help(void)
 
 int setenv_main(int argc, char *argv[])
 {
-	int retval = -1;
-
-	if (argc == 1) {
+	if (argc < 2) {
 		setenv_help();
 		return -1;
 	}
 
 	if (argc == 2)
-		retval = setenv(argv[1], NULL, 1);
+		return setenv(argv[1], NULL, 1);
 
 	if (argc == 3)
-		retval = setenv(argv[1], argv[2], 1);
+		return setenv(argv[1], argv[2], 1);
 
-	return retval;
+	return -1;
 }

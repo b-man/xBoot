@@ -1,5 +1,6 @@
-/*
- * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
+/* NVRAM device api
+ *
+ * Copyright 2017, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,37 +28,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CMDS_H
-#define CMDS_H
+#ifndef NVRAM_H
+#define NVRAM_H
 
-#include <shell.h>
-#include <stdio.h>
+/* NVRAM variable struct */
+typedef struct _nvram_variable {
+    char name[64];
+    char setting[256];
+    int overridden;
+} nvram_variable_t;
 
-/* Command prototypes */
-extern int help_main(int argc, char *argv[]);
-extern int reset_main(int argc, char *argv[]);
-extern int halt_main(int argc, char *argv[]);
-extern int boot_main(int argc, char *argv[]);
+/* NVRAM variable node struct */
+typedef struct _nvram_variable_node {
+    struct _nvram_variable_node *next;
+    nvram_variable_t value;
+} nvram_variable_node_t;
 
-extern void getenv_help(void);
-extern int getenv_main(int argc, char *argv[]);
+/* NVRAM variable list struct */
+typedef struct _nvram_variable_list {
+    nvram_variable_node_t *head, **tail;
+} nvram_variable_list_t;
 
-extern void setenv_help(void);
-extern int setenv_main(int argc, char *argv[]);
+/* NVRAM low-level api prototypes */
+extern int nvram_init(nvram_variable_t *vars, size_t size);
+extern nvram_variable_list_t *nvram_initialize_list(void);
+extern nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, int overridden);
+extern void nvram_append_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
+extern void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
 
-extern void printenv_help(void);
-extern int printenv_main(int argc, char *argv[]);
+/* NVRAM high-level api prototypes */
+extern void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting);
+extern int nvram_variable_unset(nvram_variable_list_t *list, const char *name);
+extern nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
+extern void nvram_dump_list(nvram_variable_list_t *list);
 
-/* Command list */
-cmd_handle_t commands[] = {
-	{ "help", "Display command help.", NULL, help_main },
-	{ "boot", "Boot into Darwin.", NULL, boot_main },
-	{ "halt", "Halt the system.", NULL, halt_main },
-	{ "reset", "Reset the system.", NULL, reset_main },
-	{ "getenv", "Read environment variable.", getenv_help, getenv_main },
-	{ "setenv", "Set an environment variable.", setenv_help, setenv_main },
-	{ "printenv", "Print one or all environment variables.", printenv_help, printenv_main },
-	{ NULL, NULL, NULL },
-};
-
-#endif /* !CMDS_H */
+#endif /* !NVRAM_H */

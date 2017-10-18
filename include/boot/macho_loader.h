@@ -1,5 +1,5 @@
 /*
- * Copyright 2017, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2013, winocm. <winocm@icloud.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,13 +27,52 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
-#include <device/sysctl.h>
+#ifndef _MACHO_LOADER_H_
+#define _MACHO_LOADER_H_
 
-int reset_main(int argc, char *argv[])
-{
-	printf("Resetting system...\n");
-	sysctl_reset();
+#include <boot/macho.h>
 
-	return 0;
-}
+/*
+ * The global loader context is used to keep track of the loaded mach-o
+ * file and related properties such as VM bias and so on.
+ */
+typedef struct __loader_context {
+    uint8_t *source;            /* Original file source */
+    uint8_t *load_addr;         /* Load address */
+    uint32_t entry;             /* Entrypoint */
+    uint32_t vm_bias;           /* VM address the file is based to */
+    uint32_t vm_size;           /* Size of the object after mapping. */
+    struct dysymtab_command* dsymtab;
+} loader_context_t;
+
+/*
+ * These are the error codes returned by the loader for core operations.
+ */
+typedef enum {
+    kLoadSuccess = 0,
+    kLoadFailure = -1,
+    kLoadBadImage = -2,
+    kLoadMalformedSection = -3,
+    kLoadWrongArchitecture = -4,
+    kLoadUnexpectedError = -5,
+    kLoadInvalidParameter = -6,
+    kLoadBadContext = -7,
+    kLoadThatImageSucks = 0xBEEF
+} loader_return_t;
+
+/*
+ * API functions.
+ */
+loader_return_t macho_rebase(loader_context_t * ctx, uint32_t slide);
+
+loader_return_t macho_initialize(loader_context_t * ctx, void *file);
+
+loader_return_t macho_set_vm_bias(loader_context_t * ctx, uint32_t vmaddr);
+
+loader_return_t macho_get_entrypoint(loader_context_t * ctx, uint32_t * ep);
+
+loader_return_t macho_file_map(loader_context_t * ctx, uint32_t loadaddr, uint32_t slide);
+
+uint32_t macho_get_vmsize(loader_context_t * ctx);
+
+#endif

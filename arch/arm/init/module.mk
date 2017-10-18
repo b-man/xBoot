@@ -2,6 +2,7 @@ SRC_DIR := $(SRCROOT)/arch/arm/init
 
 S_SRC_FILES := \
 	start.S \
+	locore.S \
 	vectors.S
 
 C_SRC_FILES := \

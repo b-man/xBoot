@@ -1,6 +1,6 @@
-/* xBoot-specfic prototypes
+/* Alignment helpers
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,14 +29,13 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef ALIGN_H
+#define ALIGN_H
 
-#ifndef XBOOT_H
-#define XBOOT_H
+#if defined(__arm__)
+#include <arm/align.h>
+#else
+#error "Unsupported architecture"
+#endif
 
-/* Used when calling xBoot's main routine after cpu-specific initialization */
-extern void xboot_main(void);
-
-/* Used for xBoot version information */
-extern const char __xBoot_version[];
-
-#endif /* !XBOOT_H */
+#endif /* !ALIGN_H */

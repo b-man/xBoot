@@ -1,5 +1,5 @@
 /*
- * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2013, winocm. <winocm@icloud.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,37 +27,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CMDS_H
-#define CMDS_H
+#ifndef _MEMORY_REGIONS_H_
+#define _MEMORY_REGIONS_H_
 
-#include <shell.h>
-#include <stdio.h>
+#include <sys/types.h>
 
-/* Command prototypes */
-extern int help_main(int argc, char *argv[]);
-extern int reset_main(int argc, char *argv[]);
-extern int halt_main(int argc, char *argv[]);
-extern int boot_main(int argc, char *argv[]);
+typedef struct __memory_region_t {
+    uint32_t base;
+    uint32_t pos;
+} memory_region_t;
 
-extern void getenv_help(void);
-extern int getenv_main(int argc, char *argv[]);
+void *memory_region_reserve(memory_region_t * reg, uint32_t size, int align);
 
-extern void setenv_help(void);
-extern int setenv_main(int argc, char *argv[]);
-
-extern void printenv_help(void);
-extern int printenv_main(int argc, char *argv[]);
-
-/* Command list */
-cmd_handle_t commands[] = {
-	{ "help", "Display command help.", NULL, help_main },
-	{ "boot", "Boot into Darwin.", NULL, boot_main },
-	{ "halt", "Halt the system.", NULL, halt_main },
-	{ "reset", "Reset the system.", NULL, reset_main },
-	{ "getenv", "Read environment variable.", getenv_help, getenv_main },
-	{ "setenv", "Set an environment variable.", setenv_help, setenv_main },
-	{ "printenv", "Print one or all environment variables.", printenv_help, printenv_main },
-	{ NULL, NULL, NULL },
-};
-
-#endif /* !CMDS_H */
+#endif

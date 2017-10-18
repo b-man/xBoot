@@ -9,8 +9,9 @@
 DIRS += \
 	core \
 	lib/crt \
+	lib/boot \
 	lib/shell \
+	lib/device \
 	lib/debug \
 	lib/memory \
-	lib/interface \
 	arch/$(ARCH)

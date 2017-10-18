@@ -1,6 +1,6 @@
 /* ST-Ericsson Mulit Timer Unit driver
  *
- * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,12 +29,12 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "ste_mtu.h"
-
 #include <sys/io.h>
 #include <sys/types.h>
 
-#include <interface/timer.h>
+#include <device/timer.h>
+
+#include "ste_mtu.h"
 
 #define DELAY_TIMER 2	/* MTU0 timer 2 will be the delay timer */
 

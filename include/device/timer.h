@@ -1,4 +1,4 @@
-/* Generic system control interface - structures and prototypes
+/* Timer device api
  *
  * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -29,17 +29,21 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SYSCTL_H
-#define SYSCTL_H
+#ifndef TIMER_H
+#define TIMER_H
 
-/* sysctl driver interface */
+#include <sys/types.h>
+
+/* timer driver interface */
 typedef struct {
+	void (*init)(void);
 	void (*reset)(void);
-	void (*poweroff)(void);
-} sysctl_driver;
+	uint32_t (*count_usec)(void);
+} timer_driver;
 
-/* sysctl driver prototypes */
-extern void sysctl_reset(void);
-extern void sysctl_poweroff(void);
+/* timer driver prototypes */
+extern void timer_init(void);
+extern void timer_reset(void);
+extern void usleep(uint32_t us);
 
-#endif /* !SYSCTL_H */
+#endif /* !TIMER_H */

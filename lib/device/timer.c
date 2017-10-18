@@ -1,6 +1,6 @@
-/* Standard library api
+/* Generic timer driver interface
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,20 +29,37 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef STDBOOL_H
-#define STDBOOL_H
+#include <stdio.h>
+#include <sys/types.h>
+#include <device/timer.h>
 
-#define __bool_true_false_are_defined 1
+extern timer_driver timer_drv;
+static timer_driver *timer = &timer_drv;
 
-#define bool _Bool
+void timer_init(void)
+{
+	timer->init();
 
-typedef bool boolean_t;
+	return;
+}
 
-#define true	1
-#define false	0
+void timer_reset(void)
+{
+	timer->reset();
 
-/* TODO: get rid of this. */
-#define TRUE	true
-#define FALSE	false
+	return;
+}
 
-#endif /* !STDBOOL_H */
+void usleep(uint32_t us)
+{
+	uint32_t ini, end;
+	ini = end = 0;
+
+	ini = timer->count_usec();
+	end = (ini + us);
+
+	while ((int32_t)(end - timer->count_usec()) > 0)
+		;
+
+	return;
+}

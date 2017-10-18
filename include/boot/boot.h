@@ -1,6 +1,6 @@
-/* Standard library api
+/* Bootloader prototypes
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,20 +29,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef STDBOOL_H
-#define STDBOOL_H
 
-#define __bool_true_false_are_defined 1
+#ifndef BOOT_H
+#define BOOT_H
 
-#define bool _Bool
+/* xBoot main routine */
+extern void xboot_main(void);
 
-typedef bool boolean_t;
+/* Bootload Darwin kernel */
+extern void start_darwin(void);
 
-#define true	1
-#define false	0
-
-/* TODO: get rid of this. */
-#define TRUE	true
-#define FALSE	false
-
-#endif /* !STDBOOL_H */
+#endif /* !XBOOT_H */

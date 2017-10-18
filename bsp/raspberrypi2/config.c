@@ -29,18 +29,23 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "bcm2836.h"
-
 #include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
+
+#include <shell.h>
+
 #include <boot/bsp.h>
-#include <interface/timer.h>
-#include <interface/serial.h>
-#include <interface/sysctl.h>
+
+#include <device/timer.h>
+#include <device/serial.h>
+#include <device/sysctl.h>
+
 #include <driver/serial/pl011/pl011.h>
 #include <driver/timer/bcm_timer/bcm_timer.h>
+
+#include "bcm2836.h"
 
 #define xstr(s) #s
 #define str(s) xstr(s)
@@ -84,10 +89,6 @@ int bsp_init(void)
 	/* Initialize the delay timer */
 	timer_init();
 
-	/* Wait for RX fifo to empty. */
-	while (readl((addr_t)(BCM2836_UART0_BASE + UART_FR)) & UART_FR_TXFF_BIT)
-		;
-
 	/* Turn off the uart */
 	writel((addr_t)(BCM2836_UART0_BASE + UART_CR), UART_CR_DISA);
 
@@ -96,8 +97,8 @@ int bsp_init(void)
 	delay(150);
 
 	/* Disable pull up/down for pins 14 and 15 and delay for 150 cycles. */
-	writeorl((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), BCM_GPIO_PIN(14));
-	writeorl((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUD), BCM_GPIO_PIN(15));
+	writeorl((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUDCLK0), BCM_GPIO_PIN(14));
+	writeorl((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUDCLK0), BCM_GPIO_PIN(15));
 	delay(150);
 
 	/* Write 0 to GPPUDCLK0 to make it take effect. */

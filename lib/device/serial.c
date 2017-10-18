@@ -30,7 +30,7 @@
  */
 
 #include <sys/types.h>
-#include <interface/serial.h>
+#include <device/serial.h>
 
 extern serial_driver serial_drv;
 static serial_driver *serial = &serial_drv;

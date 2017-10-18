@@ -1,5 +1,5 @@
 /*
- * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2013, winocm. <winocm@icloud.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,37 +27,52 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CMDS_H
-#define CMDS_H
+#ifndef _BOOT_ARGS_H_
+#define _BOOT_ARGS_H_
 
-#include <shell.h>
-#include <stdio.h>
+/*
+ * !!! Make sure this file matches with the kernel one !!!
+ */
 
-/* Command prototypes */
-extern int help_main(int argc, char *argv[]);
-extern int reset_main(int argc, char *argv[]);
-extern int halt_main(int argc, char *argv[]);
-extern int boot_main(int argc, char *argv[]);
+#include <sys/types.h>
 
-extern void getenv_help(void);
-extern int getenv_main(int argc, char *argv[]);
+#define BOOT_LINE_LENGTH        256
 
-extern void setenv_help(void);
-extern int setenv_main(int argc, char *argv[]);
+/*
+ * Video information.
+ */
 
-extern void printenv_help(void);
-extern int printenv_main(int argc, char *argv[]);
-
-/* Command list */
-cmd_handle_t commands[] = {
-	{ "help", "Display command help.", NULL, help_main },
-	{ "boot", "Boot into Darwin.", NULL, boot_main },
-	{ "halt", "Halt the system.", NULL, halt_main },
-	{ "reset", "Reset the system.", NULL, reset_main },
-	{ "getenv", "Read environment variable.", getenv_help, getenv_main },
-	{ "setenv", "Set an environment variable.", setenv_help, setenv_main },
-	{ "printenv", "Print one or all environment variables.", printenv_help, printenv_main },
-	{ NULL, NULL, NULL },
+struct Boot_Video {
+    uint32_t v_baseAddr;
+    uint32_t v_display;
+    uint32_t v_rowBytes;
+    uint32_t v_width;
+    uint32_t v_height;
+    uint32_t v_depth;
 };
+typedef struct Boot_Video Boot_Video;
 
-#endif /* !CMDS_H */
+/*
+ * Boot arguments structure.
+ */
+#define kBootArgsRevision	1
+
+#define kBootArgsVersion1	1   /* Previous? */
+#define kBootArgsVersion2	2   /* iOS 4 */
+#define kBootArgsVersion3	3   /* iOS 6? 7 for sure. */
+
+typedef struct boot_args {
+    uint16_t Revision;
+    uint16_t Version;
+    uint32_t virtBase;
+    uint32_t physBase;
+    uint32_t memSize;
+    uint32_t topOfKernelData;
+    Boot_Video Video;
+    uint32_t machineType;
+    void *deviceTreeP;          /* VA of DeviceTree */
+    uint32_t deviceTreeLength;
+    char commandLine[BOOT_LINE_LENGTH];
+} boot_args;
+
+#endif
