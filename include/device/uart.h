@@ -1,6 +1,6 @@
-/* Generic serial driver interface
+/* UART device api
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,50 +29,25 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef UART_H
+#define UART_H
+
 #include <sys/types.h>
-#include <device/serial.h>
 
-extern serial_driver serial_drv;
-static serial_driver *serial = &serial_drv;
+/* serial driver interface */
+typedef struct {
+	void (*init)(void);
+	int (*poll)(void);
+	uint32_t (*getc)(void);
+	void (*putc)(uint32_t c);
+	void (*puts)(const char *str);
+} serial_driver;
 
-void serial_init(void)
-{
-	serial->init();
+/* serial driver prototypes */
+extern void serial_init(void);
+extern int serial_poll(void);
+extern uint32_t serial_getc(void);
+extern void serial_putc(int c);
+extern void serial_puts(const char *str);
 
-	return;
-}
-
-int serial_poll(void)
-{
-	int state;
-
-	state = serial->poll();
-
-	return state;
-}
-
-uint32_t serial_getc(void)
-{
-	uint32_t val = '\0';
-
-	val = serial->getc();
-
-	return val;
-}
-
-void serial_putc(int c)
-{
-	if (c == '\n')
-		serial->putc('\r');
-
-	serial->putc(c);
-
-	return;
-}
-
-void serial_puts(const char *str)
-{
-	serial->puts(str);
-
-	return;
-}
+#endif /* !UART_H */

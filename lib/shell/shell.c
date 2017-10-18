@@ -35,7 +35,7 @@
 
 #include <shell.h>
 
-#include <device/serial.h>
+#include <device/uart.h>
 
 /**
  * shell_getline

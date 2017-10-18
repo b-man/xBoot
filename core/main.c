@@ -40,7 +40,7 @@
 #include <boot/boot.h>
 
 #include <device/timer.h>
-#include <device/serial.h>
+#include <device/uart.h>
 
 #define SHELL_PROMPT "] "
 

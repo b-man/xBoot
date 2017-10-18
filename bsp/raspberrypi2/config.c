@@ -1,6 +1,6 @@
 /* Raspberry Pi2-specific configuration information
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -39,10 +39,10 @@
 #include <boot/bsp.h>
 
 #include <device/timer.h>
-#include <device/serial.h>
+#include <device/uart.h>
 #include <device/sysctl.h>
 
-#include <driver/serial/pl011/pl011.h>
+#include <driver/uart/pl011/pl011.h>
 #include <driver/timer/bcm_timer/bcm_timer.h>
 
 #include "bcm2836.h"

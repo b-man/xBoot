@@ -39,9 +39,9 @@
 
 #include <device/timer.h>
 #include <device/sysctl.h>
-#include <device/serial.h>
+#include <device/uart.h>
 
-#include <driver/serial/pl011/pl011.h>
+#include <driver/uart/pl011/pl011.h>
 #include <driver/timer/ste_mtu/ste_mtu.h>
 
 #include "ap9500.h"

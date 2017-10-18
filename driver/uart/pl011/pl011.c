@@ -1,6 +1,6 @@
-/* PL011 serial driver
+/* PL011 UART driver
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,7 +34,7 @@
 #include <sys/io.h>
 #include <sys/types.h>
 
-#include <device/serial.h>
+#include <device/uart.h>
 
 #include "pl011.h"
 
@@ -99,7 +99,7 @@ void pl011_rx_interrupt_mask(bool state)
 	pl011_cfg *config = &pl011_config;
 	addr_t base = config->base;
 
-	if (state == TRUE)
+	if (state == true)
 		writel((base + UART_IMSC), (UART_IMSC_RXMS));
 	else
 		writel((base + UART_IMSC), (UART_IMSC_RXMS & ~UART_IMSC_RXMS));
@@ -115,7 +115,7 @@ void pl011_tx_interrupt_mask(bool state)
 	pl011_cfg *config = &pl011_config;
 	addr_t base = config->base;
 
-	if (state == TRUE)
+	if (state == true)
 		writel((base + UART_IMSC), (UART_IMSC_TXMS));
 	else
 		writel((base + UART_IMSC), (UART_IMSC_TXMS & ~UART_IMSC_TXMS));

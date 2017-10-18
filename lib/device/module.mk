@@ -1,7 +1,7 @@
 SRC_DIR := $(SRCROOT)/lib/device
 
 C_SRC_FILES := \
-	serial.c \
+	uart.c \
 	sysctl.c \
 	timer.c \
 	nvram.c
