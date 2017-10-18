@@ -81,10 +81,10 @@ int bsp_init(void)
 	timer_init();
 
 	/* Initialize the serial port */
-	serial_init();
+	uart_init();
 
 	/* Initialize console output */
-	printf_init(serial_putc);
+	printf_init(uart_putc);
 
 	/* Initialize the environment */
 	shell_runscript(init_script);

@@ -51,24 +51,24 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 	lp = buffer;
 
 	while (1) {
-		ch = serial_getc();
+		ch = uart_getc();
 
 		switch (ch) {
 			case '\n':
 			case '\r':
-			    serial_puts("\n");
+			    uart_puts("\n");
 			    *lp++ = '\0';
 			    return;
 			case '\b':
 			case '\177':
 			    if (lp >= (buffer + minlen - 1)) {
-				serial_puts("\b \b");
+				uart_puts("\b \b");
 				lp--;
 			    }
 			    continue;
 			default:
 			    if ((ch > '\040' || ch < '\177') && ch_count < maxlen) {
-			    	serial_putc(ch);
+			    	uart_putc(ch);
 				*lp++ = ch;
 				ch_count++;
 			    }

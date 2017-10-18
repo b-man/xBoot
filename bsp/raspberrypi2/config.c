@@ -105,10 +105,10 @@ int bsp_init(void)
 	writel((addr_t)(BCM2836_GPIO_BASE + BCM_GPIO_GPPUDCLK0), 0x00000000);
 
 	/* Initialize the serial port */
-	serial_init();
+	uart_init();
 
 	/* Initialize debug output */
-	printf_init(serial_putc);
+	printf_init(uart_putc);
 
 	printf("I've made it here!\n");
 

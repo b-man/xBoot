@@ -84,10 +84,10 @@ int bsp_init(void)
 	timer_init();
 
 	/* Initialize the serial port */
-	serial_init();
+	uart_init();
 
 	/* Initialize debug output */
-	printf_init(serial_putc);
+	printf_init(uart_putc);
 
 	/* Use REFCLK (1Mhz) for timer2 */
 	writel((addr_t)SYS_CTRL0_BASE, (1 << 19));

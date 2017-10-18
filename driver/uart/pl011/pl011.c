@@ -199,7 +199,7 @@ void pl011_puts(const char *str)
 }
 
 /* register this driver */
-serial_driver serial_drv = {
+uart_driver uart_drv = {
 	pl011_init,
 	pl011_poll,
 	pl011_getc,

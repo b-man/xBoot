@@ -117,7 +117,7 @@ static int do_printf(const char *fmt, va_list args, fnptr_t fn, void *ptr)
 	state = count = given_wd = flags = 0;
 
 	if (fmt == NULL)
-		serial_puts("NULL\n");
+		uart_puts("NULL\n");
 
 	for (; *fmt; fmt++) {
 		switch(state) {

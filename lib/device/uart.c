@@ -30,49 +30,50 @@
  */
 
 #include <sys/types.h>
+
 #include <device/uart.h>
 
-extern serial_driver serial_drv;
-static serial_driver *serial = &serial_drv;
+extern uart_driver uart_drv;
+static uart_driver *uart = &uart_drv;
 
-void serial_init(void)
+void uart_init(void)
 {
-	serial->init();
+	uart->init();
 
 	return;
 }
 
-int serial_poll(void)
+int uart_poll(void)
 {
 	int state;
 
-	state = serial->poll();
+	state = uart->poll();
 
 	return state;
 }
 
-uint32_t serial_getc(void)
+uint32_t uart_getc(void)
 {
 	uint32_t val = '\0';
 
-	val = serial->getc();
+	val = uart->getc();
 
 	return val;
 }
 
-void serial_putc(int c)
+void uart_putc(int c)
 {
 	if (c == '\n')
-		serial->putc('\r');
+		uart->putc('\r');
 
-	serial->putc(c);
+	uart->putc(c);
 
 	return;
 }
 
-void serial_puts(const char *str)
+void uart_puts(const char *str)
 {
-	serial->puts(str);
+	uart->puts(str);
 
 	return;
 }
