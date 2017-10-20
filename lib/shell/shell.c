@@ -85,11 +85,11 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
  */
 static int shell_parseline(char *buffer, char **argv)
 {
-	int argc, nquote;
 	char *delim = " \t";
 	char *token, *lpr, *lpw, *save;
+	int argc, nsquote, ndquote;
 
-	nquote = 0;
+	nsquote = ndquote = 0;
 
 	if (*buffer == '\0')
 		return 0;
@@ -102,13 +102,16 @@ static int shell_parseline(char *buffer, char **argv)
 	for (lpr = buffer, lpw = buffer; *lpr != '\0'; lpr++) {
 		*lpw = *lpr;
 		switch (*lpr) {
-			case '\042': /* " */
-			case '\047': /* ' */
-			    if (++nquote == 2)
-				nquote = 0;
+			case '\"':
+			    if (++ndquote == 2)
+				ndquote = 0;
+			    break;
+			case '\'':
+			    if (++nsquote == 2)
+				nsquote = 0;
 			    break;
 			default:
-			    if ((nquote == 1) && (*lpr == ' '))
+			    if ((nsquote == 1 || ndquote == 1) && (*lpr == ' '))
 				*lpw = (char)-1;
 			    lpw++;
 		}
@@ -117,7 +120,7 @@ static int shell_parseline(char *buffer, char **argv)
 	*lpw = '\0';
 
 	/* Throw a syntax error for incomplete quoted strings. */
-	if (nquote == 1) {
+	if (nsquote == 1 || ndquote == 1) {
 		printf("? syntax error\n");
 		return -1;
 	}
