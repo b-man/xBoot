@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdbool.h>
 
 #include <shell.h>
 
@@ -44,9 +45,13 @@
  */
 static void shell_getline(char *buffer, int minlen, int maxlen)
 {
-	int ch;
 	char *lp;
-	int ch_count = 0;
+	bool esc_seq, esc_seq_fini;
+	int ch, last_ch, ch_count;
+
+	esc_seq = false;
+	esc_seq_fini = true;
+	ch_count = last_ch = 0;
 
 	lp = buffer;
 
@@ -64,13 +69,43 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			    if (lp >= (buffer + minlen - 1)) {
 				uart_puts("\b \b");
 				lp--;
+			        ch_count--;
 			    }
 			    continue;
+			case 27: /* ESC */
+			    last_ch = ch;
+			    continue;
+			case '[':
+			    switch (last_ch) {
+			        case 27:
+			            last_ch = ch;
+			            esc_seq = true;
+			            continue;
+			        case '[':
+			            esc_seq_fini = true;
+			            /* TODO: line editing & history */
+			            switch (ch) {
+			                case 'A': /* UP Key */
+			                    continue;
+			                case 'B': /* Down key */
+			                    continue;
+			                case 'C': /* Right key */
+			                    continue;
+			                case 'D': /* Left key */
+			                    continue;
+			                default:
+			                    continue;
+			            }
+			    }
 			default:
-			    if ((ch > '\040' || ch < '\177') && ch_count < maxlen) {
+			    if ((ch_count < maxlen) && !esc_seq) {
 			    	uart_putc(ch);
 				*lp++ = ch;
 				ch_count++;
+			    }
+			    if (esc_seq_fini) {
+			        esc_seq = false;
+			        esc_seq_fini = true;
 			    }
 		}
 	}
@@ -152,6 +187,9 @@ static int shell_callcmd(int argc, char **argv)
 	cmd_handle_t cmd;
 
 	if (argc < 1)
+		return 0;
+
+	if (((int)**argv) == '\027')
 		return 0;
 
 	cmd = query_command(argv[0]);
@@ -238,7 +276,7 @@ void shell_prompt(const char *prompt)
 
 	printf("\n\nEntering interactive shell. Run \'help\' for a list of commands.\n\n");
 
-	guard = (strlen(prompt));
+	guard = strlen(prompt);
 
 	while (1) {
 		printf("%s", prompt);

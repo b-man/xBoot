@@ -43,10 +43,11 @@ cmd_handle_t query_command(const char *name)
 	int i = 0;
 	cmd_handle_t cmd = { NULL, NULL, NULL };
 
-	while (commands[i].name != NULL) {
-		if (strncmp(commands[i].name, name, strlen(name)) == 0)
-			cmd = commands[i];
-		++i;
+	cmd = commands[i];
+	while (cmd.name != NULL) {
+		if (strcmp(cmd.name, name) == 0)
+			return cmd;
+		cmd = commands[++i];
 	}
 
 	return cmd;

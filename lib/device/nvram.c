@@ -120,7 +120,6 @@ void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node)
 void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting)
 {
     nvram_variable_node_t *node;
-
     nvram_variable_node_t *current = list->head;
 
     while (current != NULL) {
@@ -171,7 +170,6 @@ int nvram_variable_unset(nvram_variable_list_t *list, const char *name)
 nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const char *name)
 {
     nvram_variable_t *value = NULL;
-
     nvram_variable_node_t *current = list->head;
 
     while (current != NULL) {
