@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #include <device/nvram.h>
 
@@ -57,9 +58,15 @@ nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, 
 {
     nvram_variable_node_t *node = malloc(sizeof(nvram_variable_node_t));
 
+    if ((strlen(name) >= NAME_MAX) || (strlen(setting) >= NAME_MAX)) {
+	printf("NVRAM Error: length of variable name or value too large.\n");
+
+	return NULL;
+    }
+
     node->next = NULL;
-    strncpy(node->value.name, name, 63);
-    strncpy(node->value.setting, setting, 255);
+    strncpy(node->value.name, name, strlen(name));
+    strncpy(node->value.setting, setting, strlen(setting));
     node->value.overridden = overridden;
 
     return node;
@@ -118,10 +125,8 @@ void nvram_variable_set(nvram_variable_list_t *list, const char *name, const cha
 
     while (current != NULL) {
         if (strcmp(current->value.name, name) == 0) {
-            bzero(current->value.name, 63);
-            bzero(current->value.setting, 255);
-            strncpy(current->value.name, name, 63);
-            strncpy(current->value.setting, setting, 255);
+            bzero(current->value.setting, strlen(current->value.setting));
+            strncpy(current->value.setting, setting, strlen(setting));
             current->value.overridden = 1;
 
             return;
@@ -130,7 +135,9 @@ void nvram_variable_set(nvram_variable_list_t *list, const char *name, const cha
     }
 
     node = nvram_create_node(name, setting, 0);
-    nvram_append_node(list, node);
+
+    if (node != NULL)
+        nvram_append_node(list, node);
 
     return;
 }

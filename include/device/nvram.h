@@ -31,11 +31,13 @@
 #ifndef NVRAM_H
 #define NVRAM_H
 
+#include <limits.h>
+
 /* NVRAM variable struct */
 typedef struct _nvram_variable {
-    char name[64];
-    char setting[256];
     int overridden;
+    char name[NAME_MAX];
+    char setting[NAME_MAX];
 } nvram_variable_t;
 
 /* NVRAM variable node struct */
