@@ -39,9 +39,9 @@
 
 #include <device/timer.h>
 #include <device/sysctl.h>
-#include <device/serial.h>
+#include <device/uart.h>
 
-#include <driver/serial/pl011/pl011.h>
+#include <driver/uart/pl011/pl011.h>
 #include <driver/timer/ste_mtu/ste_mtu.h>
 
 #include "ap9500.h"
@@ -81,10 +81,10 @@ int bsp_init(void)
 	timer_init();
 
 	/* Initialize the serial port */
-	serial_init();
+	uart_init();
 
 	/* Initialize console output */
-	printf_init(serial_putc);
+	printf_init(uart_putc);
 
 	/* Initialize the environment */
 	shell_runscript(init_script);

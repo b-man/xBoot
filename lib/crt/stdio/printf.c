@@ -1,6 +1,6 @@
 /* Basic printf for xBoot
  *
- * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include <device/serial.h>
+#include <device/uart.h>
 
 /* putc function to use */
 static void (*putchar)(int c);
@@ -117,7 +117,7 @@ static int do_printf(const char *fmt, va_list args, fnptr_t fn, void *ptr)
 	state = count = given_wd = flags = 0;
 
 	if (fmt == NULL)
-		serial_puts("NULL\n");
+		uart_puts("NULL\n");
 
 	for (; *fmt; fmt++) {
 		switch(state) {

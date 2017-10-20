@@ -35,5 +35,6 @@
 #define CHAR_BIT	8	/* Max. number of bits that can fit in a char */
 
 #define LINE_MAX	2048	/* Max. number of bytes of a utility's input line */
+#define NAME_MAX	1024	/* Max. number of bytes in a file name. */
 
 #endif /* !LIMITS_H */

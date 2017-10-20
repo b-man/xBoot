@@ -15,4 +15,4 @@ C_SRC_FILES := \
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 
 include $(SRCROOT)/driver/timer/ste_mtu/module.mk
-include $(SRCROOT)/driver/serial/pl011/module.mk
+include $(SRCROOT)/driver/uart/pl011/module.mk

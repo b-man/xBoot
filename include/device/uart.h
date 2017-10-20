@@ -1,6 +1,6 @@
-/* Serial device api
+/* UART device api
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,25 +29,25 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SERIAL_H
-#define SERIAL_H
+#ifndef UART_H
+#define UART_H
 
 #include <sys/types.h>
 
-/* serial driver interface */
+/* uart driver interface */
 typedef struct {
 	void (*init)(void);
 	int (*poll)(void);
 	uint32_t (*getc)(void);
 	void (*putc)(uint32_t c);
 	void (*puts)(const char *str);
-} serial_driver;
+} uart_driver;
 
-/* serial driver prototypes */
-extern void serial_init(void);
-extern int serial_poll(void);
-extern uint32_t serial_getc(void);
-extern void serial_putc(int c);
-extern void serial_puts(const char *str);
+/* uart driver prototypes */
+extern void uart_init(void);
+extern int uart_poll(void);
+extern uint32_t uart_getc(void);
+extern void uart_putc(int c);
+extern void uart_puts(const char *str);
 
-#endif /* !SERIAL_H */
+#endif /* !UART_H */

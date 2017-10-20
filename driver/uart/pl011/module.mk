@@ -1,4 +1,4 @@
-SRC_DIR := $(SRCROOT)/driver/serial/pl011
+SRC_DIR := $(SRCROOT)/driver/uart/pl011
 
 C_SRC_FILES := \
 	pl011.c

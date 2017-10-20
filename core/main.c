@@ -40,7 +40,7 @@
 #include <boot/boot.h>
 
 #include <device/timer.h>
-#include <device/serial.h>
+#include <device/uart.h>
 
 #define SHELL_PROMPT "] "
 
@@ -50,7 +50,7 @@ static void xboot_banner(void)
 {
 	/* display banner */
 	printf("\nxBoot for %s\n", bsp_platform_name);
-	printf("Copyright (c) 2015 Brian McKenzie <mckenzba@gmail.com>\n");
+	printf("Copyright (c) 2017 Brian McKenzie <mckenzba@gmail.com>\n");
 	printf("Build: %s\n\n", __xBoot_version);
 
 	return;
@@ -67,7 +67,7 @@ void xboot_main(void)
 	printf("Press any key to enter interactive shell.\n");
 	for (boot_delay = atoi(getenv("bootdelay")); boot_delay > 0; boot_delay--) {
 		printf("Booting in %2d seconds...\r", boot_delay);
-		if (serial_poll() != 0)
+		if (uart_poll() != 0)
 			shell_prompt(SHELL_PROMPT);
 		usleep(1000 * 1000);
 	}

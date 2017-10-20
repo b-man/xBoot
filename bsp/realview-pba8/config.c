@@ -38,11 +38,11 @@
 #include <boot/bsp.h>
 
 #include <device/timer.h>
-#include <device/serial.h>
+#include <device/uart.h>
 #include <device/sysctl.h>
 
+#include <driver/uart/pl011/pl011.h>
 #include <driver/timer/sp804/sp804.h>
-#include <driver/serial/pl011/pl011.h>
 
 #include "rvpba8.h"
 #include "realview-pba8.h"
@@ -84,10 +84,10 @@ int bsp_init(void)
 	timer_init();
 
 	/* Initialize the serial port */
-	serial_init();
+	uart_init();
 
 	/* Initialize debug output */
-	printf_init(serial_putc);
+	printf_init(uart_putc);
 
 	/* Use REFCLK (1Mhz) for timer2 */
 	writel((addr_t)SYS_CTRL0_BASE, (1 << 19));
