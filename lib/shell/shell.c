@@ -189,9 +189,6 @@ static int shell_callcmd(int argc, char **argv)
 	if (argc < 1)
 		return 0;
 
-	if (((int)**argv) == '\027')
-		return 0;
-
 	cmd = query_command(argv[0]);
 
 	if (cmd.name != NULL)
