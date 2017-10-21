@@ -76,5 +76,5 @@ LDFLAGS	+= \
 	-static \
 	-nostdlib \
 	--defsym DRAM_SIZE=$(DRAM_SIZE) \
-	-defsym BOOT_TEXT_BASE=$(BOOT_TEXT_BASE) \
+	--defsym BOOT_TEXT_BASE=$(BOOT_TEXT_BASE) \
 	-L$(BUILD_ROOT)
