@@ -85,6 +85,9 @@ SECTIONS
 	*(.ARM.attributes)
     }
 
-    __end = . ;
+    __end = .;
+    .dtre . : {
+        dtre.o
+    }
     PROVIDE (__end = .);
 }

@@ -12,16 +12,17 @@ export TARGET := xboot.$(PLATFORM)
 include $(SRCROOT)/make/vars.mk
 include $(SRCROOT)/make/tools.mk
 ifdef PLATFORM
-        BSP_PATH = $(SRCROOT)/bsp/$(PLATFORM)/bsp.mk
-        ifneq ("$(wildcard $(BSP_PATH))","")
-                include $(BSP_PATH)
+	BSP_DIR := $(SRCROOT)/bsp/$(PLATFORM)
+        BSP_MKFILE := $(BSP_DIR)/bsp.mk
+        ifneq ("$(wildcard $(BSP_MKFILE))","")
+                include $(BSP_MKFILE)
         else
                 $(error Unsupported platform "$(PLATFORM)" specified. Run "make help" for a list of supported platforms.)
         endif
 endif
 include $(SRCROOT)/make/dirs.mk
-include $(SRCROOT)/make/flags.mk
 include $(SRCROOT)/make/build.mk
+include $(SRCROOT)/make/flags.mk
 
 export DERIVED_SOURCES_DIR := $(BUILD_GEN)
 

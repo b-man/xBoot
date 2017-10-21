@@ -72,7 +72,9 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			        ch_count--;
 			    }
 			    continue;
-			case 27: /* ESC */
+			case '\t':
+			    continue;
+			case '\e':
 			    last_ch = ch;
 			    continue;
 			case '[':
@@ -97,8 +99,6 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			                    continue;
 			            }
 			    }
-			case '\t':
-			    continue;
 			default:
 			    if ((ch_count < maxlen) && !esc_seq) {
 			    	uart_putc(ch);

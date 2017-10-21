@@ -12,6 +12,9 @@ SRC_DIR := $(SRCROOT)/bsp/snowball
 C_SRC_FILES := \
 	config.c
 
+PLAT_DT_FILE := \
+	snowball_dt.plist
+
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 
 include $(SRCROOT)/driver/timer/ste_mtu/module.mk

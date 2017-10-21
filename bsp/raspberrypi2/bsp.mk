@@ -12,6 +12,9 @@ SRC_DIR := $(SRCROOT)/bsp/raspberrypi2
 C_SRC_FILES := \
 	config.c
 
+PLAT_DT_FILE := \
+	raspberrypi2_dt.plist
+
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 
 include $(SRCROOT)/driver/timer/bcm_timer/module.mk

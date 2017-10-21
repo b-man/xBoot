@@ -38,13 +38,18 @@ setup:
 	@rm -rf $(BUILD_DIR)
 	@mkdir -p $(BUILD_GEN)
 	@mkdir -p $(BUILD_OBJS)
-	@$(HOST_CC) -O1 $(SRCROOT)/scripts/ccdv.c -o $(SRCROOT)/scripts/ccdv
+	@$(HOST_CC) $(SRCROOT)/scripts/ccdv.c -o $(SRCROOT)/scripts/ccdv
+	@$(HOST_CC) -Wno-multichar $(SRCROOT)/scripts/image3maker.c -o $(SRCROOT)/scripts/image3maker
 	@$(SRCROOT)/scripts/version.pl $(RC_ProjectName) > $(BUILD_GEN)/$(RC_ProjectName)_version.c
 	$(_CC) $(CFLAGS) -c $(BUILD_GEN)/$(RC_ProjectName)_version.c -o $(BUILD_ROOT)/$(RC_ProjectName)_version.o
+	@$(SRCROOT)/scripts/image3maker -t dtre -f $(BSP_DIR)/$(PLAT_DT_FILE) -o $(BUILD_ROOT)/dtre.img3
+	$(_LD) -r -b binary -o $(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/dtre.img3
+	$(_OBJCPY) --rename-section .data=.dtre $(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/dtre.o
 
 $(TARGET): $(OBJS)
 	@bash -e $(SRCROOT)/scripts/archive.sh $(AR) $(BUILD_OBJS)/Objects.list $(BUILD_DIR)/$(TARGET).a
-	$(_LD) -T $(SRCROOT)/arch/arm/init/xboot.ld $(BUILD_DIR)/$(TARGET).a $(BUILD_ROOT)/$(RC_ProjectName)_version.o -o  $(BUILD_DIR)/$(TARGET).elf $(LDFLAGS)
+	$(_LD) -T $(SRCROOT)/arch/arm/init/xboot.ld $(BUILD_DIR)/$(TARGET).a \
+		$(BUILD_ROOT)/$(RC_ProjectName)_version.o -o $(BUILD_DIR)/$(TARGET).elf $(LDFLAGS)
 	$(_OBJDMP) -D $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).list
 	$(_OBJCPY) $(BUILD_DIR)/$(TARGET).elf -g -S -O binary $(SRCROOT)/$(TARGET).bin
 	@echo "$(TARGET).bin is ready."
@@ -52,7 +57,8 @@ $(TARGET): $(OBJS)
 install: all
 
 clean:
-	@rm -rf $(BUILD_DIR) $(SRCROOT)/$(TARGET).* $(SRCROOT)/scripts/ccdv $(SRCROOT)/xboot.*.bin
+	@rm -rf $(BUILD_DIR) $(SRCROOT)/$(TARGET).* $(SRCROOT)/xboot.*.bin \
+		$(SRCROOT)/scripts/ccdv $(SRCROOT)/scripts/image3maker
 	@echo "Source tree is now clean."
 
 

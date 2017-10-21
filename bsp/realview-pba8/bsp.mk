@@ -12,6 +12,9 @@ SRC_DIR := $(SRCROOT)/bsp/realview-pba8
 C_SRC_FILES := \
 	config.c
 
+PLAT_DT_FILE := \
+	realview_dt.plist
+
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 
 include $(SRCROOT)/driver/timer/sp804/module.mk
