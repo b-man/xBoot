@@ -75,6 +75,7 @@ SFLAGS += $(SFLAGS_INCS)
 LDFLAGS	+= \
 	-static \
 	-nostdlib \
+	--gc-sections \
 	--defsym DRAM_SIZE=$(DRAM_SIZE) \
 	--defsym BOOT_TEXT_BASE=$(BOOT_TEXT_BASE) \
 	-L$(BUILD_ROOT)

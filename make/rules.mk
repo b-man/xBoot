@@ -49,7 +49,7 @@ setup:
 $(TARGET): $(OBJS)
 	@bash -e $(SRCROOT)/scripts/archive.sh $(AR) $(BUILD_OBJS)/Objects.list $(BUILD_DIR)/$(TARGET).a
 	$(_LD) -T $(SRCROOT)/arch/arm/init/xboot.ld $(BUILD_DIR)/$(TARGET).a \
-		$(BUILD_ROOT)/$(RC_ProjectName)_version.o -o $(BUILD_DIR)/$(TARGET).elf $(LDFLAGS)
+		$(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/$(RC_ProjectName)_version.o -o $(BUILD_DIR)/$(TARGET).elf $(LDFLAGS)
 	$(_OBJDMP) -D $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).list
 	$(_OBJCPY) $(BUILD_DIR)/$(TARGET).elf -g -S -O binary $(SRCROOT)/$(TARGET).bin
 	@echo "$(TARGET).bin is ready."

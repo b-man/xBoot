@@ -87,7 +87,7 @@ SECTIONS
 
     __end = .;
     .dtre . : {
-        dtre.o
+        KEEP(*(.dtre))
     }
     PROVIDE (__end = .);
 }
