@@ -44,14 +44,12 @@
 
 #define SHELL_PROMPT "] "
 
-extern const char __xBoot_version[];
-
 static void xboot_banner(void)
 {
 	/* display banner */
 	printf("\nxBoot for %s\n", bsp_platform_name);
 	printf("Copyright (c) 2017 Brian McKenzie <mckenzba@gmail.com>\n");
-	printf("Build: %s\n\n", __xBoot_version);
+	printf("Build: %s %s %s\n\n", getenv("build-version"), __DATE__, __TIME__);
 
 	return;
 }

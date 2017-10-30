@@ -47,7 +47,7 @@ int printenv_main(int argc, char *argv[])
 			printf("no such variable: %s\n", argv[1]);
 			return -1;
 		} else {
-			printf("  %s = %s\n", argv[1], val);
+			printf("  %s = \"%s\"\n", argv[1], val);
 			return 0;
 		}
 	} else {

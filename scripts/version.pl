@@ -49,5 +49,4 @@ if(defined($vers) && $vers ne '') {
 	$name = time();
     }
 }
-printf "const char __%s_version[] = \"%s %s\";\n", $name, $vers,
-    POSIX::strftime("%x %X %Z", localtime());
+printf "const char __%s_version[] = \"%s\";\n", $name, $vers;

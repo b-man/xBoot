@@ -192,7 +192,7 @@ void nvram_dump_list(nvram_variable_list_t *list)
     nvram_variable_node_t *current = list->head;
 
     while (current != NULL) {
-        printf("%s %s = %s\n", (current->value.overridden ? "M" : " "), current->value.name, current->value.setting);
+        printf("%s %s = \"%s\"\n", (current->value.overridden ? "M" : " "), current->value.name, current->value.setting);
         current = current->next;
     }
 

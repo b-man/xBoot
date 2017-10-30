@@ -40,6 +40,9 @@
 
 boot_args gBootArgs;
 
+extern const char __xBoot_version[];
+extern const char __xBoot_build_version[];
+
 /* TODO: make this random */
 #define KERNEL_VMADDR_SLIDE 0x80001000
 
@@ -55,13 +58,21 @@ static void init_boot_args(void)
 	gBootArgs.virtBase = KERNEL_VMADDR_SLIDE & 0xFFFF0000;
 }
 
+static void init_build_info(void)
+{
+	setenv("build-version", __xBoot_version, 1);
+}
+
 void xboot_init(void)
 {
-	/* Initialize boot-args */
-	init_boot_args();
-
 	/* Initialize environment */
 	env_init();
+
+	/* Initialize build version info */
+	init_build_info();
+
+	/* Initialize boot-args */
+	init_boot_args();
 
 	/* Initialize BSP */
 	bsp_init();
