@@ -13,7 +13,7 @@ C_SRC_FILES := \
 	config.c
 
 PLAT_DT_FILE := \
-	snowball_dt.plist
+	snowball.jsdt
 
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 

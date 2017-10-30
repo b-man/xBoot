@@ -32,7 +32,7 @@
 #ifndef CTYPE_H
 #define CTYPE_H
 
-extern int isacii(int c);
+extern int isascii(int c);
 extern int isalpha(int c);
 extern int isdigit(int c);
 extern int isspace(int c);

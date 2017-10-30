@@ -32,9 +32,12 @@
 #ifndef LIMITS_H
 #define LIMITS_H
 
-#define CHAR_BIT	8	/* Max. number of bits that can fit in a char */
+#define CHAR_BIT	8		/* Max. number of bits that can fit in a char */
 
-#define LINE_MAX	2048	/* Max. number of bytes of a utility's input line */
-#define NAME_MAX	1024	/* Max. number of bytes in a file name. */
+#define LINE_MAX	2048		/* Max. number of bytes of a utility's input line */
+#define NAME_MAX	1024		/* Max. number of bytes in a file name */
+
+/* TODO: This should go into an arch-specific header once we support 64bit systems. */
+#define ULONG_MAX	0xFFFFFFFFUL	/* Max. value of type unsigned long */
 
 #endif /* !LIMITS_H */

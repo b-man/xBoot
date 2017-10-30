@@ -32,19 +32,19 @@
 
 #include <sys/types.h>
 
-#define kImage3Magic				'Img3'
+#define kImage3Magic			'Img3'
 
 /* Image types */
-#define kImage3TypeKernel			'krnl'
-#define kImage3TypeiBoot			'ibot'
-#define	kImage3TypeiBSS				'ibss'
-#define kImage3TypeiBEC				'ibec'
-#define kImage3TypeiLLB				'illb'
+#define kImage3TypeKernel		'krnl'
+#define kImage3TypeiBoot		'ibot'
+#define	kImage3TypeiBSS			'ibss'
+#define kImage3TypeiBEC			'ibec'
+#define kImage3TypeiLLB			'illb'
 #define kImage3TypeAppleLogo		'logo'
 #define kImage3TypeRecoveryLogo		'recm'
 #define kImage3TypeNeedService		'nsrv'
-#define kImage3TypeDiags			'diag'
-#define kImage3TypeTsys				'tsys'
+#define kImage3TypeDiags		'diag'
+#define kImage3TypeTsys			'tsys'
 #define kImage3TypeDeviceTree		'dtre'
 #define kImage3TypeCharging0		'chg0'
 #define kImage3TypeCharging1		'chg1'
@@ -58,17 +58,17 @@
 #define kImage3TypeJsonDeviceTree	'jsdt'
 
 /* Image3 Tags */
-#define kImage3TagData				'DATA'
-#define kImage3TagType				'TYPE'
-#define kImage3TagCert				'CERT'
-#define kImage3TagSignature			'SHSH'
-#define kImage3TagBoard				'BORD'
-#define kImage3TagKeyBag			'KBAG'
+#define kImage3TagData			'DATA'
+#define kImage3TagType			'TYPE'
+#define kImage3TagCert			'CERT'
+#define kImage3TagSignature		'SHSH'
+#define kImage3TagBoard			'BORD'
+#define kImage3TagKeyBag		'KBAG'
 #define kImage3TagSecurityEpoch		'SEPO'
-#define kImage3TypeVersion			'VERS'
+#define kImage3TypeVersion		'VERS'
 #define kImage3TagSecurityDomain	'SDOM'
-#define kImage3TagProduct			'PROD'
-#define kImage3TagChip				'CHIP'
+#define kImage3TagProduct		'PROD'
+#define kImage3TagChip			'CHIP'
 
 typedef struct Image3Header {
     uint32_t magic;
@@ -90,5 +90,6 @@ extern int image3_fast_get_type(void *buffer, uint32_t * type);
 extern Image3Header *image3_find_tag(void *image, uint32_t find_tag);
 extern int image3_get_tag_data(void *image, uint32_t tag, void **out_data,
                                uint32_t * out_size);
+extern void *image3_get_image(uint32_t type);
 
 #endif

@@ -80,14 +80,10 @@ SECTIONS
         PROVIDE(__stack_end = .);
     }
 
+    __end = .;
+
     /DISCARD/ : {
         *(.comment .note)
-	*(.ARM.attributes)
+        *(.ARM.attributes)
     }
-
-    __end = .;
-    .dtre . : {
-        KEEP(*(.dtre))
-    }
-    PROVIDE (__end = .);
 }

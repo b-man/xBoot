@@ -25,6 +25,8 @@
 #ifndef __DEVICE_TREE_H
 #define __DEVICE_TREE_H
 
+#include <stdbool.h>
+
 #include <sys/types.h>
 
 typedef struct _Property {

@@ -1,7 +1,7 @@
 /*
- * ARM-specific startup routine for xBoot
+ * Startup routine for xBoot
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -35,24 +35,39 @@
 
 #include <boot/bsp.h>
 #include <boot/boot.h>
+#include <boot/dtre.h>
 #include <boot/globals.h>
 
 boot_args gBootArgs;
 
-void plat_init(void)
+/* TODO: make this random */
+#define KERNEL_VMADDR_SLIDE 0x80001000
+
+static void init_boot_args(void)
 {
-	/* Ensure that boot args struct is zeroed */
 	bzero((void *)&gBootArgs, sizeof(boot_args));
 
-	/* Initialize memory info */
+	gBootArgs.Revision = kBootArgsRevision;
+	gBootArgs.Version = kBootArgsVersion2;
+
 	gBootArgs.physBase = DRAM_BASE;
 	gBootArgs.memSize = DRAM_SIZE;
+	gBootArgs.virtBase = KERNEL_VMADDR_SLIDE & 0xFFFF0000;
+}
+
+void xboot_init(void)
+{
+	/* Initialize boot-args */
+	init_boot_args();
 
 	/* Initialize environment */
 	env_init();
 
 	/* Initialize BSP */
 	bsp_init();
+
+	/* Initialize device tree */
+	dtre_init();
 
 	/* Jump to main */
 	xboot_main();

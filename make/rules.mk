@@ -42,9 +42,8 @@ setup:
 	@$(HOST_CC) -Wno-multichar $(SRCROOT)/scripts/image3maker.c -o $(SRCROOT)/scripts/image3maker
 	@$(SRCROOT)/scripts/version.pl $(RC_ProjectName) > $(BUILD_GEN)/$(RC_ProjectName)_version.c
 	$(_CC) $(CFLAGS) -c $(BUILD_GEN)/$(RC_ProjectName)_version.c -o $(BUILD_ROOT)/$(RC_ProjectName)_version.o
-	@$(SRCROOT)/scripts/image3maker -t dtre -f $(BSP_DIR)/$(PLAT_DT_FILE) -o $(BUILD_ROOT)/dtre.img3
-	$(_LD) -r -b binary -o $(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/dtre.img3
-	$(_OBJCPY) --rename-section .data=.dtre $(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/dtre.o
+	@$(SRCROOT)/scripts/image3maker -t jsdt -f $(BSP_DIR)/$(PLAT_DT_FILE) -o $(BUILD_ROOT)/dtre.img3
+	@cd $(BUILD_ROOT) && $(LD) -r -b binary -o dtre.o dtre.img3
 
 $(TARGET): $(OBJS)
 	@bash -e $(SRCROOT)/scripts/archive.sh $(AR) $(BUILD_OBJS)/Objects.list $(BUILD_DIR)/$(TARGET).a

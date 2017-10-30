@@ -6,8 +6,7 @@ S_SRC_FILES := \
 	vectors.S
 
 C_SRC_FILES := \
-	traps.c \
-	init.c
+	traps.c
 
 SFLAGS += -I$(SRC_DIR)/../include
 CFLAGS += -I$(SRC_DIR)/../include

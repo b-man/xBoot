@@ -1,0 +1,72 @@
+{
+	'compatible': ['Broadcom BCM2836', 'arm-soc'],
+	'APPL,phandle': 0x1,
+	@ [
+		{
+			'name': 'chosen',
+			@ [
+				{
+					'name': 'memory-map',
+					'device_type': 'memory',
+					'reg': [0x0, 0x10000000]
+				}
+			]
+		},
+		{
+			'name': 'cpus',
+			@ [
+				{
+					'name': 'cpu0',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x2,
+					'reg': 0xf00
+				},
+				{
+					'name': 'cpu1',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x3,
+					'reg': 0xf01
+				},
+				{
+					'name': 'cpu2',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x4,
+					'reg': 0xf02
+				},
+				{
+					'name': 'cpu3',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x5,
+					'reg': 0xf03
+				},
+			]
+		},
+		{
+			'name': 'arm-io',
+			'compatible': ['arm-io,brcm'],
+			'device_type': 'brcm-io',
+			@ [
+				{
+					'name': 'mailbox',
+					'compatible': ['mailbox,brcm'],
+					'device_type': 'mailbox',
+					'APPL,phandle': 0x6,
+					'reg': [0x7e00b880 0x40]
+										
+				},
+				{
+					'name': 'gic',
+					'compatible': ['gic,brcm'],
+					'device_type': 'interrupt-controller',
+					'APPL,phandle': 0x7,
+					'interrupt-controller': 'master',
+					'reg': [0x7e00b200 0x200]
+				}
+			]
+		}
+	]
+}

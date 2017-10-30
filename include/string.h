@@ -47,6 +47,7 @@ extern char *strcpy(char *dst, const char *src);
 extern char *strncpy(char *dst, const char *src, size_t len);
 extern char *strtok(char *s, const char *delim);
 extern char *strtok_r(char *s, const char *delim, char **last);
+extern unsigned long strtoul(const char *nptr, char **endptr, int base);
 extern unsigned long hextoul(const char *str);
 
 #endif /* !STRING_H */

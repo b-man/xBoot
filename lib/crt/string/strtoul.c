@@ -34,8 +34,8 @@
  */
 
 #include <string.h>
-#include <sys/ctype.h>
-#include <sys/limits.h>
+#include <ctype.h>
+#include <limits.h>
 
 /*
  * Convert a string to an unsigned long integer.

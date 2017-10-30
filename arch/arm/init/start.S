@@ -82,7 +82,6 @@ EnterARM(start)
     beq    L_relocated
 
     /* We're not at the right load address, relocate ourselves to the right address. */
-
     mov    r6, #(1 * 1024 * 1024)	// HACK
 L_relocate_loop:
     ldr    r8, [r5], #4
@@ -95,7 +94,6 @@ L_relocate_loop:
     bx     r4
 
 L_relocated:
-
     /*
      * Things look semi good, (we hope we're running at the right
      * text base, this is assumed.)
@@ -104,9 +102,9 @@ L_relocated:
     mov     r7, #0
 
     /*
-     * Go to platform bootstrap now.
+     * Go to xboot bootstrap now.
      */
-    bl      plat_init
+    bl      xboot_init
 
 .text
 

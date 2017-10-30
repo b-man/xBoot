@@ -13,8 +13,8 @@ CFLAGS_ARGS	+= \
 	-fPIC \
 	-nostdlib \
 	-nostartfiles \
-	-ffreestanding
-#	-g
+	-ffreestanding \
+	-g
 
 CFLAGS_DEFS	+= \
 	-D__LITTLE_ENDIAN__=1 \

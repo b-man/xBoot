@@ -1,0 +1,42 @@
+/* test */
+{
+	'compatible': ['NovaThor A9500', 'arm-soc'],
+	'APPL,phandle': 0x1,
+	@ [
+		{
+			'name': 'chosen',
+			@ [
+				{
+					'name': 'memory-map',
+					'device_type': 'memory',
+					'reg': [0x0, 0x10000000]
+				}
+			]
+		},
+		{
+			'name': 'cpus',
+			@ [
+				{
+					'name': 'cpu0',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x2,
+					'reg': 0xf00
+				},
+				{
+					'name': 'cpu1',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x3,
+					'reg': 0xf01
+				}
+			]
+		},
+		{
+			'name': 'arm-io',
+			'compatible': ['arm-io,ste'],
+			'device_type': 'ste-io',
+		}
+	]
+}
+/* !test */

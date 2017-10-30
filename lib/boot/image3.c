@@ -29,13 +29,19 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+
 #include <assert.h>
+
 #include <sys/align.h>
+#include <sys/types.h>
+
 #include <boot/image3.h>
 
 #define image3_off(head, off) ((uint32_t)((uintptr_t)off - (uintptr_t)head))
 
-int image3_fast_get_type(void *buffer, uint32_t * type)
+extern uint8_t _binary_dtre_img3_start[];
+
+int image3_fast_get_type(void *buffer, uint32_t *type)
 {
     Image3RootHeader *head = (Image3RootHeader *) buffer;
     if (head->header.magic != kImage3Magic) {
@@ -66,28 +72,35 @@ Image3Header *image3_find_tag(void *image, uint32_t find_tag)
 }
 
 int image3_get_tag_data(void *image, uint32_t tag, void **out_data,
-                        uint32_t * out_size)
+                        uint32_t *out_size)
 {
-    Image3RootHeader *head = (Image3RootHeader *) image;
     Image3Header *imageTag = image3_find_tag(image, tag);
 
     if (imageTag) {
-        assert((out_data != NULL) && (out_size != NULL));
-
-        printf
-            ("image3_get_tag_data: data at 0x%08x of size 0x%08x for image type '%c%c%c%c'\n",
-             (unsigned int)(imageTag + 1),
-             (unsigned int)imageTag->dataSize,
-             (char)(head->shshExtension.imageType >> 24),
-             (char)(head->shshExtension.imageType >> 16),
-             (char)(head->shshExtension.imageType >> 8),
-             (char)(head->shshExtension.imageType)
-            );
+        assert(out_data != NULL);
 
         *out_size = imageTag->dataSize;
         *out_data = (void *)(imageTag + 1);
+
         return true;
     }
 
     return false;
+}
+
+void *image3_get_image(uint32_t type)
+{
+    Image3RootHeader *img3 = (Image3RootHeader *)&_binary_dtre_img3_start;
+
+    while (img3 != NULL) {
+        if (img3->header.magic != kImage3Magic) {
+            printf("IMG3 Error: Invalid header magic!\n");
+            return NULL;
+        }
+        if (img3->shshExtension.imageType == type)
+            return img3;
+        img3 = (Image3RootHeader *) ((uint8_t *)(img3) + img3->header.size);
+    }
+
+    return img3;
 }

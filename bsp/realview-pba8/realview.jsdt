@@ -1,0 +1,54 @@
+{
+	'compatible': ['ARM RealView PB-A8', 'arm-soc'],
+	'APPL,phandle': 0x1,
+	@ [
+		{
+			'name': 'chosen',
+			@ [
+				{
+					'name': 'memory-map',
+					'device_type': 'memory',
+					'reg': [0x0, 0x10000000]
+				}
+			]
+		},
+		{
+			'name': 'cpus',
+			@ [
+				{
+					'name': 'cpu0',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x2,
+					'reg': 0xf00
+				},
+				{
+					'name': 'cpu1',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x3,
+					'reg': 0xf01
+				},
+				{
+					'name': 'cpu2',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x4,
+					'reg': 0xf02
+				},
+				{
+					'name': 'cpu3',
+					'compatible': ['arm-cpu', 'armv7-cpu'],
+					'device_type': 'cpu',
+					'APPL,phandle': 0x5,
+					'reg': 0xf03
+				},
+			]
+		},
+		{
+			'name': 'arm-io',
+			'compatible': ['arm-io,rvpb'],
+			'device_type': 'rvpb-io',
+		}
+	]
+}

@@ -13,7 +13,7 @@ C_SRC_FILES := \
 	config.c
 
 PLAT_DT_FILE := \
-	raspberrypi2_dt.plist
+	bcm2836.jsdt
 
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))
 
