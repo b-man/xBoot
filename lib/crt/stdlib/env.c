@@ -76,14 +76,22 @@ int setenv(const char *var, const char *val, int overwrite)
 	return 0;
 }
 
+int setenv_protect(const char *var, const char *val)
+{
+	nvram_variable_set(gNvramVariables, var, val);
+	nvram_set_attribute(gNvramVariables, var, nv_attr_p);
+
+	return 0;
+}
+
 int unsetenv(const char *var)
 {
 	return nvram_variable_unset(gNvramVariables, var);
 }
 
-void printenv(void)
+void printenv(const char *var)
 {
-	nvram_dump_list(gNvramVariables);
+	nvram_dump(gNvramVariables, var);
 
 	return;
 }

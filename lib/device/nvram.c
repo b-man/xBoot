@@ -1,4 +1,4 @@
-/* NVRAM api interface
+/* NVRAM api
  *
  * Copyright 2014, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdbool.h>
 
 #include <device/nvram.h>
 
@@ -54,9 +55,10 @@ nvram_variable_list_t *nvram_initialize_list(void)
  *
  * Create a node to be inserted into linked list.
  */
-nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, int overridden)
+nvram_variable_node_t *nvram_create_node(const char *name, const char *setting)
 {
     nvram_variable_node_t *node = malloc(sizeof(nvram_variable_node_t));
+    bzero(node, sizeof(nvram_variable_node_t));
 
     if ((strlen(name) >= NAME_MAX) || (strlen(setting) >= NAME_MAX)) {
 	printf("NVRAM Error: length of variable name or value too large.\n");
@@ -67,7 +69,7 @@ nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, 
     node->next = NULL;
     strncpy(node->value.name, name, strlen(name));
     strncpy(node->value.setting, setting, strlen(setting));
-    node->value.overridden = overridden;
+    node->value.attr = nv_attr_u;
 
     return node;
 }
@@ -124,16 +126,21 @@ void nvram_variable_set(nvram_variable_list_t *list, const char *name, const cha
 
     while (current != NULL) {
         if (strcmp(current->value.name, name) == 0) {
-            bzero(current->value.setting, strlen(current->value.setting));
-            strncpy(current->value.setting, setting, strlen(setting));
-            current->value.overridden = 1;
+            if (nvram_get_attribute(list, name) != nv_attr_p) {
+                bzero(current->value.setting, strlen(current->value.setting));
+                strncpy(current->value.setting, setting, strlen(setting));
+                current->value.attr |= nv_attr_m;
 
-            return;
+                return;
+            } else {
+                printf("NVRAM Error: variable \'%s\' is protected.\n", name);
+		return;
+            }
         }
         current = current->next;
     }
 
-    node = nvram_create_node(name, setting, 0);
+    node = nvram_create_node(name, setting);
 
     if (node != NULL)
         nvram_append_node(list, node);
@@ -152,8 +159,13 @@ int nvram_variable_unset(nvram_variable_list_t *list, const char *name)
 
     while (current != NULL) {
         if (strcmp(current->value.name, name) == 0) {
-            nvram_remove_node(list, current);
-            return 0;
+            if (nvram_get_attribute(list, name) != nv_attr_p) {
+                nvram_remove_node(list, current);
+                return 0;
+            } else {
+                printf("NVRAM Error: variable \'%s\' is protected.\n", name);
+                return -1;
+            }
         }
 
         current = current->next;
@@ -183,18 +195,90 @@ nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const ch
 }
 
 /**
- * nvram_dump_list
+ * nvram_dump
  *
- * Dump a list of all variables in nvram and their associated values and states.
+ * Dump values and states of nvram variables.
  */
-void nvram_dump_list(nvram_variable_list_t *list)
+void nvram_dump(nvram_variable_list_t *list, const char *name)
 {
+    int attr;
+    bool search_mode = false;
     nvram_variable_node_t *current = list->head;
+    nvram_variable_t *var = nvram_read_variable_info(list, name);
+
+
+    if (var != NULL)
+        search_mode = true;
 
     while (current != NULL) {
-        printf("%s %s = \"%s\"\n", (current->value.overridden ? "M" : " "), current->value.name, current->value.setting);
+        if (search_mode) {
+            attr = nvram_get_attribute(list, var->name);
+        } else {
+            attr = nvram_get_attribute(list, current->value.name);
+        }
+
+	switch (attr) {
+            case nv_attr_m:
+                printf("M ");
+                break;
+            case nv_attr_p:
+                printf("P ");
+                break;
+            case nv_attr_u:
+            default:
+                printf("  ");
+                break;
+	}
+
+        if (search_mode) {
+            printf("%s = \"%s\"\n", var->name, var->setting);
+            break;
+        } else {
+            printf("%s = \"%s\"\n", current->value.name, current->value.setting);
+        }
+
         current = current->next;
     }
 
     return;
+}
+
+/**
+ * nvram_set_attribute
+ *
+ * Set attributes for an nvram variable.
+ */
+int nvram_set_attribute(nvram_variable_list_t *list, const char *name, nvram_attr_t attr)
+{
+    nvram_variable_node_t *current = list->head;
+
+    while (current != NULL) {
+        if (strcmp(current->value.name, name) == 0) {
+            current->value.attr |= attr;
+            return 0;
+        }
+
+        current = current->next;
+    }
+
+    return -1;
+}
+
+/**
+ * nvram_get_attribute
+ *
+ * Get attributes for an nvram variable.
+ */
+int nvram_get_attribute(nvram_variable_list_t *list, const char *name)
+{
+    nvram_variable_node_t *current = list->head;
+
+    while (current != NULL) {
+        if (strcmp(current->value.name, name) == 0)
+            return (int)current->value.attr;
+
+        current = current->next;
+    }
+
+    return -1;
 }

@@ -33,9 +33,16 @@
 
 #include <limits.h>
 
+/* NVRAM variable attributes */
+typedef enum {
+    nv_attr_u,    /* unmodified attribute */
+    nv_attr_m,    /* modified attribute */
+    nv_attr_p     /* protected attribute */
+} nvram_attr_t;
+
 /* NVRAM variable struct */
 typedef struct _nvram_variable {
-    int overridden;
+    nvram_attr_t attr;
     char name[NAME_MAX];
     char setting[NAME_MAX];
 } nvram_variable_t;
@@ -54,7 +61,7 @@ typedef struct _nvram_variable_list {
 /* NVRAM low-level api prototypes */
 extern int nvram_init(nvram_variable_t *vars, size_t size);
 extern nvram_variable_list_t *nvram_initialize_list(void);
-extern nvram_variable_node_t *nvram_create_node(const char *name, const char *setting, int overridden);
+extern nvram_variable_node_t *nvram_create_node(const char *name, const char *setting);
 extern void nvram_append_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
 extern void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node);
 
@@ -62,6 +69,8 @@ extern void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t
 extern void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting);
 extern int nvram_variable_unset(nvram_variable_list_t *list, const char *name);
 extern nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const char *name);
-extern void nvram_dump_list(nvram_variable_list_t *list);
+extern void nvram_dump(nvram_variable_list_t *list, const char *name);
+extern int nvram_set_attribute(nvram_variable_list_t *list, const char *name, nvram_attr_t attr);
+extern int nvram_get_attribute(nvram_variable_list_t *list, const char *name);
 
 #endif /* !NVRAM_H */

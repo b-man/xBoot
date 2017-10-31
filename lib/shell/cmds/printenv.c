@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <device/nvram.h>
+
 void printenv_help(void)
 {
 	printf("Usage:\n\tprintenv\nOR\tprintenv <var>\n");
@@ -40,21 +42,13 @@ void printenv_help(void)
 
 int printenv_main(int argc, char *argv[])
 {
-	char *val;
+	char *name;
 
-	if (argv[1]) {
-		if ((val = getenv(argv[1])) == NULL) {
-			printf("no such variable: %s\n", argv[1]);
-			return -1;
-		} else {
-			printf("  %s = \"%s\"\n", argv[1], val);
-			return 0;
-		}
-	} else {
-		printf("\n");
-		printenv();
-		printf("\n");
-	}
+	name = argv[1];
+
+	printf("\n");
+	printenv(name);
+	printf("\n");
 
 	return 0;
 }

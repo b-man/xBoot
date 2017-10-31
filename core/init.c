@@ -60,7 +60,7 @@ static void init_boot_args(void)
 
 static void init_build_info(void)
 {
-	setenv("build-version", __xBoot_version, 1);
+	setenv_protect("build-version", __xBoot_version);
 }
 
 void xboot_init(void)

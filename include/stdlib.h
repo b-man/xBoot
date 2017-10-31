@@ -57,7 +57,8 @@ extern void *reallocf(void *ptr, size_t size);
 /* Environment manipulation prototypes */
 extern char *getenv(const char *var);
 extern int unsetenv(const char *var);
+extern int setenv_protect(const char *var, const char *val);
 extern int setenv(const char *var, const char *val, int overwrite);
-extern void printenv(void);
+extern void printenv(const char *var);
 
 #endif /* !STDLIB_H */
