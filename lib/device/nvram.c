@@ -206,7 +206,6 @@ void nvram_dump(nvram_variable_list_t *list, const char *name)
     nvram_variable_node_t *current = list->head;
     nvram_variable_t *var = nvram_read_variable_info(list, name);
 
-
     if (var != NULL)
         search_mode = true;
 

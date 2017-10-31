@@ -71,14 +71,14 @@ void xboot_init(void)
 	/* Initialize build version info */
 	init_build_info();
 
-	/* Initialize boot-args */
-	init_boot_args();
-
 	/* Initialize BSP */
 	bsp_init();
 
 	/* Initialize device tree */
 	dtre_init();
+
+	/* Initialize boot-args */
+	init_boot_args();
 
 	/* Jump to main */
 	xboot_main();

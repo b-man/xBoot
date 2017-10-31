@@ -119,14 +119,18 @@ void publish_device_tree(void)
  */
 boot_args *publish_boot_args(void)
 {
+    char *cmdline;
     boot_args *args;
 
     gBootArgs.topOfKernelData = align_up(kernel_region.pos, 0x100000);
 
+    cmdline = getenv("bootargs");
+    strncpy(gBootArgs.commandLine, cmdline, (BOOT_LINE_LENGTH - 1));
+
     printf("gBootArgs.commandLine = [%s]\n", gBootArgs.commandLine);
 
     /* Allocate kernel memory for this. */
-    args = (boot_args *) memory_region_reserve(&kernel_region,
+    args = (boot_args *)memory_region_reserve(&kernel_region,
                                             sizeof(boot_args), 1024);
     bcopy(&gBootArgs, args, sizeof(boot_args));
 
