@@ -60,6 +60,7 @@ static void init_boot_args(void)
 
 static void init_build_info(void)
 {
+	setenv_protect("build-style", BUILD_STYLE);
 	setenv_protect("build-version", __xBoot_version);
 }
 

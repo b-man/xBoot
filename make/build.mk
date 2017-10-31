@@ -6,7 +6,7 @@
 # Set build directory
 #
 
-BUILD_DIR	+= $(SRCROOT)/Build/$(PLATFORM)
+BUILD_DIR	+= $(SRCROOT)/Build/$(PLATFORM)/$(BUILD)
 BUILD_ROOT	+= $(BUILD_DIR)
 BUILD_OBJS	+= $(BUILD_ROOT)/Objects
 BUILD_GEN	+= $(BUILD_ROOT)/GeneratedSources

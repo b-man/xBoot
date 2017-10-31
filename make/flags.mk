@@ -9,23 +9,34 @@
 CFLAGS_ARGS	+= \
 	-mcpu=$(SUBARCH) \
 	-fno-builtin \
-	-Os \
 	-fPIC \
 	-nostdlib \
 	-nostartfiles \
 	-ffreestanding \
-	-g
+
+ifeq ($(BUILD),DEBUG)
+	CFLAGS_ARGS	+= \
+		-g \
+		-O0
+else
+	CFLAG_ARGS	+= \
+		-Os
+endif
 
 CFLAGS_DEFS	+= \
 	-D__LITTLE_ENDIAN__=1 \
 	-DDRAM_BASE=$(DRAM_BASE) \
-	-DDRAM_SIZE=$(DRAM_SIZE)
+	-DDRAM_SIZE=$(DRAM_SIZE) \
+	-DBUILD_STYLE=\"$(BUILD)\"
 
 ifeq ($(SUBARCH),cortex-a9)
-	CFLAGS_DEFS	+= -DCORTEX_A9
+	CFLAGS_DEFS	+= \
+		-DCORTEX_A9
 endif
+
 ifeq ($(SUBARCH),cortex-a8)
-	CFLAGS_DEFS	+= -DCORTEX_A8
+	CFLAGS_DEFS	+= \
+		-DCORTEX_A8
 endif
 
 CFLAGS_WARNS	+= \

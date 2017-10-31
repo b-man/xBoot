@@ -1,13 +1,16 @@
 # Project name and version
 export RC_ProjectName := xBoot
 export RC_ProjectSourceVersion := 41
-export RC_ProjectBuildVersion := 2
+export RC_ProjectBuildVersion := 3
 
 export SRCROOT := $(CURDIR)
 export OBJROOT := $(SRCROOT)
 
+# Default build style
+export BUILD ?= DEBUG
+
 # Main build target
-export TARGET := xboot.$(PLATFORM)
+export TARGET := xboot.$(PLATFORM).$(BUILD)
 
 include $(SRCROOT)/make/vars.mk
 include $(SRCROOT)/make/tools.mk
