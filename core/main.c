@@ -49,7 +49,8 @@ static void xboot_banner(void)
 	/* display banner */
 	printf("\nxBoot for %s\n", bsp_platform_name);
 	printf("Copyright (c) 2017 Brian McKenzie <mckenzba@gmail.com>\n");
-	printf("Build: %s %s %s\n\n", getenv("build-version"), __DATE__, __TIME__);
+	printf("Build: %s %s %s %s\n\n", getenv("build-version"), getenv("build-style"),
+		__DATE__, __TIME__);
 
 	return;
 }
