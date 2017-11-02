@@ -26,8 +26,9 @@ uint32_t prng_get_random_uint32(void)
     for (i = 0; i < 32; i++) {
         j = i;
 
-        do {
-            j--;
+	do {
+            if (j > 0)
+                j--;
         } while (j);
 
         result = ((timer_read() & 1) | (result << 1));
