@@ -1,6 +1,6 @@
-/* Timer device api
+/* PRNG api
  *
- * Copyright (c) 2013, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -29,22 +29,20 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef PRNG_H
+#define PRNG_H
 
 #include <sys/types.h>
 
-/* timer device interface */
-typedef struct {
-	void (*init)(void);
-	void (*reset)(void);
-	uint32_t (*count_usec)(void);
-} timer_driver;
+#if defined(__arm__)
+#define ENTROPY_SIZE 9600
+#elif defined(__arm64__)
+#define ENTROPY_SIZE 4000
+#else
+#error "Unsupported architecture"
+#endif
 
-/* timer device prototypes */
-extern void timer_init(void);
-extern void timer_reset(void);
-extern uint32_t timer_read(void);
-extern void usleep(uint32_t us);
+extern uint32_t prng_get_random_uint32(void);
+extern void prng_get_random_bytes(char *buf, uint32_t len);
 
-#endif /* !TIMER_H */
+#endif /* !PRNG_H */
