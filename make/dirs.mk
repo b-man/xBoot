@@ -15,5 +15,5 @@ DIRS += \
 	lib/shell \
 	lib/device \
 	lib/debug \
-	lib/memory \
+	lib/tlsf \
 	arch/$(ARCH)

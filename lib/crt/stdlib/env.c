@@ -1,6 +1,6 @@
 /* Environment variable handling for xBoot
  *
- * Copyright (c) 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,

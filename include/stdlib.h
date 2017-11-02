@@ -46,13 +46,10 @@ extern int env_init(void);
 
 /* Memory allocation prototypes */
 extern void free(void *ptr);
-extern void mallocstats(void);
-extern caddr_t sbrk(int incr);
 extern void *malloc(size_t size);
-extern void *calloc(size_t n1, size_t n2);
+extern void *calloc(size_t nelem, size_t elsize);
 extern void *realloc(void *ptr, size_t size);
-extern void *reallocf(void *ptr, size_t size);
-
+extern void *memalign(size_t align, size_t size);
 
 /* Environment manipulation prototypes */
 extern char *getenv(const char *var);
