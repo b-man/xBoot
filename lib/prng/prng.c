@@ -24,11 +24,10 @@ uint32_t prng_get_random_uint32(void)
     uint32_t result = 0;
 
     for (i = 0; i < 32; i++) {
-        j = i;
+        j = i + 1;
 
         do {
-            if (j > 0)
-                j--;
+            j--;
         } while (j);
 
         result = ((timer_read() & 1) | (result << 1));
@@ -39,36 +38,31 @@ uint32_t prng_get_random_uint32(void)
 
 void prng_get_random_bytes(char *buf, uint32_t len)
 {
-    int *entropy_data;
     char hash_bytes[SHA_DIGEST_LENGTH];
+    uint32_t entropy_data[ENTROPY_SIZE];
     uint32_t copylen, copylen_remaining, hash_bytes_remaining;
 
     copylen_remaining = len;
+    hash_bytes_remaining = 0;
 
     if (len) {
         do {
             if(!hash_bytes_remaining) {
-                if (!entropy_data)
-                    entropy_data = malloc(ENTROPY_SIZE);
-
-                for (int i = 0; i < (ENTROPY_SIZE / sizeof(int)); i++) {
-                    *(int *)(entropy_data + i) = prng_get_random_uint32();
+                for (uint32_t i = 0; i < (ENTROPY_SIZE / sizeof(uint32_t)); i++) {
+                    *(entropy_data + i) = prng_get_random_uint32();
                 }
 
-                SHA1(hash_bytes, (char *)entropy_data, SHA_DIGEST_LENGTH);
-                hash_bytes_remaining = 20;
+                SHA1(hash_bytes, (char *)entropy_data, ENTROPY_SIZE);
+                hash_bytes_remaining = SHA_DIGEST_LENGTH;
             }
             copylen = MIN(hash_bytes_remaining, copylen_remaining);
-            memcpy(buf, hash_bytes + 20 - hash_bytes_remaining, copylen);
+            memcpy(buf, hash_bytes + SHA_DIGEST_LENGTH - hash_bytes_remaining, copylen);
 
             buf += copylen;
             copylen_remaining -= copylen;
             hash_bytes_remaining -= copylen;
         } while (copylen_remaining);
-    }
 
-    if (entropy_data) {
-        free(entropy_data);
-        entropy_data = 0;
+        bzero(entropy_data, ENTROPY_SIZE);
     }
 }
