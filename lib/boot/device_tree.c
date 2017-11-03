@@ -304,6 +304,17 @@ static void *FlattenNodes(Node * node, void *buffer)
     return buffer;
 }
 
+void DT__GetDeviceTreeSize(uint32_t *size)
+{
+    uint32_t totalSize;
+
+    totalSize = DTInfo.numNodes * sizeof(DeviceTreeNode) +
+        DTInfo.numProperties * sizeof(DeviceTreeNodeProperty) +
+        DTInfo.totalPropertySize;
+
+    *size = totalSize;
+}
+
 /*
  * Flatten the in-memory representation of the device tree
  * into a binary DT block.
@@ -311,7 +322,6 @@ static void *FlattenNodes(Node * node, void *buffer)
  * To have a buffer allocated for you, call with *result = 0.
  * To use your own buffer, call with *result = &buffer.
  */
-
 void DT__FlattenDeviceTree(void **buffer_p, uint32_t * length)
 {
     uint32_t totalSize;
@@ -323,9 +333,7 @@ void DT__FlattenDeviceTree(void **buffer_p, uint32_t * length)
         DT__PrintTree(rootNode);
 #endif
 
-    totalSize = DTInfo.numNodes * sizeof(DeviceTreeNode) +
-        DTInfo.numProperties * sizeof(DeviceTreeNodeProperty) +
-        DTInfo.totalPropertySize;
+    DT__GetDeviceTreeSize(&totalSize);
 
     DPRINTF("Total size 0x%x\n", totalSize);
     if (buffer_p != 0) {

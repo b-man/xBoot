@@ -1,7 +1,7 @@
 # Project name and version
 export RC_ProjectName := xBoot
 export RC_ProjectSourceVersion := 57
-export RC_ProjectBuildVersion := 1
+export RC_ProjectBuildVersion := 2
 
 export SRCROOT := $(CURDIR)
 export OBJROOT := $(SRCROOT)

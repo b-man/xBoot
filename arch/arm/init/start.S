@@ -1,6 +1,7 @@
 /* Start of xBoot
  *
  * Copyright 2013, winocm. <winocm@icloud.com>
+ * Copyright 2017, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,

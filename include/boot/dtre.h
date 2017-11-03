@@ -33,7 +33,11 @@
 #include <boot/device_tree.h>
 
 extern void dtre_init(void);
+extern uint32_t dtre_get_size(void);
+extern Node *dtre_root_node(void);
+extern Node *dtre_find_node(const char *path, bool create);
 extern int dtre_create_node(Node *node, char *name, void* datap, int size);
 extern int dtre_allocate_memory_range(char *name, long start, long length, long type);
+extern void dtre_flatten(void *data, uint32_t length);
 
 #endif /* !DTRE_H */

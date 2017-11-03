@@ -59,9 +59,9 @@ void publish_device_tree(void)
     uint32_t dtre_length;
     Node *root, *chosen, *options;
 
-    root = DT__RootNode();
-    chosen = DT__FindNode("/chosen", 1);
-    options = DT__FindNode("/options", 1);
+    root = dtre_root_node();
+    chosen = dtre_find_node("/chosen", 1);
+    options = dtre_find_node("/options", 1);
 
     assert(root != NULL);
     assert(chosen != NULL);
@@ -101,9 +101,9 @@ void publish_device_tree(void)
     dtre_create_node(root, firmware_version, &firmware_version, sizeof(firmware_version));
 
     /* Flatten the device tree. */
-    DT__FlattenDeviceTree(NULL, &dtre_length);
+    dtre_length = dtre_get_size();
     dtre_data = memory_region_reserve(&kernel_region, dtre_length, 0);
-    DT__FlattenDeviceTree(dtre_data, &dtre_length);
+    dtre_flatten(dtre_data, dtre_length);
 
     /* Add boot-args entry. */
     gBootArgs.deviceTreeLength = dtre_length;

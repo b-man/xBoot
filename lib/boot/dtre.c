@@ -94,6 +94,50 @@ int dtre_create_node(Node *node, char *name, void* datap, int size)
 }
 
 /**
+ * dtre_root_node
+ *
+ * Returns a pointer to the root node of the device tree.
+ */
+Node *dtre_root_node(void)
+{
+    return DT__RootNode();
+}
+
+/**
+ * dtre_find_node
+ *
+ * Searches the device tree for the requested node.
+ */
+Node *dtre_find_node(const char *path, bool create)
+{
+    return DT__FindNode(path, create);
+}
+
+/**
+ * dtre_get_size
+ *
+ * Returns the size of the device tree in bytes.
+ */
+uint32_t dtre_get_size(void)
+{
+    uint32_t size;
+
+    DT__GetDeviceTreeSize(&size);
+
+    return size;
+}
+
+/**
+ * dtre_flatten
+ *
+ * Flatten the device tree.
+ */
+void dtre_flatten(void *data, uint32_t length)
+{
+    return DT__FlattenDeviceTree(data, &length);
+}
+
+/**
  * dtre_init
  *
  * Initialize the device tree.

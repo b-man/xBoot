@@ -69,6 +69,8 @@ void DT__Initialize(void);
  */
 extern void DT__Finalize(void);
 
+void DT__GetDeviceTreeSize(uint32_t *size);
+
 void DT__FlattenDeviceTree(void **result, uint32_t * length);
 
 void DTInit(void *base);
