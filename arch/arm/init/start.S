@@ -66,10 +66,6 @@ _vectorTable:
 /**
  * The point of this bootloader is to copy the kernel to the proper
  * physical address and start it.
- *
- * The known states of the registers are:
- *  r0 - #0
- *  r1 - Machine type
  */
 EnterARM(start)
     /* We are in supervisor, no interrupts. */
@@ -94,17 +90,29 @@ L_relocate_loop:
     bx     r4
 
 L_relocated:
-    /*
-     * Things look semi good, (we hope we're running at the right
-     * text base, this is assumed.)
-     */
-    ldr     sp, =__stack_end
-    mov     r7, #0
+
+    /* Zero out the bss section. */
+    ldr    r4, =__sbss
+    ldr    r5, =__ebss
+    cmp    r4, r5
+    beq    L_initstack
+    sub    r6, r5, r4
+    mov    r8, #0
+L_zero:
+    strb   r8, [r4], #1
+    subs   r6, r6, #1
+    bne    L_zero
+
+L_initstack:
+
+    /* Initialize stack and frame pointers. */
+    ldr    sp, =__stack_end
+    mov    r7, #0
 
     /*
      * Go to xboot bootstrap now.
      */
-    bl      xboot_init
+    bl     xboot_init
 
 .text
 
