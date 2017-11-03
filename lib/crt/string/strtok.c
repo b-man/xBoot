@@ -46,7 +46,7 @@ char *strtok_r(char *s, const char *delim, char **last)
 	char *spanp, *tok;
 
 	if (s == NULL && (s = *last) == NULL)
-		return (NULL);
+		return NULL;
 
 	/*
 	 * Skip (span) leading delimiters (s += strspn(s, delim), sort of).
@@ -60,7 +60,7 @@ cont:
 
 	if (c == 0) {		/* no non-delimiter characters */
 		*last = NULL;
-		return (NULL);
+		return NULL;
 	}
 	tok = s - 1;
 
@@ -78,7 +78,7 @@ cont:
 				else
 					s[-1] = '\0';
 				*last = s;
-				return (tok);
+				return tok;
 			}
 		} while (sc != 0);
 	}
@@ -89,5 +89,5 @@ char *strtok(char *s, const char *delim)
 {
 	static char *last;
 
-	return (strtok_r(s, delim, &last));
+	return strtok_r(s, delim, &last);
 }

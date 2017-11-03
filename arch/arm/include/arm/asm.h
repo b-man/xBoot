@@ -47,26 +47,34 @@
  */
 #define EnterARM(function)              \
     .code 32                        ;   \
+    .globl function                 ;   \
     .globl _ ##function             ;   \
     .align  4                       ;   \
+    function:                       ;   \
     _##function:                    ;   \
 
 #define EnterThumb(function)        ;   \
     .code 16                        ;   \
-    .thumb_func                     ;   \
+    .thumb_func _ ##function        ;   \
+    .globl function                 ;   \
     .globl _ ##function             ;   \
     .align  4                       ;   \
+    function:                       ;   \
     _##function:                    ;   \
 
 #define EnterARM_NoAlign(function)      \
     .code 32                        ;   \
+    .globl function                 ;   \
     .globl _ ##function             ;   \
+    function:                       ;   \
     _##function:                    ;   \
 
 #define EnterThumb_NoAlign(function)    \
     .code 16                        ;   \
     .thumb_func _ ##function        ;   \
+    .globl function                 ;   \
     .globl _ ##function             ;   \
+    function:                       ;   \
     _##function:                    ;   \
 
 /*

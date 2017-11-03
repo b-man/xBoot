@@ -38,6 +38,11 @@
 #define NAME_MAX	1024		/* Max. number of bytes in a file name */
 
 /* TODO: This should go into an arch-specific header once we support 64bit systems. */
+#if defined(__arm__)
+#define LONG_BIT 32			/* Number of bits in a long */
 #define ULONG_MAX	0xFFFFFFFFUL	/* Max. value of type unsigned long */
+#else
+#error "Unsupported architecture"
+#endif
 
 #endif /* !LIMITS_H */

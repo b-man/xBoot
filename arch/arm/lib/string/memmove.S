@@ -1,5 +1,5 @@
-/*	$OpenBSD: bzero.S,v 1.3 2008/06/26 05:42:04 ray Exp $	*/
-/*	$NetBSD: bzero.S,v 1.2 2001/07/16 05:50:06 matt Exp $	*/
+/*	$OpenBSD: memmove.S,v 1.3 2008/06/26 05:42:04 ray Exp $	*/
+/*	$NetBSD: memmove.S,v 1.3 2003/04/05 23:08:52 bjh21 Exp $	*/
 
 /*-
  * Copyright (c) 1997 The NetBSD Foundation, Inc.
@@ -32,7 +32,7 @@
 
 #include <arm/asm.h>
 
-EnterARM(bzero)
-	mov	r2, r1
-	mov	r1, #0
-	b	_memset
+EnterARM(memmove)
+	stmfd	sp!, {r0, lr}
+	bl	_memcpy
+	ldmfd	sp!, {r0, pc}
