@@ -1,5 +1,4 @@
-/*
- * Startup routine for xBoot
+/* Common addresses
  *
  * Copyright (c) 2017, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -30,73 +29,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
-#include <string.h>
+#ifndef ADDRESS_H
+#define ADDRESS_H
 
-#include <boot/bsp.h>
-#include <boot/aslr.h>
-#include <boot/boot.h>
-#include <boot/dtre.h>
-#include <boot/address.h>
-#include <boot/globals.h>
+/* Default kernel virtual address */
+#if defined(__arm__)
+#define KERNEL_VMADDR    0x80001000
+#else
+#error "Unsupported architecture"
+#endif
 
-boot_args gBootArgs;
-
-extern const char __xBoot_version[];
-extern const char __xBoot_build_version[];
-
-/**
- * init_boot_args
- *
- * Initialize kernel boot-args
- */
-static void init_boot_args(void)
-{
-	bzero((void *)&gBootArgs, sizeof(boot_args));
-
-	gBootArgs.Revision = kBootArgsRevision;
-	gBootArgs.Version = kBootArgsVersion2;
-
-	gBootArgs.physBase = DRAM_BASE;
-	gBootArgs.memSize = DRAM_SIZE;
-
-	/* Use a random, page-aligned address. */
-	gBootArgs.virtBase = calc_aslr_virtbase(KERNEL_VMADDR);
-}
-
-/**
- * init_build_info
- *
- * Initialize exported built-time information
- */
-static void init_build_info(void)
-{
-	setenv_protect("build-style", BUILD_STYLE);
-	setenv_protect("build-version", __xBoot_version);
-}
-
-/**
- * xboot_init
- *
- * Main xBoot initialization routine
- */
-void xboot_init(void)
-{
-	/* Initialize environment */
-	env_init();
-
-	/* Initialize build version info */
-	init_build_info();
-
-	/* Initialize BSP */
-	bsp_init();
-
-	/* Initialize device tree */
-	dtre_init();
-
-	/* Initialize boot-args */
-	init_boot_args();
-
-	/* Jump to main */
-	xboot_main();
-}
+#endif /* !ADDRESS_H */

@@ -31,23 +31,38 @@
 
 #include <boot/aslr.h>
 
+/* TODO: put these a header */
+#if defined(__arm__)
+    #define PAGE_SIZE 0x1000
+#elif defined(__arm64__)
+    #ifdef USE_16K_PAGES
+        #define PAGE_SIZE 0x4000
+    #else
+        #define PAGE_SIZE 0x1000
+    #endif
+#else
+    #error "Unsupported architecture"
+#endif
+
+#define round_to_page(x) \
+    ((((uint32_t)(x)) + (PAGE_SIZE - 1)) & ~(PAGE_SIZE -1))
+
 static uint32_t get_aslr_slide(void)
 {
-	int8_t data[1];
+    int8_t data[1];
 
-	prng_get_random_bytes(data, 1);
+    prng_get_random_bytes(data, 1);
 
-	return (uint32_t)data[0];
+    return (uint32_t)data[0];
 }
-
 
 uint32_t calc_aslr_virtbase(uint32_t addr)
 {
-	uint32_t base;
+    uint32_t base;
 
-	base = addr;
-	base |= get_aslr_slide();
-	base &= 0xFFFF0000;
+    base = addr;
+    base |= get_aslr_slide();
+    round_to_page(base);
 
-	return base;
+    return base;
 }

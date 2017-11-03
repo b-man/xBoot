@@ -1,6 +1,7 @@
 SRC_DIR := $(SRCROOT)/lib/boot
 
 C_SRC_FILES := \
+	aslr.c \
 	boot.c \
 	dtre.c \
 	jsdt.c \
