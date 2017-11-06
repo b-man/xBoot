@@ -2,6 +2,18 @@
 Copyright (C) 2013-2017 Kristina Brooks
 All rights reserved.
 
+File     :  jsdt.c
+Revision :
+
+*** WARNING ***
+THIS IS PROVIDED UNDER LGPLv3 PROVIDING THIS NOTICE IS RETAINED AND NOT ALTERED
+IN ANY WAY OR FORM.
+*** WARNING ***
+*/
+/*=============================================================================
+Copyright (C) 2013-2017 Kristina Brooks
+All rights reserved.
+
 File     :  JS_device_tree.c
 Revision :
 

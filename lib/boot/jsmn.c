@@ -6,6 +6,18 @@ File     :  jsmn.c
 Revision :
 
 *** WARNING ***
+THIS IS PROVIDED UNDER LGPLv3 PROVIDING THIS NOTICE IS RETAINED AND NOT ALTERED
+IN ANY WAY OR FORM.
+*** WARNING ***
+*/
+/*=============================================================================
+Copyright (C) 2013-2017 Kristina Brooks
+All rights reserved.
+
+File     :  jsmn.c
+Revision :
+
+*** WARNING ***
 THIS IS PROVIDED UNDER GPLv3 PROVIDING THIS NOTICE IS RETAINED AND NOT ALTERED
 IN ANY WAY OR FORM. THIS FILE IS FROM AN OLD AND UNMAINTAINED PROJECT SINCE
 2013 AND IS NOT MODIFIED IN ANY WAY SINCE THEN ASIDE FROM THE ADDITION OF THIS
