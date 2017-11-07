@@ -204,7 +204,12 @@ nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const ch
  */
 static void nvram_print_variable(nvram_variable_list_t *list, nvram_variable_t *var)
 {
-    int attr = nvram_get_attribute(list, var->name);
+    int attr;
+
+    if (var == NULL)
+        return;
+
+    attr = nvram_get_attribute(list, var->name);
 
     switch (attr) {
         case nv_attr_m:
@@ -231,11 +236,15 @@ static void nvram_print_variable(nvram_variable_list_t *list, nvram_variable_t *
  */
 void nvram_dump(nvram_variable_list_t *list, const char *name)
 {
+    nvram_variable_t *var;
     nvram_variable_node_t *current = list->head;
-    nvram_variable_t *var = nvram_read_variable_info(list, name);
 
-    if (var != NULL)
-        return nvram_print_variable(list, var);
+    if (name != NULL) {
+        var = nvram_read_variable_info(list, name);
+        nvram_print_variable(list, var);
+
+        return;
+    }
 
     while (current != NULL) {
         nvram_print_variable(list, &current->value);
