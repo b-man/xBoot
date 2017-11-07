@@ -198,46 +198,47 @@ nvram_variable_t *nvram_read_variable_info(nvram_variable_list_t *list, const ch
 }
 
 /**
+ * nvram_print_variable
+ *
+ * Display information for a specific variable. For internal use only.
+ */
+static void nvram_print_variable(nvram_variable_list_t *list, nvram_variable_t *var)
+{
+    int attr = nvram_get_attribute(list, var->name);
+
+    switch (attr) {
+        case nv_attr_m:
+            printf("M ");
+            break;
+        case nv_attr_p:
+            printf("P ");
+            break;
+        case nv_attr_u:
+        default:
+            printf("  ");
+            break;
+    }
+
+    printf("%s = \"%s\"\n", var->name, var->setting);
+
+    return;
+}
+
+/**
  * nvram_dump
  *
  * Dump values and states of nvram variables.
  */
 void nvram_dump(nvram_variable_list_t *list, const char *name)
 {
-    int attr;
-    bool search_mode = false;
     nvram_variable_node_t *current = list->head;
     nvram_variable_t *var = nvram_read_variable_info(list, name);
 
     if (var != NULL)
-        search_mode = true;
+        return nvram_print_variable(list, var);
 
     while (current != NULL) {
-        if (search_mode) {
-            attr = nvram_get_attribute(list, var->name);
-        } else {
-            attr = nvram_get_attribute(list, current->value.name);
-        }
-
-	switch (attr) {
-            case nv_attr_m:
-                printf("M ");
-                break;
-            case nv_attr_p:
-                printf("P ");
-                break;
-            case nv_attr_u:
-            default:
-                printf("  ");
-                break;
-	}
-
-        if (search_mode) {
-            printf("%s = \"%s\"\n", var->name, var->setting);
-            break;
-        } else {
-            printf("%s = \"%s\"\n", current->value.name, current->value.setting);
-        }
+        nvram_print_variable(list, &current->value);
 
         current = current->next;
     }

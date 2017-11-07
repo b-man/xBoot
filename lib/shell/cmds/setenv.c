@@ -48,7 +48,7 @@ int setenv_main(int argc, char *argv[])
 	}
 
 	key = argv[1];
-        value = argv[2];
+	value = argv[2];
 
 	return setenv(key, value, 1);
 }

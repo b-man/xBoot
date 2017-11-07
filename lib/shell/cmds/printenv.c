@@ -42,12 +42,12 @@ void printenv_help(void)
 
 int printenv_main(int argc, char *argv[])
 {
-	char *name;
+	char *value;
 
-	name = argv[1];
+	value = argv[1];
 
 	printf("\n");
-	printenv(name);
+	printenv(value);
 	printf("\n");
 
 	return 0;
