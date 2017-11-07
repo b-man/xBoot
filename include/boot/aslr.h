@@ -32,6 +32,12 @@
 
 #include <sys/types.h>
 
-extern uint32_t calc_aslr_virtbase(uint32_t addr);
+#if defined(__arm__)
+#define ASLR_MULTIPLIER 0x00200000
+#else
+#error "Unsupported architecture"
+#endif
+
+extern uintptr_t calc_aslr_virtbase(uintptr_t addr);
 
 #endif /* !ASLR_H */

@@ -31,12 +31,20 @@ CFLAGS_DEFS	+= \
 
 ifeq ($(SUBARCH),cortex-a9)
 	CFLAGS_DEFS	+= \
-		-DCORTEX_A9
+		-DCORTEX_A9 \
+		-DUSE_4K_PAGES
 endif
 
 ifeq ($(SUBARCH),cortex-a8)
 	CFLAGS_DEFS	+= \
-		-DCORTEX_A8
+		-DCORTEX_A8 \
+		-DUSE_4K_PAGES
+endif
+
+ifeq ($(SUBARCH),cortex-a7)
+	CFLAGS_DEFS	+= \
+		-DCORTEX_A8 \
+		-DUSE_4K_PAGES
 endif
 
 CFLAGS_WARNS	+= \
