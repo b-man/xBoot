@@ -40,9 +40,12 @@
 #define SYS_RESETCTL       0x10000040
 
 /* RVPBA8-specific control/status bits */
-#define SYS_SWRESET_BIT       (1 << 4)
+#define SYS_PORESET_BIT  (1 << 2)
 
 /* uart clock speed in Hz */
 #define PL011_CLOCK_RATE 27000000
+
+/* sysctl unlocking value */
+#define SYS_CTL_KEY      0xA05F
 
 #endif /* !RVPBA8_H */

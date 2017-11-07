@@ -102,10 +102,11 @@ int bsp_init(void)
 void rvpba8_reset(void)
 {
 	/* Prepare for sw reset */
-	writel((addr_t)SYS_CTL_LOCK, 0x0);
+	writel((addr_t)SYS_CTL_LOCK, SYS_CTL_KEY);
 
 	/* Reset the board */
-	writel((addr_t)SYS_RESETCTL, SYS_SWRESET_BIT);
+	writel((addr_t)SYS_RESETCTL, 0x0);
+	writel((addr_t)SYS_RESETCTL, SYS_PORESET_BIT);
 
 	/* Halt on failure */
 	_locore_halt_system();
