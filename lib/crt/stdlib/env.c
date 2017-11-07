@@ -68,8 +68,17 @@ int setenv(const char *var, const char *val, int overwrite)
 {
 	nvram_variable_t *variable = nvram_read_variable_info(gNvramVariables, var);
 
-	if ((overwrite == 0) && (strlen(variable->name) >= 1))
+	if ((overwrite == 0) && (strlen(variable->name) > 0))
 		return 0;
+
+        if (strchr(var, '=') != NULL)
+		return -1;
+
+        if (val == NULL) {
+		unsetenv(var);
+
+		return 0;
+	}
 
 	nvram_variable_set(gNvramVariables, var, val);
 

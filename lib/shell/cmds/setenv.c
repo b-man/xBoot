@@ -33,23 +33,22 @@
 
 void setenv_help(void)
 {
-	printf("Usage:\n\tsetenv <var> <value>\n");
+	printf("Usage:\n\tsetenv <var> <value>\nOR\tsetenv <var> to delete <var>\n");
 
 	return;
 }
 
 int setenv_main(int argc, char *argv[])
 {
+	char *key, *value;
+
 	if (argc < 2) {
 		setenv_help();
 		return -1;
 	}
 
-	if (argc == 2)
-		return setenv(argv[1], NULL, 1);
+	key = argv[1];
+        value = argv[2];
 
-	if (argc == 3)
-		return setenv(argv[1], argv[2], 1);
-
-	return -1;
+	return setenv(key, value, 1);
 }

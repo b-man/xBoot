@@ -127,10 +127,13 @@ void nvram_variable_set(nvram_variable_list_t *list, const char *name, const cha
     while (current != NULL) {
         if (strcmp(current->value.name, name) == 0) {
             if (nvram_get_attribute(list, name) != nv_attr_p) {
-                bzero(current->value.setting, strlen(current->value.setting));
-                strncpy(current->value.setting, setting, strlen(setting));
-                current->value.attr |= nv_attr_m;
-
+                if (strlen(setting) >= NAME_MAX) {
+                    printf("NVRAM Error: length of variable value too large.\n");
+                } else {
+                    bzero(current->value.setting, strlen(current->value.setting));
+                    strncpy(current->value.setting, setting, strlen(setting));
+                    current->value.attr |= nv_attr_m;
+                }
                 return;
             } else {
                 printf("NVRAM Error: variable \'%s\' is protected.\n", name);
