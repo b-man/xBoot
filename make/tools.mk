@@ -11,10 +11,10 @@ OBJDMP	:= $(CROSS)objdump
 OBJCPY	:= $(CROSS)objcopy
 HOST_CC	:= gcc
 
-CCDV	:= $(SRCROOT)/tools/ccdv/ccdv
-VERSION	:= $(SRCROOT)/tools/scripts/version.pl
-ARCHIVE := $(SRCROOT)/tools/scripts/archive.sh
-IMAGE3MAKER := $(SRCROOT)/tools/image3maker/image3maker
+CCDV	:= $(TOOLDIR)/ccdv/ccdv
+VERSION	:= $(TOOLDIR)/scripts/version.pl
+ARCHIVE := $(TOOLDIR)/scripts/archive.sh
+IMAGE3MAKER := $(TOOLDIR)/image3maker/image3maker
 
 ##
 # Used for quiet vs verbose building - do not touch!

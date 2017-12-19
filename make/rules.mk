@@ -38,7 +38,7 @@ setup:
 	@rm -rf $(BUILD_DIR)
 	@mkdir -p $(BUILD_GEN)
 	@mkdir -p $(BUILD_OBJS)
-	@$(MAKE) -C $(SRCROOT)/tools HOST_CC=$(HOST_CC)
+	@$(MAKE) -C $(TOOLDIR) HOST_CC=$(HOST_CC)
 	@$(VERSION) $(RC_ProjectName) > $(BUILD_GEN)/$(RC_ProjectName)_version.c
 	$(_CC) $(CFLAGS) -c $(BUILD_GEN)/$(RC_ProjectName)_version.c -o $(BUILD_ROOT)/$(RC_ProjectName)_version.o
 	@$(IMAGE3MAKER) -t jsdt -f $(BSP_DIR)/$(PLAT_DT_FILE) -o $(BUILD_ROOT)/dtre.img3
@@ -56,7 +56,7 @@ install: all
 
 clean:
 	@rm -rf $(BUILD_DIR) $(SRCROOT)/$(TARGET).* $(SRCROOT)/xboot.*.bin
-	@$(MAKE) -C $(SRCROOT)/tools clean
+	@$(MAKE) -C $(TOOLDIR) clean
 	@echo "Source tree is now clean."
 
 

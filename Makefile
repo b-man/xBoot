@@ -1,10 +1,11 @@
 # Project name and version
 export RC_ProjectName := xBoot
 export RC_ProjectSourceVersion := 64
-export RC_ProjectBuildVersion := 1
+export RC_ProjectBuildVersion := 2
 
 export SRCROOT := $(CURDIR)
 export OBJROOT := $(SRCROOT)
+export TOOLDIR := $(SRCROOT)/tools
 
 # Default build style
 export BUILD ?= DEBUG
