@@ -11,17 +11,22 @@ OBJDMP	:= $(CROSS)objdump
 OBJCPY	:= $(CROSS)objcopy
 HOST_CC	:= gcc
 
+CCDV	:= $(SRCROOT)/tools/ccdv/ccdv
+VERSION	:= $(SRCROOT)/tools/scripts/version.pl
+ARCHIVE := $(SRCROOT)/tools/scripts/archive.sh
+IMAGE3MAKER := $(SRCROOT)/tools/image3maker/image3maker
+
 ##
 # Used for quiet vs verbose building - do not touch!
 #
 
 ifneq ($(VERBOSE_BUILD),1)
-	_CC := @$(SRCROOT)/scripts/ccdv $(CC)
-	_AS := @$(SRCROOT)/scripts/ccdv $(AS)
-	_AR := @$(SRCROOT)/$(SRCROOT)scripts/ccdv $(AR)
-	_LD := @$(SRCROOT)/scripts/ccdv $(LD)
-	_OBJCPY := @$(SRCROOT)/scripts/ccdv $(OBJCPY)
-	_OBJDMP := @$(SRCROOT)/scripts/ccdv $(OBJDMP)
+	_CC := @$(CCDV) $(CC)
+	_AS := @$(CCDV) $(AS)
+	_AR := @$(CCDV) $(AR)
+	_LD := @$(CCDV) $(LD)
+	_OBJCPY := @$(CCDV) $(OBJCPY)
+	_OBJDMP := @$(CCDV) $(OBJDMP)
 else
 	_CC := $(CC)
 	_AS := $(AS)
