@@ -45,11 +45,11 @@ setup:
 	@cd $(BUILD_ROOT) && $(LD) -r -b binary -o dtre.o dtre.img3
 
 $(TARGET): $(OBJS)
-	@bash -e $(ARCHIVE) $(AR) $(BUILD_OBJS)/Objects.list $(BUILD_DIR)/$(TARGET).a
-	$(_LD) -T $(SRCROOT)/arch/arm/init/xboot.ld $(BUILD_DIR)/$(TARGET).a \
-		$(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/$(RC_ProjectName)_version.o -o $(BUILD_DIR)/$(TARGET).elf $(LDFLAGS)
-	$(_OBJDMP) -D $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).list
-	$(_OBJCPY) $(BUILD_DIR)/$(TARGET).elf -g -S -O binary $(SRCROOT)/$(TARGET).bin
+	@bash -e $(ARCHIVE) $(AR) $(BUILD_OBJS)/Objects.list $(BUILD_ROOT)/$(TARGET).a
+	$(_LD) -T $(SRCROOT)/arch/arm/init/xboot.ld $(BUILD_ROOT)/$(TARGET).a \
+		$(BUILD_ROOT)/dtre.o $(BUILD_ROOT)/$(RC_ProjectName)_version.o -o $(BUILD_ROOT)/$(TARGET).elf $(LDFLAGS)
+	$(_OBJDMP) -D $(BUILD_ROOT)/$(TARGET).elf > $(BUILD_ROOT)/$(TARGET).list
+	$(_OBJCPY) $(BUILD_ROOT)/$(TARGET).elf -g -S -O binary $(SRCROOT)/$(TARGET).bin
 	@echo "$(TARGET).bin is ready."
 
 install: all
