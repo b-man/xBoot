@@ -11,6 +11,7 @@ OBJDMP	:= $(CROSS)objdump
 OBJCPY	:= $(CROSS)objcopy
 HOST_CC	:= gcc
 
+DTC	:= $(TOOLDIR)/fdt/dtc/dtc
 CCDV	:= $(TOOLDIR)/ccdv/ccdv
 VERSION	:= $(TOOLDIR)/scripts/version.pl
 ARCHIVE := $(TOOLDIR)/scripts/archive.sh

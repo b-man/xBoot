@@ -9,6 +9,7 @@
 DIRS += \
 	core \
 	lib/crt \
+	lib/fdt \
 	lib/prng \
 	lib/crypto \
 	lib/boot \

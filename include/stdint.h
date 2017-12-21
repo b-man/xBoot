@@ -29,14 +29,9 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef STDDEF_H
-#define STDDEF_H
+#ifndef STDINT_H
+#define STDINT_H
 
 #include <sys/types.h>
 
-#define offsetof(st, m) \
-	__builtin_offsetof(st, m)
-
-#define NULL ((void *)0)
-
-#endif /* !STDDEF_H */
+#endif /* !STDINT_H */

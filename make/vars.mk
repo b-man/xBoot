@@ -32,15 +32,23 @@ PLAT_DT_FILE	:=
 # OBJCPY	- object copier to be used while building xBoot
 # HOST_CC	- compiler to use for building tools that are ran on the host
 # CROSS		- prefix for toolchain to be used while building xBoot
+# DTC		- device tree compiler to be used for building xBoot
+# ARCHIVE	- archival tool for the first stage of linking xBoot
+# VERSION	- timestamp tool for labeling the build date of xBoot
+# IMAGE3MAKER	- archival tool for generating IMG3 containers
 
-CC	:=
-LD	:=
-AS	:=
-AR	:=
-OBJDMP	:=
-OBJCPY	:=
-HOST_CC	:=
-CROSS	:=
+CC		:=
+LD		:=
+AS		:=
+AR		:=
+OBJDMP		:=
+OBJCPY		:=
+HOST_CC		:=
+CROSS		:=
+DTC		:=
+ARCHIVE		:=
+VERSION		:=
+IMAGE3MAKER	:=
 
 ##
 # Common compiler, linker, and assembler flags  (set in make/flags.mk)

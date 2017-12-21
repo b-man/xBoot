@@ -33,9 +33,9 @@
 #define STDIO_H
 
 #include <stdarg.h>
+#include <stddef.h>
 
 #define EOF (-1)
-#define NULL ((void *)0)
 
 /* Initialization functions */
 extern void printf_init(void (*putc)(int c));

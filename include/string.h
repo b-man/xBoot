@@ -43,11 +43,14 @@
 
 extern int atoi(const char *str);
 extern char *strdup(char *str);
+extern size_t strnlen(const char *str, size_t maxlen);
 extern char *strcpy(char *dst, const char *src);
 extern char *strncpy(char *dst, const char *src, size_t len);
 extern char *strtok(char *s, const char *delim);
 extern char *strtok_r(char *s, const char *delim, char **last);
 extern unsigned long strtoul(const char *nptr, char **endptr, int base);
 extern unsigned long hextoul(const char *str);
+extern int memcmp(const void *s1, const void *s2, size_t n);
+extern void *memchr(const void *s, int c, size_t n);
 
 #endif /* !STRING_H */

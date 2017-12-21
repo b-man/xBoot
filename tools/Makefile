@@ -2,7 +2,8 @@ HOST_CC ?= gcc
 
 TOOLS := \
 	ccdv \
-	image3maker
+	image3maker \
+	fdt
 
 define do_make
 	@for dir in $1; do \
