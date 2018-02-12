@@ -1,4 +1,4 @@
-/* Shell history api
+/* Shell history api.
  *
  * Copyright (c) 2018, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
@@ -34,7 +34,6 @@
 
 #include <sys/types.h>
 
-
 #define DEFAULT_HISTORY_DEPTH 10
 
 typedef struct history_entry {
@@ -46,12 +45,12 @@ typedef struct history_entry {
 typedef struct history_queue {
         size_t depth;
         size_t count;
-        history_entry_t *head;
-        history_entry_t *tail;
+        struct history_entry_t *head;
+        struct history_entry_t *tail;
 } history_queue_t;
 
 extern int shell_history_init(size_t depth);
 extern int shell_history_push(const char *line);
 extern int shell_history_print(void);
 
-#endif /* SHELL_HISTORY_H */
+#endif /* !SHELL_HISTORY_H */

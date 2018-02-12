@@ -1,4 +1,4 @@
-/* xBoot interactive shell.
+/* Shell history api.
  *
  * Copyright 2018, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
@@ -38,6 +38,7 @@
 
 
 static history_queue_t *history;
+
 /**
  * history_create_entry
  *
@@ -212,4 +213,3 @@ int shell_history_print(void)
 
 	return 1;
 }
-

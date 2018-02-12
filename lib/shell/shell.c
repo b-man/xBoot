@@ -65,8 +65,6 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			case '\r':
 			    uart_puts("\n");
 			    *lp++ = '\0';
-			    /* save history to buffer */
-
 			    return;
 			case '\b':
 			case '\177':
