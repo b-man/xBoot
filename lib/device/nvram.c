@@ -1,6 +1,6 @@
 /* NVRAM api
  *
- * Copyright 2014, Brian McKenzie <mckenzba@gmail.com>
+ * Copyright 2018, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,6 +34,8 @@
 #include <limits.h>
 #include <stdbool.h>
 
+#include <panic.h>
+
 #include <device/nvram.h>
 
 /**
@@ -43,7 +45,15 @@
  */
 nvram_variable_list_t *nvram_initialize_list(void)
 {
-    nvram_variable_list_t *list = malloc(sizeof(nvram_variable_list_t));
+    nvram_variable_list_t *list;
+    
+    if ((list = malloc(sizeof(nvram_variable_list_t))) == NULL) {
+        panic("NVRAM Error: initialization failed.\n");
+
+	/* NOREACH */
+	return NULL;
+    }
+
     list->head = NULL;
     list->tail = &list->head;
 
@@ -57,18 +67,30 @@ nvram_variable_list_t *nvram_initialize_list(void)
  */
 nvram_variable_node_t *nvram_create_node(const char *name, const char *setting)
 {
-    nvram_variable_node_t *node = malloc(sizeof(nvram_variable_node_t));
-    bzero(node, sizeof(nvram_variable_node_t));
+    size_t name_size;
+    size_t setting_size;
+    nvram_variable_node_t *node;
 
-    if ((strlen(name) >= NAME_MAX) || (strlen(setting) >= NAME_MAX)) {
+    name_size = strlen(name);
+    setting_size = strlen(setting);
+
+    if ((node = malloc(sizeof(nvram_variable_node_t))) == NULL) {
+        panic("NVRAM Error: failed to allocate space for variable.\n");
+
+        /* NOREACH */
+        return NULL;
+    }
+
+    if ((name_size >= NAME_MAX) || (setting_size >= NAME_MAX)) {
 	printf("NVRAM Error: length of variable name or value too large.\n");
 
 	return NULL;
     }
 
-    node->next = NULL;
-    strncpy(node->value.name, name, strlen(name));
-    strncpy(node->value.setting, setting, strlen(setting));
+    bzero(node, sizeof(nvram_variable_node_t));
+
+    strncpy(node->value.name, name, name_size);
+    strncpy(node->value.setting, setting, setting_size);
     node->value.attr = nv_attr_u;
 
     return node;
@@ -105,7 +127,7 @@ void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node)
             if (list->tail == &node->next)
                 list->tail = next;
 
-            node->next = NULL;
+	    free(node);
             break;
         }
         next = &current->next;
@@ -121,17 +143,20 @@ void nvram_remove_node(nvram_variable_list_t *list, nvram_variable_node_t *node)
  */
 void nvram_variable_set(nvram_variable_list_t *list, const char *name, const char *setting)
 {
+    size_t setting_size;
     nvram_variable_node_t *node;
+
+    setting_size = strlen(setting);
     nvram_variable_node_t *current = list->head;
 
     while (current != NULL) {
         if (strcmp(current->value.name, name) == 0) {
             if (nvram_get_attribute(list, name) != nv_attr_p) {
-                if (strlen(setting) >= NAME_MAX) {
+                if (setting_size >= NAME_MAX) {
                     printf("NVRAM Error: length of variable value too large.\n");
                 } else {
                     bzero(current->value.setting, strlen(current->value.setting));
-                    strncpy(current->value.setting, setting, strlen(setting));
+                    strncpy(current->value.setting, setting, setting_size);
                     current->value.attr |= nv_attr_m;
                 }
                 return;

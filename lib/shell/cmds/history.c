@@ -1,5 +1,5 @@
 /*
- * Copyright 2015, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2018, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -28,28 +28,10 @@
  */
 
 #include <stdio.h>
-#include <string.h>
 
-#include <shell/shell.h>
+#include <shell/history.h>
 
-#include "cmds.h"
-
-/**
- * query_command
- *
- * query a command and return its associated handle.
- */
-cmd_handle_t query_command(const char *name)
+int history_main(int argc, char *argv[])
 {
-	int i = 0;
-	cmd_handle_t cmd = { NULL, NULL, NULL };
-
-	cmd = commands[i];
-	while (cmd.name != NULL) {
-		if (strcmp(cmd.name, name) == 0)
-			return cmd;
-		cmd = commands[++i];
-	}
-
-	return cmd;
+	return shell_history_print();
 }

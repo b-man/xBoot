@@ -7,6 +7,7 @@ C_SRC_FILES := \
 	reset.c \
 	getenv.c \
 	setenv.c \
-	printenv.c
+	printenv.c \
+	history.c
 
 C_SRCS += $(addprefix $(SRC_DIR)/, $(C_SRC_FILES))

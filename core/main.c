@@ -34,13 +34,11 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include <shell.h>
-
 #include <boot/bsp.h>
 #include <boot/boot.h>
-
-#include <device/timer.h>
+#include <shell/shell.h>
 #include <device/uart.h>
+#include <device/timer.h>
 
 #define SHELL_PROMPT "] "
 

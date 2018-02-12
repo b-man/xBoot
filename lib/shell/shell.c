@@ -1,6 +1,6 @@
 /* xBoot interactive shell.
  *
- * Copyright 2017, Brian McKenzie. <mckenzba@gmail.com>
+ * Copyright 2018, Brian McKenzie. <mckenzba@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,9 +34,11 @@
 #include <limits.h>
 #include <stdbool.h>
 
-#include <shell.h>
-
+#include <panic.h>
+#include <shell/shell.h>
+#include <shell/history.h>
 #include <device/uart.h>
+
 
 /**
  * shell_getline
@@ -63,6 +65,8 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			case '\r':
 			    uart_puts("\n");
 			    *lp++ = '\0';
+			    /* save history to buffer */
+
 			    return;
 			case '\b':
 			case '\177':
@@ -79,7 +83,7 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			    continue;
 			case '[':
 			    switch (last_ch) {
-			        case 27:
+			        case '\e':
 			            last_ch = ch;
 			            esc_seq = true;
 			            continue;
@@ -276,10 +280,12 @@ void shell_prompt(const char *prompt)
 	printf("\n\nEntering interactive shell. Run \'help\' for a list of commands.\n\n");
 
 	guard = strlen(prompt);
+	shell_history_init(DEFAULT_HISTORY_DEPTH);
 
 	while (1) {
 		printf("%s", prompt);
 		shell_getline(buffer, guard, LINE_MAX);
+		shell_history_push(buffer);
 		argc = shell_parseline(buffer, argv);
 		shell_callcmd(argc, argv);
 		shell_flushargs(argv);

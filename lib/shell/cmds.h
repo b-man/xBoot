@@ -30,8 +30,9 @@
 #ifndef CMDS_H
 #define CMDS_H
 
-#include <shell.h>
 #include <stdio.h>
+
+#include <shell/shell.h>
 
 /* Command prototypes */
 extern int help_main(int argc, char *argv[]);
@@ -48,6 +49,8 @@ extern int setenv_main(int argc, char *argv[]);
 extern void printenv_help(void);
 extern int printenv_main(int argc, char *argv[]);
 
+extern int history_main(int argc, char *argv[]);
+
 /* Command list */
 cmd_handle_t commands[] = {
 	{ "help", "Display command help.", NULL, help_main },
@@ -57,6 +60,7 @@ cmd_handle_t commands[] = {
 	{ "getenv", "Read environment variable.", getenv_help, getenv_main },
 	{ "setenv", "Set an environment variable.", setenv_help, setenv_main },
 	{ "printenv", "Print one or all environment variables.", printenv_help, printenv_main },
+	{ "history", "Print the command history.", NULL, history_main },
 	{ NULL, NULL, NULL },
 };
 

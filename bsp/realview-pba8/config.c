@@ -33,10 +33,8 @@
 #include <stdlib.h>
 #include <sys/io.h>
 
-#include <shell.h>
-
 #include <boot/bsp.h>
-
+#include <shell/shell.h>
 #include <device/timer.h>
 #include <device/uart.h>
 #include <device/sysctl.h>

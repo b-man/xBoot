@@ -27,9 +27,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <shell.h>
 #include <stdio.h>
 #include <string.h>
+
+#include <shell/shell.h>
 
 extern cmd_handle_t commands[];
 
