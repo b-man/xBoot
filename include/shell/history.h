@@ -45,8 +45,8 @@ typedef struct history_entry {
 typedef struct history_queue {
         size_t depth;
         size_t count;
-        struct history_entry_t *head;
-        struct history_entry_t *tail;
+        history_entry_t *head;
+        history_entry_t *tail;
 } history_queue_t;
 
 extern int shell_history_init(size_t depth);
