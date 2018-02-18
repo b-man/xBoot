@@ -34,12 +34,14 @@
 
 #include <sys/types.h>
 
-#define DEFAULT_HISTORY_DEPTH 10
+#define DEFAULT_HISTORY_DEPTH 16
 
 typedef struct history_entry {
-	char *buffer;
+	size_t size;
 	size_t count;
+	char *buffer;
         struct history_entry *next;
+	struct history_entry *last;
 } history_entry_t;
 
 typedef struct history_queue {
@@ -50,7 +52,10 @@ typedef struct history_queue {
 } history_queue_t;
 
 extern int shell_history_init(size_t depth);
-extern int shell_history_push(const char *line);
+extern int shell_history_push(const char *line, size_t size);
 extern int shell_history_print(void);
+
+extern char *shell_history_last_line(char *lp, size_t *size);
+extern char *shell_history_next_line(char *lp, size_t *size);
 
 #endif /* !SHELL_HISTORY_H */

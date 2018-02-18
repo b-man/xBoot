@@ -45,14 +45,14 @@
  *
  * Read a line of user input and place it in an input buffer.
  */
-static void shell_getline(char *buffer, int minlen, int maxlen)
+static size_t shell_getline(char *buffer, size_t minlen, size_t maxlen)
 {
 	char *lp;
-	bool esc_seq, esc_seq_fini;
-	int ch, last_ch, ch_count;
+	char ch, last_ch;
+	size_t ch_count;
+	bool esc_seq;
 
 	esc_seq = false;
-	esc_seq_fini = true;
 	ch_count = last_ch = 0;
 
 	lp = buffer;
@@ -65,7 +65,7 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			case '\r':
 			    uart_puts("\n");
 			    *lp++ = '\0';
-			    return;
+			    return ch_count;
 			case '\b':
 			case '\177':
 			    if (lp >= (buffer + minlen - 1)) {
@@ -80,41 +80,37 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
 			    last_ch = ch;
 			    continue;
 			case '[':
-			    switch (last_ch) {
-			        case '\e':
-			            last_ch = ch;
-			            esc_seq = true;
-			            continue;
-			        case '[':
-			            esc_seq_fini = true;
-			            /* TODO: line editing & history */
-			            switch (ch) {
-			                case 'A': /* UP Key */
-			                    continue;
-			                case 'B': /* Down key */
-			                    continue;
-			                case 'C': /* Right key */
-			                    continue;
-			                case 'D': /* Left key */
-			                    continue;
-			                default:
-			                    continue;
-			            }
+			    if (last_ch ==  '\e') {
+			        esc_seq = true;
 			    }
+			    continue;
 			default:
 			    if ((ch_count < maxlen) && !esc_seq) {
-			    	uart_putc(ch);
-				*lp++ = ch;
-				ch_count++;
+			        uart_putc(ch);
+			        *lp++ = ch;
+			        ch_count++;
 			    }
-			    if (esc_seq_fini) {
+			    if (esc_seq) {
+			        switch (ch) {
+			            case 'A': /* Up Key */
+			                lp = shell_history_last_line(lp, &ch_count);
+			                continue;
+			            case 'B': /* Down Key */
+			                lp = shell_history_next_line(lp, &ch_count);
+			                continue;
+			            case 'C': /* Right Key */
+			                continue;
+			            case 'D': /* Left Key */
+			                continue;
+			            default:
+			                continue;
+			        }
 			        esc_seq = false;
-			        esc_seq_fini = true;
 			    }
 		}
 	}
 
-	return;
+	return ch_count;
 }
 
 /**
@@ -122,15 +118,19 @@ static void shell_getline(char *buffer, int minlen, int maxlen)
  *
  * Parse an input buffer into an argument array and return the argument count.
  */
-static int shell_parseline(char *buffer, char **argv)
+static int shell_parseline(char *buffer, char **argv, size_t size)
 {
 	char *delim = " \t";
 	char *token, *lpr, *lpw, *save;
 	int argc, nsquote, ndquote;
 
+	lpr = lpw = buffer;
 	nsquote = ndquote = 0;
 
-	if (*buffer == '\0')
+	if (buffer == NULL)
+		return 0;
+
+	if ((size < 1) || (size > LINE_MAX))
 		return 0;
 
 	/* If quoted strings are present in the input buffer, we need to save any spaces within
@@ -138,7 +138,7 @@ static int shell_parseline(char *buffer, char **argv)
 	 * get tokenized. We will also strip out the quotes around those strings as they aren't
 	 * needed when they get placed in the argument array.
 	 */
-	for (lpr = buffer, lpw = buffer; *lpr != '\0'; lpr++) {
+	while (size > 0) {
 		*lpw = *lpr;
 		switch (*lpr) {
 			case '\"':
@@ -154,6 +154,9 @@ static int shell_parseline(char *buffer, char **argv)
 				*lpw = (char)-1;
 			    lpw++;
 		}
+
+		lpr++;
+		size--;
 	}
 
 	*lpw = '\0';
@@ -208,9 +211,9 @@ static int shell_callcmd(int argc, char **argv)
  *
  * Utility function for flushing the argument array.
  */
-static void shell_flushargs(char **argv)
+static void shell_flushargs(int argc, char **argv)
 {
-	while (*argv != NULL) {
+	for (int i = 0; i < argc; i++) {
 		bzero(*argv, strlen(*argv));
 		argv++;
 	}
@@ -223,9 +226,9 @@ static void shell_flushargs(char **argv)
  *
  * Utility function for flushing the input buffer.
  */
-static void shell_flushbuffer(char *buffer)
+static void shell_flushbuffer(char *buffer, size_t size)
 {
-	bzero(buffer, strlen(buffer));
+	bzero(buffer, size);
 
 	return;
 }
@@ -237,6 +240,7 @@ static void shell_flushbuffer(char *buffer)
  */
 int shell_runscript(char *buffer)
 {
+	size_t token_size;
 	char *token, *save;
 	char *delim = ";\n";
 	char *argv[LINE_MAX];
@@ -246,8 +250,9 @@ int shell_runscript(char *buffer)
 		return -1;
 
 	token = strtok_r(buffer, delim, &save);
+	token_size = strlen(token);
 	for (line = 1; token != NULL; line++) {
-		if ((argc = shell_parseline(token, argv)) == -1) {
+		if ((argc = shell_parseline(token, argv, token_size)) == -1) {
 			printf("runscript: syntax error on line %d, aborting.\n", line);
 			stat = -2;
 			break;
@@ -257,7 +262,7 @@ int shell_runscript(char *buffer)
 			stat = -3;
 			break;
 		}
-		shell_flushargs(argv);
+		shell_flushargs(argc, argv);
 		token = strtok_r(NULL, delim, &save);
 	}
 
@@ -271,23 +276,24 @@ int shell_runscript(char *buffer)
  */
 void shell_prompt(const char *prompt)
 {
-	int argc, guard;
+	int argc;
 	char *argv[LINE_MAX];
-	char buffer[LINE_MAX];
+	char input[LINE_MAX];
+	size_t input_len, skip_len;
 
 	printf("\n\nEntering interactive shell. Run \'help\' for a list of commands.\n\n");
 
-	guard = strlen(prompt);
+	skip_len = strlen(prompt);
 	shell_history_init(DEFAULT_HISTORY_DEPTH);
 
 	while (1) {
 		printf("%s", prompt);
-		shell_getline(buffer, guard, LINE_MAX);
-		shell_history_push(buffer);
-		argc = shell_parseline(buffer, argv);
+		input_len = shell_getline(input, skip_len, LINE_MAX);
+		shell_history_push(input, input_len);
+		argc = shell_parseline(input, argv, input_len);
 		shell_callcmd(argc, argv);
-		shell_flushargs(argv);
-		shell_flushbuffer(buffer);
+		shell_flushargs(argc, argv);
+		shell_flushbuffer(input, input_len);
 	}
 
 	return;
