@@ -94,18 +94,19 @@ static size_t shell_getline(char *buffer, size_t minlen, size_t maxlen)
 			        switch (ch) {
 			            case 'A': /* Up Key */
 			                lp = shell_history_last_line(lp, &ch_count);
-			                continue;
+			                break;
 			            case 'B': /* Down Key */
 			                lp = shell_history_next_line(lp, &ch_count);
-			                continue;
+			                break;
 			            case 'C': /* Right Key */
-			                continue;
+			                break;
 			            case 'D': /* Left Key */
-			                continue;
+			                break;
 			            default:
-			                continue;
+			                break;
 			        }
 			        esc_seq = false;
+				continue;
 			    }
 		}
 	}

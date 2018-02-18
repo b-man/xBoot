@@ -1,4 +1,4 @@
-/* Shell history api.
+/* Common shell history structures and api.
  *
  * Copyright (c) 2018, Brian McKenzie <mckenzba@gmail.com>
  * All rights reserved.

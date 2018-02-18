@@ -305,10 +305,10 @@ char *shell_history_next_line(char *lp, size_t *size)
 {
 	size_t line_size = *size;
 
-	if ((line_size < 0) || (line_size > LINE_MAX))
+	if (recall == NULL)
 		return lp;
 
-	if (recall == NULL)
+	if ((line_size < 0) || (line_size > LINE_MAX))
 		return lp;
 
 	recall = history_lookup_next_entry(recall);
