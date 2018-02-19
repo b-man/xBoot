@@ -1,4 +1,6 @@
 Build
 xboot*.bin
-scripts/ccdv
-scripts/image3maker
+tools/ccdv/ccdv
+tools/ccdv/ccdv.o
+tools/image3maker/image3maker
+tools/image3maker/image3maker.o
