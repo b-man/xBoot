@@ -97,35 +97,6 @@ static history_entry_t *history_create_entry(const char *line, size_t size)
 }
 
 /**
- * history_pop_entry
- *
- * Pop an entry off of the start of the history queue.
- */
-static void history_pop_entry(history_queue_t *queue)
-{
-	history_entry_t *old_head;
-	history_entry_t *new_head;
-
-	if (queue == NULL)
-		return;
-
-	if ((queue->head == NULL) && (queue->tail == NULL))
-		return;
-
-	old_head = queue->head;
-	new_head = old_head->next;
-	queue->head = new_head;
-
-	free(old_head->buffer);
-	free(old_head);
-
-	if (queue->head == NULL)
-		queue->tail = queue->head;
-
-	return;
-}
-
-/**
  * history_lookup_prev_entry
  *
  * Walk up the history queue and return the last entry.
@@ -156,7 +127,6 @@ static history_entry_t *history_lookup_next_entry(history_entry_t *current)
 
 	return current->next;
 }
-
 
 /**
  * history_push_entry
@@ -195,6 +165,34 @@ static void history_push_entry(history_queue_t *queue, history_entry_t *entry)
 	return;
 }
 
+/**
+ * history_pop_entry
+ *
+ * Pop an entry off of the start of the history queue.
+ */
+static void history_pop_entry(history_queue_t *queue)
+{
+	history_entry_t *old_head;
+	history_entry_t *new_head;
+
+	if (queue == NULL)
+		return;
+
+	if ((queue->head == NULL) && (queue->tail == NULL))
+		return;
+
+	old_head = queue->head;
+	new_head = old_head->next;
+	queue->head = new_head;
+
+	free(old_head->buffer);
+	free(old_head);
+
+	if (queue->head == NULL)
+		queue->tail = queue->head;
+
+	return;
+}
 
 /**
  * shell_history_init
@@ -241,7 +239,7 @@ int shell_history_push(const char *line, size_t size)
 	entry = history_create_entry(line, size);
 	history_push_entry(history, entry);
 
-	/* reset history recall context */
+	/* Reset history recall context */
 	recall = NULL;
 
 	return 0;
@@ -316,6 +314,14 @@ char *shell_history_next_line(char *lp, size_t *size)
 	while (line_size-- > 0) {
 		printf("\b \b");
 		lp--;
+	}
+
+	/* Return a blank line after stepping over the last entry. */
+	if (strncmp(lp, recall->buffer, recall->size) == 0) {
+		*size = 0;
+		recall = NULL;
+
+		return lp;
 	}
 
 	for (int i = 0; i < recall->size; i++)
