@@ -254,14 +254,13 @@ int shell_history_print(void)
 {
 	history_entry_t *entry;
 
-	if (history != NULL) {
-		for (entry = history->head; entry != NULL; entry = entry->next)
-			printf("  %2d %s\n", entry->count, entry->buffer);
+	if (history == NULL)
+		return 1;
 
-		return 0;
-	}
+	for (entry = history->head; entry != NULL; entry = entry->next)
+		printf("  %2d %s\n", entry->count, entry->buffer);
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -276,14 +275,14 @@ char *shell_history_last_line(char *lp, size_t *size)
 	if ((line_size < 0) || (line_size > LINE_MAX))
 		return lp;
 
-	recall = history_lookup_last_entry(recall);
-	if (recall == NULL)
-		return lp;
-
 	while (line_size-- > 0) {
 		printf("\b \b");
 		lp--;
 	}
+
+	recall = history_lookup_last_entry(recall);
+	if (recall == NULL)
+		return lp;
 
 	for (int i = 0; i < recall->size; i++)
 		*lp++ = *(recall->buffer + i);
@@ -303,26 +302,25 @@ char *shell_history_next_line(char *lp, size_t *size)
 {
 	size_t line_size = *size;
 
-	if (recall == NULL)
-		return lp;
-
 	if ((line_size < 0) || (line_size > LINE_MAX))
 		return lp;
-
-	recall = history_lookup_next_entry(recall);
 
 	while (line_size-- > 0) {
 		printf("\b \b");
 		lp--;
 	}
 
-	/* Return a blank line after stepping over the last entry. */
-	if (strncmp(lp, recall->buffer, recall->size) == 0) {
+	/* Return a blank line after stepping over the latest entry. */
+	if (recall == history->tail) {
 		*size = 0;
 		recall = NULL;
 
 		return lp;
 	}
+
+	recall = history_lookup_next_entry(recall);
+	if (recall == NULL)
+		return lp;
 
 	for (int i = 0; i < recall->size; i++)
 		*lp++ = *(recall->buffer + i);
