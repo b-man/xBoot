@@ -41,7 +41,6 @@ typedef struct command_handle {
 } cmd_handle_t;
 
 /* Command interface prototypes */
-extern int shell_runscript(char *buffer);
 extern void shell_prompt(const char *prompt);
 extern cmd_handle_t query_command(const char *name);
 

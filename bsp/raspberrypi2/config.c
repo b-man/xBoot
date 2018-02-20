@@ -29,13 +29,11 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <shell.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/io.h>
 
 #include <boot/bsp.h>
-#include <shell/shell.h>
 #include <device/timer.h>
 #include <device/uart.h>
 #include <device/sysctl.h>
@@ -73,13 +71,10 @@ bcm_timer_cfg bcm_timer_config = {
 };
 
 /* Default environment settings for this platform */
-char init_script[512] = \
-	"setenv bootdelay 10;"
-	"setenv bootargs \"rd=md0 debug=0x16e serial=3 -v symbolicate_panics=1\";"
-	"setenv autoboot false;"
-	"setenv bootdev md0;"
-	"setenv bootpart 0;"
-	"setenv loadaddr " str(DRAM_BASE);
+static void bsp_env_init(void)
+{
+	setenv("bootdelay", "10", 1);
+}
 
 /* Board initialization routine */
 int bsp_init(void)
@@ -108,10 +103,8 @@ int bsp_init(void)
 	/* Initialize debug output */
 	printf_init(uart_putc);
 
-	printf("I've made it here!\n");
-
-	/* Initialize the environment */
-	shell_runscript(init_script);
+	/* Initialize the default environment */
+	bsp_env_init();
 
 	return 0;
 }
@@ -121,16 +114,12 @@ void bcm2836_reset(void)
 {
 	/* Halt */
 	_locore_halt_system();
-
-	return;
 }
 
 void bcm2836_halt(void)
 {
 	/* Halt the board */
 	_locore_halt_system();
-
-	return;
 }
 
 /* Register system control interface */

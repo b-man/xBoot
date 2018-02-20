@@ -235,42 +235,6 @@ static void shell_flushbuffer(char *buffer, size_t size)
 }
 
 /**
- * shell_runscript
- *
- * Parse and execute a script.
- */
-int shell_runscript(char *buffer)
-{
-	size_t token_size;
-	char *token, *save;
-	char *delim = ";\n";
-	char *argv[LINE_MAX];
-	int stat, line, argc;
-
-	if (buffer == NULL)
-		return -1;
-
-	token = strtok_r(buffer, delim, &save);
-	token_size = strlen(token);
-	for (line = 1; token != NULL; line++) {
-		if ((argc = shell_parseline(token, argv, token_size)) == -1) {
-			printf("runscript: syntax error on line %d, aborting.\n", line);
-			stat = -2;
-			break;
-		}
-		if ((stat = shell_callcmd(argc, argv)) != 0) {
-			printf("runscript: command error on line %d, aborting.\n", line);
-			stat = -3;
-			break;
-		}
-		shell_flushargs(argc, argv);
-		token = strtok_r(NULL, delim, &save);
-	}
-
-	return stat;
-}
-
-/**
  * shell_prompt
  *
  * An interactive shell for xBoot.

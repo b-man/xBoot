@@ -34,7 +34,6 @@
 #include <sys/io.h>
 
 #include <boot/bsp.h>
-#include <shell/shell.h>
 #include <device/timer.h>
 #include <device/uart.h>
 #include <device/sysctl.h>
@@ -44,9 +43,6 @@
 
 #include "rvpba8.h"
 #include "realview-pba8.h"
-
-#define xstr(s) #s
-#define str(s) xstr(s)
 
 extern void _locore_halt_system();
 
@@ -67,13 +63,10 @@ sp804_cfg sp804_config = {
 };
 
 /* Default environment settings for this platform */
-char init_script[512] = \
-	"setenv bootdelay 10;"
-	"setenv bootargs \"rd=md0 debug=0x16e serial=3 -v symbolicate_panics=1\";"
-	"setenv autoboot false;"
-	"setenv bootdev md0;"
-	"setenv bootpart 0;"
-	"setenv loadaddr " str(DRAM_BASE);
+static void bsp_env_init(void)
+{
+	setenv("bootdelay", "10", 1);
+}
 
 /* Board initialization routine */
 int bsp_init(void)
@@ -90,8 +83,8 @@ int bsp_init(void)
 	/* Use REFCLK (1Mhz) for timer2 */
 	writel((addr_t)SYS_CTRL0_BASE, (1 << 19));
 
-	/* Initialize the environment */
-	shell_runscript(init_script);
+	/* Initialize the default environment */
+	bsp_env_init();
 
 	return 0;
 }
@@ -108,8 +101,6 @@ void rvpba8_reset(void)
 
 	/* Halt on failure */
 	_locore_halt_system();
-
-	return;
 }
 
 void rvpba8_halt(void)
@@ -117,8 +108,6 @@ void rvpba8_halt(void)
 
 	/* Halt the board */
 	_locore_halt_system();
-
-	return;
 }
 
 /* Register system control interface */

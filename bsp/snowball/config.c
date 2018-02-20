@@ -34,7 +34,6 @@
 #include <sys/io.h>
 
 #include <boot/bsp.h>
-#include <shell/shell.h>
 #include <device/timer.h>
 #include <device/sysctl.h>
 #include <device/uart.h>
@@ -44,9 +43,6 @@
 
 #include "ap9500.h"
 #include "snowball.h"
-
-#define xstr(s) #s
-#define str(s) xstr(s)
 
 /* Platform name */
 char *bsp_platform_name = "ST-Ericsson Snowball";
@@ -65,13 +61,10 @@ ste_mtu_cfg mtu_config = {
 };
 
 /* Default environment settings for this platform */
-char init_script[512] = \
-	"setenv bootdelay 10;"
-	"setenv bootargs \"rd=md0 debug=0x16e serial=3 -v symbolicate_panics=1\";"
-	"setenv autoboot false;"
-	"setenv bootdev md0;"
-	"setenv bootpart 0;"
-	"setenv loadaddr " str(DRAM_BASE);
+static void bsp_env_init(void)
+{
+	setenv("bootdelay", "10", 1);
+}
 
 int bsp_init(void)
 {
@@ -84,8 +77,8 @@ int bsp_init(void)
 	/* Initialize console output */
 	printf_init(uart_putc);
 
-	/* Initialize the environment */
-	shell_runscript(init_script);
+	/* Initialize the default environment */
+	bsp_env_init();
 
 	return 0;
 }
