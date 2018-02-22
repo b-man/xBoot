@@ -13,6 +13,7 @@ CFLAGS_ARGS	+= \
 	-nostdlib \
 	-nostartfiles \
 	-ffreestanding \
+	-std=c11 \
 
 ifeq ($(BUILD),DEBUG)
 	CFLAGS_ARGS	+= \

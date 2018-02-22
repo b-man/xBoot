@@ -2,7 +2,7 @@
 # Tools used for building xBoot
 ##
 
-CROSS	:= arm-none-eabi-
+CROSS	?= arm-none-eabi-
 CC	:= $(CROSS)gcc
 LD	:= $(CROSS)ld
 AS	:= $(CROSS)as
